@@ -69,11 +69,11 @@ if(isset($_POST['add'])){
                     <label for="">Role</label>
                     <select name="role" id="role" class="form-control">
                         <option selected>Select</option>
-                        <option value="admin">Admin</option>
-                        <option value="doctor">Doctor</option>
-                        <option value="nurse">Nurse</option>
-                        <option value="receptionist">Receptionist</option>
-                        <option value="patient">Patient</option>
+                        <option value="Admin">Admin</option>
+                        <option value="Doctor">Doctor</option>
+                        <option value="Nurse">Nurse</option>
+                        <option value="Receptionist">Receptionist</option>
+                        <option value="Patient">Patient</option>
 
                     </select>
                 </div>
@@ -103,118 +103,58 @@ if(isset($_POST['add'])){
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">User List
                 <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#exampleModal">
-                    Add Doctor
+                    Add User
                 </button>
             </h6>
         </div>
         <div class="card-body">
+            <?php 
+             $data_display= "SELECT * FROM user_tbl";
+             $result1 = mysqli_query($conn,$data_display) or die("Query failed");
+             $count_row = mysqli_num_rows($result1);
+        if($count_row > 0){
+
+             
+            
+            ?>
             <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
                             <th>ID</th>
                             <th>Name</th>
-                            <th>Position</th>
+                            <th>Email</th>
                             <th>Phone</th>
-                            <th>Age</th>
+                            <th>Address</th>
+                            <td>Position</td>
                             <th>Start date</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>1</td>
-                            <td>Tiger Nixon</td>
-                            <td>System Architect</td>
-                            <td>Edinburgh</td>
-                            <td>61</td>
-                            <td>2011/04/25</td>
+                            <?php 
+                            $sn = +1;
+                            while($row = mysqli_fetch_assoc($result1)){ ?>
+                            <td><?php echo $sn; ?></td>
+                            <td><?php echo $row['user_name'] ;?></td>
+                            <td><?php echo $row['user_email'];?></td>
+                            <td><?php echo $row['phone']; ?></td>
+                            <td><?php echo $row['address']; ?></td>
+                            <td><?php echo ucfirst($row['role']) ;?></td>
+                            <td><?php echo date("Y M d ", strtotime($row['created_at'])) ?></td>
                             <td><button type="button" class="btn btn-outline-warning">View</button>
-                                <button type="button" class="btn btn-outline-success">Edit</button>
+                          <a href="doctor_edit.php?id=<?php echo $row['id'] ?>" class="btn btn-outline-success">Edit</a>     
                                 <button type="button" class="btn btn-outline-danger">Delete</button>
 
                             </td>
                         </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Garrett Winters</td>
-                            <td>Accountant</td>
-                            <td>Tokyo</td>
-                            <td>63</td>
-                            <td>2011/07/25</td>
-                            <td><button type="button" class="btn btn-outline-warning">View</button>
-                                <button type="button" class="btn btn-outline-success">Edit</button>
-                                <button type="button" class="btn btn-outline-danger">Delete</button>
-
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>Ashton Cox</td>
-                            <td>Junior Technical Author</td>
-                            <td>San Francisco</td>
-                            <td>66</td>
-                            <td>2009/01/12</td>
-                            <td><button type="button" class="btn btn-outline-warning">View</button>
-                                <button type="button" class="btn btn-outline-success">Edit</button>
-                                <button type="button" class="btn btn-outline-danger">Delete</button>
-
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td>Cedric Kelly</td>
-                            <td>Senior Javascript Developer</td>
-                            <td>Edinburgh</td>
-                            <td>22</td>
-                            <td>2012/03/29</td>
-                            <td><button type="button" class="btn btn-outline-warning">View</button>
-                                <button type="button" class="btn btn-outline-success">Edit</button>
-                                <button type="button" class="btn btn-outline-danger">Delete</button>
-
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>5</td>
-                            <td>Airi Satou</td>
-                            <td>Accountant</td>
-                            <td>Tokyo</td>
-                            <td>33</td>
-                            <td>2008/11/28</td>
-                            <td><button type="button" class="btn btn-outline-warning">View</button>
-                                <button type="button" class="btn btn-outline-success">Edit</button>
-                                <button type="button" class="btn btn-outline-danger">Delete</button>
-
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>6</td>
-                            <td>Brielle Williamson</td>
-                            <td>Integration Specialist</td>
-                            <td>New York</td>
-                            <td>61</td>
-                            <td>2012/12/02</td>
-                            <td><button type="button" class="btn btn-outline-warning">View</button>
-                                <button type="button" class="btn btn-outline-success">Edit</button>
-                                <button type="button" class="btn btn-outline-danger">Delete</button>
-
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>7</td>
-                            <td>Herrod Chandler</td>
-                            <td>Sales Assistant</td>
-                            <td>San Francisco</td>
-                            <td>59</td>
-                            <td>2012/08/06</td>
-                            <td><button type="button" class="btn btn-outline-warning">View</button>
-                                <button type="button" class="btn btn-outline-success">Edit</button>
-                                <button type="button" class="btn btn-outline-danger">Delete</button>
-
-                            </td>
-                        </tr>
-
+                        <?php
+                     $sn++;
+                    
+                    }?>
                     </tbody>
+                    <?php } ?>
                 </table>
             </div>
         </div>

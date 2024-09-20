@@ -36,7 +36,7 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Doctor</h6>
                         <a class="collapse-item" href="./doctor_specialization.php">Doctor Specialization</a>
-                        <a class="collapse-item" href="./manage_appointments_add.php">Manage Doctor</a>
+                        <a class="collapse-item" href="./doctor_add.php">Manage Doctor</a>
                     </div>
                 </div>
             </li>
