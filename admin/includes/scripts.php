@@ -16,3 +16,12 @@
 
     <!-- Page level custom scripts -->
     <script src="js/demo/datatables-demo.js"></script>
+    <script>
+   
+    function confirmDetele(){
+        if(confirm('Are you sure you want to delete')){
+            document.getElementById('deleteForm').submit();
+        }
+    }
+</script>
+

@@ -99,7 +99,7 @@ if(isset($_POST['add'])){
     <!-- DataTales Example -->
   
                                  
-    <div class="card shadow mb-4">
+    <div class="card  mb-4">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">User List
                 <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#exampleModal">
@@ -109,7 +109,7 @@ if(isset($_POST['add'])){
         </div>
         <div class="card-body">
             <?php 
-             $data_display= "SELECT * FROM user_tbl";
+             $data_display= "SELECT * FROM user_tbl ORDER BY `id` DESC";
              $result1 = mysqli_query($conn,$data_display) or die("Query failed");
              $count_row = mysqli_num_rows($result1);
         if($count_row > 0){
@@ -143,9 +143,12 @@ if(isset($_POST['add'])){
                             <td><?php echo $row['address']; ?></td>
                             <td><?php echo ucfirst($row['role']) ;?></td>
                             <td><?php echo date("Y M d ", strtotime($row['created_at'])) ?></td>
-                            <td><button type="button" class="btn btn-outline-warning">View</button>
-                          <a href="doctor_edit.php?id=<?php echo $row['id'] ?>" class="btn btn-outline-success">Edit</a>     
-                                <button type="button" class="btn btn-outline-danger">Delete</button>
+                            <td><a href="doctor_view.php?=id<?php echo $row['id']; ?>"><button type="button" class="btn btn-outline-warning mr-2">View</button></a>
+                          <a href="doctor_edit.php?id=<?php echo $row['id']; ?>" class="btn btn-outline-success mr-2">Edit</a>     
+                          <form action="doctor_delete.php" method="POST" id="deleteForm" style="display:inline-block; margin:2px;">
+                              <input type="hidden" name="id" value="<?php echo $row['id'] ?>">
+                              <button type="submit" name="delete" class="btn btn-outline-danger" onclick="confirmDetele()">Delete</button>
+                              </form> 
 
                             </td>
                         </tr>

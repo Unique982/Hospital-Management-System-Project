@@ -54,7 +54,7 @@
                 </div>
             </li>
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree"
+                <a class="nav-link collapsed" href="./patient_list.php" data-toggle="collapse" data-target="#collapseThree"
                     aria-expanded="true" aria-controls="collapseThree">
                     <i class="fa-solid fa-users"></i>
                     <span>Manage Patients</span>
@@ -62,8 +62,8 @@
                 <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Manage Patient</h6>
-                        <a class="collapse-item" href="employee-add.html">Add</a>
-                        <a class="collapse-item" href="employee-list.html">List</a>
+                        <a class="collapse-item" href="./patient_add.php">Add</a>
+                        <a class="collapse-item" href="./patient_list.php">List</a>
                     </div>
                 </div>
             </li>
