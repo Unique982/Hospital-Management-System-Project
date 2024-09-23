@@ -67,6 +67,20 @@
                     </div>
                 </div>
             </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse5"
+                    aria-expanded="true" aria-controls="collapse5">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>Manage Blood</span>
+                </a>
+                <div id="collapse5" class="collapse" aria-labelledby="heading5" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Manage Blood</h6>
+                        <a class="collapse-item" href="./blood_donor_add.php">Add</a>
+                        <a class="collapse-item" href="./blood_donor_list.php">List</a>
+                    </div>
+                </div>
+            </li>
            
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFour"
