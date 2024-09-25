@@ -91,7 +91,7 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Manage Blood</h6>
                         <a class="collapse-item" href="./bed_add.php">Add Bed</a>
-                        <a class="collapse-item" href=".bed_list.php">List Bed</a>
+                        <a class="collapse-item" href="./bed_list.php">List Bed</a>
                     </div>
                 </div>
             </li>

@@ -10,7 +10,7 @@ if(isset($_POST['add_bed'])){
   $sql = "SELECT bed_num FROM bed WHERE bed_num = '$bed_number'";
  $result = mysqli_query($conn, $sql)  or die("Query failed");
  if(mysqli_num_rows($result)>0){
-    echo "<div class='text text-danger'>bed alread exits </div>";
+    echo "<div class='alert alert-danger'>bed alread exits </div>";
  }
  else{
     $insert_query = "INSERT INTO `bed`(`bed_num`, `bed_type`, `description`, `created_at`) VALUES
