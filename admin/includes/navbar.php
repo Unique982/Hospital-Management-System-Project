@@ -105,8 +105,8 @@
                 <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Manage Appointment</h6>
-                        <a class="collapse-item" href="employee-add.html">Add</a>
-                        <a class="collapse-item" href="employee-list.html">List</a>
+                        <a class="collapse-item" href="./appointment_add.php">Add</a>
+                        <a class="collapse-item" href="./appointment_list.php">List</a>
                     </div>
                 </div>
             </li>
@@ -313,6 +313,7 @@
             <li class="nav-item dropdown no-arrow">
                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    
                     <span class="mr-2 d-none d-lg-inline text-gray-600 small">Unique Neupane</span>
                     <img class="img-profile rounded-circle"
                         src="../assets/images/WhatsApp Image 2024-07-09 at 17.55.10_f356836c.jpg">
