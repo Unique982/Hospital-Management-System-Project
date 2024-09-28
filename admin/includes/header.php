@@ -1,3 +1,14 @@
+<?php
+include('../database/config.php');
+$select_query = "SELECT * FROM setting";
+$result = mysqli_query($conn, $select_query);
+ $title = "";
+ if($row=mysqli_fetch_assoc($result)){
+    $title = $row['website_title'];
+ }
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,7 +20,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Unqiue Admin Dashboard</title>
+    <title><?php echo $title; ?></title>
     
 
     <!-- Custom fonts for this template-->
@@ -24,8 +35,7 @@
 
 </head>
 
-<body id="page-top">
-    
+<body id="page-top" style="font-family:'Times New Roman';font-size:18px;">
 
     <!-- Page Wrapper -->
     <div id="wrapper">

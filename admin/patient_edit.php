@@ -15,7 +15,7 @@ if(isset($_POST['update'])){
         $update_query = "UPDATE `patient` SET `name`='$pt_name',`age`='$pt_age',`sex`='$pt_sex',`dob`='$pt_dob',`blood_group`='$pt_blood',`address`='$pt_address',`phone`='$pt_phone',`email`='$pt_email' WHERE patient_id = $patient_id";
       if(mysqli_query($conn, $update_query)){
        
-        echo '<div class="alert alert-danger">Patient Add Successfully </div>';
+        echo '<div class="alert alert-danger">Update Successfully </div>';
     
       }
       else{
@@ -31,7 +31,7 @@ if(isset($_POST['update'])){
         <div class="col-12">
             <div class="card mb-4">
                 <div class="card-header">
-                   Add Patient
+                   Update Patient
                 </div>
                 <?php 
                 $patient_id = $_GET['patient_id'];
