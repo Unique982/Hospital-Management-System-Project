@@ -105,7 +105,6 @@
                 <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Manage Appointment</h6>
-                        <a class="collapse-item" href="./appointment_add.php">Add</a>
                         <a class="collapse-item" href="./appointment_list.php">List</a>
                     </div>
                 </div>

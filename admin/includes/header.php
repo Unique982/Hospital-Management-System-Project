@@ -35,7 +35,7 @@ $result = mysqli_query($conn, $select_query);
 
 </head>
 
-<body id="page-top" style="font-family:'Times New Roman';font-size:18px;">
+<body id="page-top">
 
     <!-- Page Wrapper -->
     <div id="wrapper">

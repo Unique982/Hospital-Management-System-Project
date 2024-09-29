@@ -2,6 +2,21 @@
 include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
+if(isset($_POST['add'])){
+    $doctor = mysqli_real_escape_string($conn,$_POST['doctor']);
+    $patient = mysqli_real_escape_string($conn,$_POST['patient']);
+    $date = mysqli_real_escape_string($conn,$_POST['date']);
+    
+    $insert_query = "INSERT INTO `appointments`(`patient_id`, `doctor_id`, `appointment_date`, `created_at`)
+     VALUES('$patient','$doctor','$date',Now())";
+     if(mysqli_query($conn,$insert_query)){
+        echo '<div class="alert alert-success role="alert">Appointment Add Sucessful?</div>';
+     }
+     else{
+     echo '<div class="alert alert-success role="alert"> Appointment failed.<div>';
+     }
+
+}
 ?>
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 <div class="modal-dialog">
@@ -16,15 +31,29 @@ include('../database/config.php');
         <div class="modal-body">
             <div class="form-group">
                 <label for="">Doctor</label>
-                <input type="text" name="doctor" class="form-control" placeholder="Enter Doctor" required>
+                <select name="doctor" id="doctor" class="form-control" required>
+                <?php
+                $select_doctor_table = "SELECT * FROM user_tbl WHERE role='doctor'";
+                $doctor_result = mysqli_query($conn,$select_doctor_table);
+                while($doctor_table_data = mysqli_fetch_assoc($doctor_result)){
+                    echo"<option selected disabled> Select One</option>";
+                    echo "<option value='".$doctor_table_data['id']."'>".$doctor_table_data['user_name']."</option>";
+                }
+                ?>
+                 </select>
+              
             </div>
             <div class="form-group">
                 <label for="">Patient</label>
                 <select name="patient" id="patient" class="form-control" required>
-                    <option selected disabled> Select One</option>
-                    <option value="1">Patient 1</option>
-                    <option value="2">Patient 2</option>
-                    <option value="3">Patient 3</option>
+                    <?php 
+                    $select_query_patient_table = "SELECT * FROM patient";
+                    $result = mysqli_query($conn,$select_query_patient_table);
+                    while($row = mysqli_fetch_assoc($result)){
+                     echo"   <option selected disabled> Select One</option>";
+                        echo "<option value='".$row['patient_id']."'>".$row['name']."</option>";
+                    }
+                    ?>
                 </select>
             </div>
             <div class="form-group">
@@ -34,7 +63,7 @@ include('../database/config.php');
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="submit" name="add" class="btn btn-primary">Save</button>
+            <button type="submit" name="add" class="btn btn-primary">Add</button>
         </div>
         </form>
     </div>
@@ -49,6 +78,18 @@ include('../database/config.php');
                 Add Appointment
             </button>
         </h6>
+        <!-- fetch Data  -->
+         <?php 
+         $appoinment_data = "SELECT appointments.id, patient.name AS patient_name,user_tbl.user_name AS
+          doctor_name, appointments.appointment_date, appointments.created_at
+         FROM appointments
+         INNER JOIN patient ON appointments.patient_id= patient.patient_id
+         INNER JOIN user_tbl ON appointments.doctor_id = user_tbl.id
+        ORDER BY appointments.id ASC
+         ";
+         $app_result = mysqli_query($conn,$appoinment_data); 
+         ?>
+
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -58,25 +99,42 @@ include('../database/config.php');
                         <th>ID</th>
                         <th>Patient Name</th>
                         <th>Doctor</th>
-                        <th>Date</th>
+                        <th>Appointment Date</th>
+                        <th>Created_at</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
+                    <?php
+                    $sn =+1;
+                    if(mysqli_num_rows($app_result)>0){
+                        while($app = mysqli_fetch_assoc($app_result)){
+                    
+                    ?>
                     <tr>
-                        <td>1</td>
-                        <td>Unique Neupane</td>
-                        <td>New Doctor</td>
-                        <td>2089-10-1</td>
+                        <td><?php echo $sn ?></td>
+                        <td><?php echo $app['patient_name'] ?></td>
+                        <td><?php echo $app['doctor_name'] ?></td>
+                        <td><?php echo $app['appointment_date'] ?></td>
+                        <td><?php echo date("Y M d ", strtotime( $app['created_at'] ))?></td>
                         <td>
                             <a href=""><button type="button" class="btn btn-outline-warning mr-2">View</button></a>
-                            <a href="" class="btn btn-outline-success mr-2">Edit</a>
+                            <a href="appointment_edit.php" class="btn btn-outline-success mr-2">Edit</a>
+                            
                             <form action="" method="POST" id="deleteForm" style="display:inline-block; margin:2px;">
                                 <input type="hidden" name="patient_id" value="">
                                 <button type="submit" name="delete" class="btn btn-outline-danger" onclick="return confirmDelete()">Delete</button>
                             </form> 
                         </td>
                     </tr>
+                    <?php 
+                     $sn++;
+                        }}else{
+                            echo "Not Found";
+                        }
+                   
+                    
+                ?>
                 </tbody>
             </table>
         </div>
