@@ -14,10 +14,14 @@ if(isset($_POST['update'])){
 $update_query = "UPDATE profile SET name = '$name',email = '$email', phone = '$phone',
 address = '$address',website_link = '$link',bio = '$bio',image='image' WHERE id =$id";
 if(mysqli_query($conn,$update_query)){
-    echo "<div class='alert alert-alert role='alert'>Update Successfullt?</div>";
+
+    $_SESSION['alert'] ="Update Successfully ";
+    $_SESSION['alert_code'] ="success";
 }
 else{
-    echo "<div class='alert alert-alert role='alert'>Failed Update</div>";
+    $_SESSION['alert'] ="Failed Update";
+    $_SESSION['alert_code'] ="error";
+
 }
 }
 

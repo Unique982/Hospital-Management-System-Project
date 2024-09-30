@@ -16,17 +16,20 @@ $bl_available = isset($_POST['bl_available']) ? 1 : 0;
 $select_query = "SELECT email, phone FROM blood_donors WHERE email='$bl_email'OR phone = '$bl_phone'";
 $result = mysqli_query($conn,$select_query);
 if(mysqli_num_rows($result)>0){
-    echo "<div class='alert alert-dander'>User account already create?</div>";
+    $_SESSION['alert'] ="Already Create";
+    $_SESSION['alert_code'] ="info";
+   
 }
 else{
    $insert_query = "INSERT INTO `blood_donors`(`name`, `email`, `gender`, `blood_group`, `phone`, `address`, `age`, `last_donated`, `is_available`, `created_at`) 
    VALUES('$bl_name','$bl_email','$bl_gender','$bl_blood','$bl_phone','$bl_address','$bl_age','$bl_last_time','$bl_available',Now())";
    if(mysqli_query($conn,$insert_query)){
-    echo "<div class='alert alert-success'>User Create successfully</div>";
-
+    $_SESSION['alert'] ="User Create Successfully";
+    $_SESSION['alert_code'] ="success";
    }
    else{
-    echo "<div class='alert alert-danger'> Not Create account</div>";
+    $_SESSION['alert'] ="Failed";
+    $_SESSION['alert_code'] ="error";
    }
 }
 }

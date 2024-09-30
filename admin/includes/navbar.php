@@ -3,7 +3,7 @@
         <ul class="navbar-nav bg-gradient-dark sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="./dashboard.php">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-hospital"></i>
                 </div>
@@ -30,17 +30,17 @@
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse0"
                     aria-expanded="true" aria-controls="collapse0">
                     <i class="fas fa-user-md"></i>
-                    <span>Doctor</span>
+                    <span>Empolyee Manage</span>
                 </a>
                 <div id="collapse0" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Doctor</h6>
+                        <h6 class="collapse-header">Empolyee Manage</h6>
                         <a class="collapse-item" href="./doctor_specialization.php">Doctor Specialization</a>
-                        <a class="collapse-item" href="./doctor_add.php">Manage Doctor</a>
+                        <a class="collapse-item" href="./employee_add.php">Manage Empolyee</a>
                     </div>
                 </div>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-user-md"></i>
@@ -52,7 +52,7 @@
                         <a class="collapse-item" href="./manage_appointments_add.php">List</a>
                     </div>
                 </div>
-            </li>
+            </li> -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="./patient_list.php" data-toggle="collapse" data-target="#collapseThree"
                     aria-expanded="true" aria-controls="collapseThree">

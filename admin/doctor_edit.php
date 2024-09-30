@@ -82,7 +82,7 @@ if (isset($_POST['update'])) {
 
                         <div class="modal-footer">
                             
-                        <a href="doctor_add.php" class="btn btn-danger">Cancel</a>
+                        <a href="employee_add.php" class="btn btn-danger">Cancel</a>
                             <button type="submit" name="update" class="btn btn-primary">Update</button>
                         </div>
 

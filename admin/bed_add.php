@@ -10,16 +10,20 @@ if(isset($_POST['add_bed'])){
   $sql = "SELECT bed_num FROM bed WHERE bed_num = '$bed_number'";
  $result = mysqli_query($conn, $sql)  or die("Query failed");
  if(mysqli_num_rows($result)>0){
-    echo "<div class='alert alert-danger'>bed alread exits </div>";
+    $_SESSION['alert'] ="Already exists";
+    $_SESSION['alert_code'] ="info";
+    
  }
  else{
     $insert_query = "INSERT INTO `bed`(`bed_num`, `bed_type`, `description`, `created_at`) VALUES
     ('$bed_number', '$bed_type', '$description', Now())";
  if(mysqli_query($conn, $insert_query)){
-    echo "<div class='alert alert-alert'>Add Successfully</div>";
+    $_SESSION['alert'] ="Added Successfully appointment";
+        $_SESSION['alert_code'] ="success";
  }
  else{
-    echo "<div class='alert alert-alert'>failed</div>";
+    $_SESSION['alert'] ="Failed";
+    $_SESSION['alert_code'] ="error";
  }
  
  }

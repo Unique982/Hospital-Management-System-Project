@@ -14,18 +14,23 @@ if(isset($_POST['add'])){
        $sql = "SELECT user_name, user_email, phone FROM user_tbl WHERE user_name = '$username'OR user_email='$email' OR phone= '$phone'";
        $result = mysqli_query($conn, $sql) or die("Query failed");
        if(mysqli_num_rows($result) >0){
-        echo "<div class='text text-danger'>User alread exits </div>";
+        
+    $_SESSION['alert'] ="User already exists";
+    $_SESSION['alert_code'] ="info";
        }
        else{
         $insert_query = "INSERT INTO `user_tbl` (`user_name`, `user_email`, `phone`, `address`, `role`,
          `password`, `confirm_password`, `created_at`)
          VALUES('$username','$email','$phone','$address','$role','$password','$confrim_password',Now()) ";
          if(mysqli_query($conn,$insert_query)){
-            echo "<div class='text text-danger'>New User Add Successfully</div>";
-
+            
+    $_SESSION['alert'] ="New User Add Successfully ";
+    $_SESSION['alert_code'] ="success";
          }
          else{
-            echo "<div class='text text-danger'>error </div>";
+           
+    $_SESSION['alert'] ="Failed";
+    $_SESSION['alert_code'] ="error";
          }
         }
  }
@@ -101,9 +106,9 @@ if(isset($_POST['add'])){
                                  
     <div class="card  mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">User List
+            <h6 class="m-0 font-weight-bold text-primary">Employee List
                 <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#exampleModal">
-                    Add User
+              Add New Employee
                 </button>
             </h6>
         </div>
@@ -126,7 +131,7 @@ if(isset($_POST['add'])){
                             <th>Email</th>
                             <th>Phone</th>
                             <th>Address</th>
-                            <td>Position</td>
+                            <th>Position</th>
                             <th>Start date</th>
                             <th>Action</th>
                         </tr>
@@ -143,7 +148,7 @@ if(isset($_POST['add'])){
                             <td><?php echo $row['address']; ?></td>
                             <td><?php echo ucfirst($row['role']) ;?></td>
                             <td><?php echo date("Y M d ", strtotime($row['created_at'])) ?></td>
-                            <td><a href="doctor_view.php?=id<?php echo $row['id']; ?>"><button type="button" class="btn btn-outline-warning mr-2">View</button></a>
+                            <td><a href="doctor_view.php?id=<?php echo $row['id']; ?>"><button type="button" class="btn btn-outline-warning mr-2">View</button></a>
                           <a href="doctor_edit.php?id=<?php echo $row['id']; ?>" class="btn btn-outline-success mr-2">Edit</a>     
                           <form action="doctor_delete.php" method="POST" id="deleteForm" style="display:inline-block; margin:2px;">
                               <input type="hidden" name="id" value="<?php echo $row['id'] ?>">

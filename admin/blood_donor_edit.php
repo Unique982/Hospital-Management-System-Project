@@ -68,7 +68,7 @@ $update_query = "UPDATE blood_donors SET name ='$bl_name', email='$bl_email', ge
                         </div>
                         <div class="form-group">
                             <label for="">Age</label>
-                            <input type="date" name="bl_age" value="<?php echo $row['age'] ?>" class="form-control" placeholder="Enter Age">
+                            <input type="number" name="bl_age" value="<?php echo $row['age'] ?>" class="form-control" placeholder="Enter Age">
                         </div>
                         <div class="form-group">
                         <label for="">Phone</label>

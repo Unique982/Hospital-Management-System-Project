@@ -16,17 +16,22 @@ if(isset($_POST['add_patient'])){
     $select_query = "SELECT  email, phone FROM `patient` WHERE email = '$pt_email' OR phone='$pt_phone'";
     $result = mysqli_query($conn, $select_query) or die("Query failed");
     if(mysqli_num_rows($result) >0){
-        echo '<div class="alert alert-danger">Patient Already Add </div>';
+        
+    $_SESSION['alert'] =" Patient Already Add ";
+    $_SESSION['alert_code'] ="info";
+       
     }
     else{
         $insert_query = "INSERT INTO `patient`( `name`, `age`, `sex`, `dob`, `blood_group`, `address`, `phone`, `password`, `email`) 
         VALUES('$pt_name','$pt_age','$pt_sex','$pt_dob','$pt_blood','$pt_address','$pt_phone','$pt_password','$pt_email')";
       if(mysqli_query($conn, $insert_query)){
-        echo '<div class="alert alert-danger">Patient Add Successfully </div>';
+        
+    $_SESSION['alert'] ="Patient Add Successfully ";
+    $_SESSION['alert_code'] ="success";
       }
       else{
-        echo '<div class="alert alert-danger">Insert failed </div>';
-
+    $_SESSION['alert'] ="Failed";
+    $_SESSION['alert_code'] ="error";
       }
     }
 }     

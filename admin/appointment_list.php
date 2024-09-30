@@ -32,11 +32,12 @@ if(isset($_POST['add'])){
             <div class="form-group">
                 <label for="">Doctor</label>
                 <select name="doctor" id="doctor" class="form-control" required>
+                <option selected disabled> Select One</option>
                 <?php
                 $select_doctor_table = "SELECT * FROM user_tbl WHERE role='doctor'";
                 $doctor_result = mysqli_query($conn,$select_doctor_table);
                 while($doctor_table_data = mysqli_fetch_assoc($doctor_result)){
-                    echo"<option selected disabled> Select One</option>";
+                  
                     echo "<option value='".$doctor_table_data['id']."'>".$doctor_table_data['user_name']."</option>";
                 }
                 ?>
@@ -46,15 +47,18 @@ if(isset($_POST['add'])){
             <div class="form-group">
                 <label for="">Patient</label>
                 <select name="patient" id="patient" class="form-control" required>
+      <option selected disabled> Select One</option>
                     <?php 
                     $select_query_patient_table = "SELECT * FROM patient";
                     $result = mysqli_query($conn,$select_query_patient_table);
                     while($row = mysqli_fetch_assoc($result)){
-                     echo"   <option selected disabled> Select One</option>";
+                    
                         echo "<option value='".$row['patient_id']."'>".$row['name']."</option>";
-                    }
-                    ?>
+                    
+            }
+                  ?>
                 </select>
+              
             </div>
             <div class="form-group">
                 <label for="">Date</label>
@@ -115,27 +119,27 @@ if(isset($_POST['add'])){
                         <td><?php echo $sn ?></td>
                         <td><?php echo $app['patient_name'] ?></td>
                         <td><?php echo $app['doctor_name'] ?></td>
-                        <td><?php echo $app['appointment_date'] ?></td>
+                        <td><?php echo date("Y M d ", strtotime( $app['appointment_date'] )) ?></td>
                         <td><?php echo date("Y M d ", strtotime( $app['created_at'] ))?></td>
                         <td>
                             <a href=""><button type="button" class="btn btn-outline-warning mr-2">View</button></a>
-                            <a href="appointment_edit.php" class="btn btn-outline-success mr-2">Edit</a>
+                            <a href="appointment_edit.php?id=<?php echo $app['id'];?>" class="btn btn-outline-success mr-2">Edit</a>
                             
-                            <form action="" method="POST" id="deleteForm" style="display:inline-block; margin:2px;">
-                                <input type="hidden" name="patient_id" value="">
+                            <form action="appointment_delete.php" method="POST" id="deleteForm" style="display:inline-block; margin:2px;">
+                                <input type="hidden" name="id" value="<?php echo $app['id'] ?>">
                                 <button type="submit" name="delete" class="btn btn-outline-danger" onclick="return confirmDelete()">Delete</button>
                             </form> 
                         </td>
                     </tr>
                     <?php 
                      $sn++;
-                        }}else{
+                        }}
+                        else{
                             echo "Not Found";
                         }
-                   
-                    
                 ?>
                 </tbody>
+                
             </table>
         </div>
     </div>

@@ -1,62 +1,95 @@
-<div class="modal fade"  aria-hid="editModal" tabindex="-2" role="dialog" aria-labelledby="editModalLabelidden="true">
-<div class="modal-dialog">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="editModalLabel">Edit Appointment</h5>
-            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-            <?php 
+<?php
+ include("includes/header.php");
+include("includes/navbar.php");
+include('../database/config.php');
+if(isset($_POST['update'])){
+    $id = mysqli_real_escape_string($conn,$_POST['id']);
+   $doctor = mysqli_real_escape_string($conn,$_POST['doctor']);
+   $patient = mysqli_real_escape_string($conn,$_POST['patient']);
+   $date = mysqli_real_escape_string($conn,$_POST['date']);
+   // update query 
+   $update_query = "UPDATE appointments SET patient_id = '$patient' , doctor_id = '$doctor', appointment_date = '$date' WHERE id=$id";
+  if(mysqli_query($conn,$update_query)){
+// success msg
+   $_SESSION['alert'] ="Successfully updated appointment";
+   $_SESSION['alert_code'] ="success";   
+  }
+ else{
+    $_SESSION['alert'] ="update Failed";
+    $_SESSION['alert_code'] ="error"; 
+  }
+}
+
+?>
+
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                    Edit Information
+                </div>
+                <?php 
                 $id = $_GET['id'];
-                $select_query = "SELECT * FROM appointment WHERE id = '$id'";
-                $edit_result = mysqli_query($conn, $select_query);
-                if(mysqli_num_rows($edit_result)>0)
-                {
-                    while($row = mysqli_fetch_assoc($edit_result))
-{                
+                $select_query = "SELECT * FROM appointments WHERE id='$id'";
+                $result = mysqli_query($conn, $select_query) or die("Query Failed");
+                if(mysqli_num_rows($result)>0){
+                    while($row = mysqli_fetch_assoc($result)){
+                
+                
                 ?>
-        </div>
-        <form action="" method="POST" class="needs-validation" novalidate>
-            <input type="hidden" name="<?php  echo $row['id']?>">
-        <div class="modal-body">
-            <div class="form-group">
-                <label for="">Doctor</label>
-                <select name="doctor" id="doctor" class="form-control" required>
-                <?php
+                <div class="card-body">
+                    <form action="" method="POST" enctype="multipart/form-data">
+                        <input type="hidden" name="id" value="<?php echo $row['id'] ?>">
+                        <div class="form-group">
+                            <label for="">Doctore Name</label>
+                           <select name="doctor" id="" class="form-control">
+                           <?php
                 $select_doctor_table = "SELECT * FROM user_tbl WHERE role='doctor'";
                 $doctor_result = mysqli_query($conn,$select_doctor_table);
                 while($doctor_table_data = mysqli_fetch_assoc($doctor_result)){
-                    echo"<option selected disabled> Select One</option>";
-                    echo "<option value='".$doctor_table_data['id']."'>".$doctor_table_data['user_name']."</option>";
+                   $selected = ($doctor_table_data['id'] == $doctor) ? 'selected':'';
+                   echo "<option value='".$doctor_table_data['id']."'$selected>".$doctor_table_data['user_name']."</option>";
                 }
                 ?>
-                 </select>
-              
-            </div>
-            <div class="form-group">
+                           </select>
+                        </div>
+                       
+                        <div class="form-group">
                 <label for="">Patient</label>
                 <select name="patient" id="patient" class="form-control" required>
                     <?php 
                     $select_query_patient_table = "SELECT * FROM patient";
                     $result = mysqli_query($conn,$select_query_patient_table);
-                    while($row = mysqli_fetch_assoc($result)){
-                     echo"   <option selected disabled> Select One</option>";
-                        echo "<option value='".$row['patient_id']."'>".$row['name']."</option>";
-                    }
-                    ?>
+                    while($row1 = mysqli_fetch_assoc($result)){
+                        $selected = ($row1['id'] == $patient) ? 'selected':'';
+                        echo "<option value='".$row1['patient_id']."'$selected>".$row1['name']."</option>";
+                     }
+                     ?>
+                    
+                   
                 </select>
             </div>
             <div class="form-group">
                 <label for="">Date</label>
-                <input type="date" name="date" value="<?php echo $row['appointment_date'] ?>" class="form-control" required>
+                 <input type="date" name="date" class="form-control" value="<?php echo $row['appointment_date']; ?>" required>
             </div>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="submit" name="add" class="btn btn-primary">Update</button>
+            <a href="appointment_list.php" class="btn btn-danger">Cancel</a>
+            
+            <button type="submit" name="update" class="btn btn-primary">Update</button>
         </div>
         </form>
-                <?php }} ?>
+        <?php }} ?>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
-</div>
+
+
+    <?php
+    include('includes/scripts.php');
+    include('includes/footer.php');
+    ?>
