@@ -1,3 +1,58 @@
+<?php
+session_start();
+include('../database/config.php');
+if(isset($_POST['login'])){
+    $user_name_or_email= mysqli_real_escape_string($conn,$_POST['user_name_or_email']);
+    $user_type = mysqli_real_escape_string($conn,$_POST['user_type']);
+    $password = mysqli_real_escape_string($conn,$_POST['password']);
+
+    $sql = "SELECT user_name, user_email, role, password FROM user_tbl 
+    WHERE (user_name = '$user_name_or_email' OR user_email = '$user_name_or_email') 
+    AND role = '$user_type'";
+ $result = mysqli_query($conn,$sql); 
+ if(mysqli_num_rows($result)>0){
+    $user_data = mysqli_fetch_assoc($result);
+    if(password_verify($password,$user_data['password'])){
+        $_SESSION['user_data'] = $user_data;
+        switch($user_type){
+            case 'admin':
+                header("Location:dashboard.php");
+                exit();
+                break;
+                case 'doctor':
+                    header("Location:dashboard.php");
+                    exit();
+                    break;
+    }
+    exit();
+ }
+
+ else{
+    echo "Invalid Password";
+ 
+}
+ }
+}
+ else{
+ $sql1 = "SELECT name, email, password FROM patient WHERE (name = '$user_name_or_email' OR email = '$user_name_or_email')";
+ $result2 = mysqli_query($conn,$sql1);
+ if(mysqli_num_rows($result2)>0){
+    $pateint_data = mysqli_fetch_assoc($result2);
+    if(password_verify($password,$pateint_data['password'])){
+        $_SESSION['pateint_data'] = $pateint_data;
+        header("location:patient_dashboard.php");
+     exit();
+    }
+    else{
+        echo "Invalid Password";
+    }
+ }
+ else{
+    echo "Invalid username or email";
+ }
+ }
+
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -30,7 +85,7 @@
             <form action="" method="post">
                 <div class="form-group">
                     <label for="">Username or Email</label>
-                    <input type="text" name="user__name/email" class="form-control" placeholder="Username/Email">
+                    <input type="text" name="user_name_or_email" class="form-control" placeholder="Username/Email">
                 </div>
                 <div class="form-group">
                     <label for="">Select Role:</label>
@@ -55,14 +110,18 @@
                 </div>
                 <hr>
                 <div class="form-group">
-    <p>Don't you have an account? 
-        <a href="#">Create Now</a>
+    <p class="text-center text-muted">Don't you have an account? 
+        <a href="register.php" class="text-center">Create Now</a>
+       
     </p>
 </div>
+<div class="form-group text-center text-muted">
+    
+<a href="forgot_password.php">Forgot password?</a>
+   
 
-<div class="form-group">
-    <a href="forgot_password.php">Forgot password?</a>
-</div>        
+</div>
+      
             </form>
              </div>
                 </div>

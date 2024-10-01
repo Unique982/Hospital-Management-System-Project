@@ -34,16 +34,7 @@
             <div class="form-group">
                 <button type="submit" class="btn btn-success w-100">Reset Password</button>
             </div>
-            <hr>
-                <div class="form-group">
-    <p>Don't you have an account? 
-        <a href="#">Create Now</a>
-    </p>
-</div>
-
-<div class="form-group">
-    <a href="forgot_password.php">Forgot password?</a>
-</div>        
+            
             </form>
              </div>
                 </div>
