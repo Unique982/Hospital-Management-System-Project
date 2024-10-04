@@ -1,4 +1,6 @@
-<?php include("includes/header.php");
+<?php 
+
+include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
 if(isset($_POST['add_patient'])){
@@ -10,7 +12,7 @@ if(isset($_POST['add_patient'])){
     $pt_age = mysqli_real_escape_string($conn,$_POST['pt_age']);
     $pt_sex = mysqli_real_escape_string($conn,$_POST['pt_sex']);
     $pt_blood = mysqli_real_escape_string($conn,$_POST['pt_blood']);
-    $pt_password = mysqli_real_escape_string($conn,$_POST['pt_password']);
+    $pt_password = mysqli_real_escape_string($conn,password_hash($_POST['pt_password'],PASSWORD_BCRYPT));
 
     // check user already exists or not
     $select_query = "SELECT  email, phone FROM `patient` WHERE email = '$pt_email' OR phone='$pt_phone'";

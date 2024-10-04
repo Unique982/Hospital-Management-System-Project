@@ -1,4 +1,8 @@
-<?php include("includes/header.php");
+<?php 
+if(isset($_SESSION['user_name'])){
+    header("location:index.php");
+}
+include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
 $select_query = "SELECT * FROM patient ORDER BY  patient_id DESC";

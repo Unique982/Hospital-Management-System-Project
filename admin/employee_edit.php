@@ -1,4 +1,5 @@
-<?php include("includes/header.php");
+<?php
+include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
 if (isset($_POST['update'])) {
@@ -12,10 +13,13 @@ if (isset($_POST['update'])) {
     $sql = "UPDATE user_tbl SET user_name = '$username', user_email = '$email', 
     phone='$phone', address = '$address', role='$role' WHERE id = $id";
      if(mysqli_query($conn, $sql)){
-      echo "<div class='alert alert-text'>Update Now</div>";
+        $_SESSION['alert'] ="update successfully";
+        $_SESSION['alert_code'] ="success";
+    
      }
      else{
-        echo "<div class='alert alert-text'>Error!</div>";
+        $_SESSION['alert'] ="Update failed";
+        $_SESSION['alert_code'] ="warning";
      }
 }
 ?>

@@ -1,6 +1,9 @@
-<?php include("includes/header.php");
+<?php
+
+include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
+
 if(isset($_POST['add'])){
       $username = mysqli_real_escape_string($conn, $_POST['username']);
       $email = mysqli_real_escape_string($conn, $_POST['email']);
@@ -77,8 +80,9 @@ if(isset($_POST['add'])){
                         <option value="Admin">Admin</option>
                         <option value="Doctor">Doctor</option>
                         <option value="Nurse">Nurse</option>
-                        <option value="Receptionist">Receptionist</option>
-                        <option value="Patient">Patient</option>
+                        <option value="Pharmacist">Pharmacist</option>
+                        <option value="Laboratorist">Laboratorist</option>
+                        <option value="Accountant">Accountant</option>
 
                     </select>
                 </div>

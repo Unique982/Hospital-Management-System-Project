@@ -1,1 +1,0 @@
-<h1>Welcome patient page</h1>

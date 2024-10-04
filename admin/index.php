@@ -5,7 +5,7 @@ if(isset($_POST['login'])){
     $user_name_or_email= mysqli_real_escape_string($conn,$_POST['user_name_or_email']);
     $user_type = mysqli_real_escape_string($conn,$_POST['user_type']);
     $password = mysqli_real_escape_string($conn,$_POST['password']);
-
+if($user_type==='admin' || $user_type==='doctor' || $user_type==='nurse' || $user_type==='pharmacist' || $user_type==='accountant'){
     $sql = "SELECT user_name, user_email, role, password FROM user_tbl 
     WHERE (user_name = '$user_name_or_email' OR user_email = '$user_name_or_email') 
     AND role = '$user_type'";
@@ -15,43 +15,59 @@ if(isset($_POST['login'])){
     if(password_verify($password,$user_data['password'])){
         $_SESSION['user_data'] = $user_data;
         switch($user_type){
-            case 'admin':
+            case 'admin':   
+        $_SESSION['alert'] ="Login successful";
+        $_SESSION['alert_code'] ="success";
                 header("Location:dashboard.php");
                 exit();
-                break;
                 case 'doctor':
+                    $_SESSION['alert'] ="Login successful";
+                    $_SESSION['alert_code'] ="success";
                     header("Location:dashboard.php");
-                    exit();
-                    break;
+                exit();
+                    case 'nurse':
+                        $_SESSION['alert'] ="Login successful";
+                        $_SESSION['alert_code'] ="success";
+                        header("Location:nurse_dashboard.php");
+                        exit();
     }
-    exit();
  }
-
+ else {
+    $_SESSION['alert'] ="Invalid Password";
+    $_SESSION['alert_code'] ="warning";
+ }}
  else{
-    echo "Invalid Password";
- 
-}
+    $_SESSION['alert'] ="Invalid username or email";
+    $_SESSION['alert_code'] ="warning";
  }
 }
- else{
- $sql1 = "SELECT name, email, password FROM patient WHERE (name = '$user_name_or_email' OR email = '$user_name_or_email')";
- $result2 = mysqli_query($conn,$sql1);
+ else if($user_type==='patient') {
+    $sql1 = "SELECT name, email, password FROM patient WHERE (name = '$user_name_or_email' OR email = '$user_name_or_email')";
+    $result2 = mysqli_query($conn, $sql1);
  if(mysqli_num_rows($result2)>0){
     $pateint_data = mysqli_fetch_assoc($result2);
     if(password_verify($password,$pateint_data['password'])){
         $_SESSION['pateint_data'] = $pateint_data;
-        header("location:patient_dashboard.php");
+        header("location:dashboard.php");
      exit();
     }
     else{
-        echo "Invalid Password";
+       
+        $_SESSION['alert'] ="Invalid Password";
+        $_SESSION['alert_code'] ="warning";
     }
  }
  else{
-    echo "Invalid username or email";
+    $_SESSION['alert'] ="Invalid Username or email";
+    $_SESSION['alert_code'] ="warning";
+   
  }
  }
-
+ else{
+    $_SESSION['alert'] ="Please Select a Valid UserType";
+    $_SESSION['alert_code'] ="warning";
+ }
+}
 ?>
 <!doctype html>
 <html lang="en">
@@ -88,13 +104,16 @@ if(isset($_POST['login'])){
                     <input type="text" name="user_name_or_email" class="form-control" placeholder="Username/Email">
                 </div>
                 <div class="form-group">
-                    <label for="">Select Role:</label>
+                    <label for="">User Type:</label>
                     <select name="user_type" id="" class="form-control">
-                        <option selected>Select User Role</option>
+                        <option selected>Select User Type</option>
                         <option value="admin">Admin</option>
                         <option value="doctor">Doctor</option>
+                        <option value="nurse">Nurse</option>
+                        <option value="pharmacist">Pharmacist</option>
+                        <option value="laboratorist">Laboratorist</option>
+                        <option value="accountant">Accountant</option>
                         <option value="patient">Patient</option>
-                        <option value="laber">Laber</option>
                     </select>
                 </div>
                 <div class="fomr-group">
@@ -129,10 +148,9 @@ if(isset($_POST['login'])){
             </div>
         </div>
       </div>
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+      <?php
+include('includes/scripts.php');
+
+?>
   </body>
 </html>

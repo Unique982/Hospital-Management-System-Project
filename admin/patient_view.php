@@ -1,4 +1,10 @@
-<?php include("includes/header.php");
+<?php 
+session_start();
+
+if(isset($_SESSION['user_name'])){
+    header("location:index.php");
+}
+include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
 $patient_id= $_GET['patient_id'];

@@ -1,4 +1,7 @@
-
+<?php 
+$user_type=$_SESSION['user_data']['role'] ?? '';
+$user_name=$_SESSION['user_data']['user_name'] ?? '';
+?>
         <!-- Sidebar -->
         <ul class="navbar-nav bg-gradient-dark sidebar sidebar-dark accordion" id="accordionSidebar">
 
@@ -23,7 +26,11 @@
             <!-- Divider -->
             <hr class="sidebar-divider">
 
-           
+
+           <?php
+           if($user_type==='admin'){
+
+           ?>
 
             <!-- Nav Item - Manage Doctors -->
             <li class="nav-item">
@@ -40,6 +47,8 @@
                     </div>
                 </div>
             </li>
+            <?php } ?>
+
             <!-- <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
@@ -53,6 +62,10 @@
                     </div>
                 </div>
             </li> -->
+            <?php 
+              if($user_type==='admin' || $user_type==='doctor' || $user_type==='nurse'){
+            
+            ?>
             <li class="nav-item">
                 <a class="nav-link collapsed" href="./patient_list.php" data-toggle="collapse" data-target="#collapseThree"
                     aria-expanded="true" aria-controls="collapseThree">
@@ -67,6 +80,11 @@
                     </div>
                 </div>
             </li>
+            <?php  }?>
+            <?php
+           if($user_type==='admin'|| $user_type==='doctor' || $user_type==='nurse'){
+
+           ?>
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse5"
                     aria-expanded="true" aria-controls="collapse5">
@@ -81,6 +99,11 @@
                     </div>
                 </div>
             </li>
+            <?php } ?>
+            <?php
+           if($user_type==='admin' || $user_type==='doctor' || $user_type==='nurse'){
+
+           ?>
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse6"
                     aria-expanded="true" aria-controls="6">
@@ -95,7 +118,12 @@
                     </div>
                 </div>
             </li>
-           
+           <?php } ?>
+
+           <?php
+           if($user_type==='admin' ||  $user_type==='doctor' || $user_type==='nurse'){
+
+           ?>
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFour"
                     aria-expanded="true" aria-controls="collapseFour">
@@ -109,7 +137,12 @@
                     </div>
                 </div>
             </li>
-           
+           <?php }  ?>
+
+           <?php
+           if($user_type==='admin' || $user_type==='doctor' || $user_type==='nurse'){
+
+           ?>
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFive"
                     aria-expanded="true" aria-controls="collapseFive">
@@ -123,6 +156,8 @@
                     </div>
                 </div>
             </li>
+           <?php } ?>
+       
             <!-- Heading -->
            
 
@@ -313,7 +348,7 @@
                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     
-                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">Unique Neupane</span>
+ <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?php echo $user_name ?></span>
                     <img class="img-profile rounded-circle"
                         src="../assets/images/WhatsApp Image 2024-07-09 at 17.55.10_f356836c.jpg">
                 </a>
@@ -338,7 +373,7 @@
                         Activity Log
                     </a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="./login.php" data-toggle="modal" data-target="#logoutModal">
+                    <a class="dropdown-item" href="./index.php" data-toggle="modal" data-target="#logoutModal">
                         <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                         Logout
                     </a>
@@ -369,7 +404,7 @@
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="./login.php">Logout</a>
+                    <a class="btn btn-primary" href="./index.php">Logout</a>
                 </div>
             </div>
         </div>

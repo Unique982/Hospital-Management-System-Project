@@ -1,4 +1,7 @@
 <?php 
+if(!isset($_SESSION['user_name'])){
+    header("location:index.php");
+}
 include('../database/config.php');
 if(isset($_POST['delete'])){
     $patient_id = $_POST['patient_id'];
