@@ -12,7 +12,7 @@ if($count){
     <div class="card  mb-4">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary"> Medicine Category List
-              <a href="medicine_add_catgeory.php">  <button type="button"  class="btn btn-primary mr-2" data-toggle="modal" data-target="#exampleModal">
+              <a href="medicine_add.php">  <button type="button"  class="btn btn-primary mr-2" data-toggle="modal" data-target="#exampleModal">
                    Medicine Category Add
                 </button>
                 </a>
@@ -61,7 +61,8 @@ if($count){
                               </form> 
 
                             </td>
-                            <?php 
+                        </tr>
+                        <?php 
                         $sn++;
                             }
                             
@@ -72,7 +73,6 @@ if($count){
                             echo "No records found";
                         }
                         ?>
-                        </tr>
                        
                      
                     </tbody>
