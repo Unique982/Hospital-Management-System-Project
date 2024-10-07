@@ -28,8 +28,14 @@ if($user_type==='admin' || $user_type==='doctor' || $user_type==='nurse' || $use
                     case 'nurse':
                         $_SESSION['alert'] ="Login successful";
                         $_SESSION['alert_code'] ="success";
-                        header("Location:nurse_dashboard.php");
+                        header("Location:dashboard.php");
                         exit();
+                        case 'pharmacist':
+                            $_SESSION['alert'] ="Login successful";
+                            $_SESSION['alert_code'] ="success";
+                            header("Location:dashboard.php");
+                            exit();
+                       
     }
  }
  else {

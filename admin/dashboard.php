@@ -1,9 +1,9 @@
 <?php 
 session_start();
-if(isset($_SESSION['user_name'])){
+if(isset($_SESSION['user_data']) && isset($_SESSION['patient_data'])){
     header("location:index.php");
+    exit();
 }
-
 include("includes/header.php");
 include("includes/navbar.php");
 ?>

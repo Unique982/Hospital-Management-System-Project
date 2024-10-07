@@ -1,7 +1,4 @@
 <?php 
-if(isset($_SESSION['user_name'])){
-    header("location:index.php");
-}
 include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');

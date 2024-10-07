@@ -6,7 +6,7 @@ if(isset($_POST['delete'])){
     $result = mysqli_query($conn, $delete_query);
     if($result){
         echo "<script>alert('User Delete successfully')</script>";
-        header('location:doctor_add.php');
+        header('location:employee_add.php');
         exit();
     }
     else{

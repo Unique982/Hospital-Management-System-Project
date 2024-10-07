@@ -1,5 +1,4 @@
 <?php 
-
 include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');

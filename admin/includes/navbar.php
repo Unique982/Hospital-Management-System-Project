@@ -1,4 +1,7 @@
 <?php 
+if(session_status() == PHP_SESSION_NONE){
+    session_start();
+}
 $user_type=$_SESSION['user_data']['role'] ?? '';
 $user_name=$_SESSION['user_data']['user_name'] ?? '';
 ?>
@@ -34,12 +37,12 @@ $user_name=$_SESSION['user_data']['user_name'] ?? '';
 
             <!-- Nav Item - Manage Doctors -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse0"
-                    aria-expanded="true" aria-controls="collapse0">
+                <a class="nav-link collapsed" href="./employee_add.php" data-toggle="collapse" data-target="#collapse1"
+                    aria-expanded="true" aria-controls="collapse1">
                     <i class="fas fa-user-md"></i>
                     <span>Empolyee Manage</span>
                 </a>
-                <div id="collapse0" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div id="collapse1" class="collapse" aria-labelledby="heading1" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Empolyee Manage</h6>
                         <a class="collapse-item" href="./doctor_specialization.php">Doctor Specialization</a>
@@ -67,12 +70,12 @@ $user_name=$_SESSION['user_data']['user_name'] ?? '';
             
             ?>
             <li class="nav-item">
-                <a class="nav-link collapsed" href="./patient_list.php" data-toggle="collapse" data-target="#collapseThree"
-                    aria-expanded="true" aria-controls="collapseThree">
+                <a class="nav-link collapsed" href="./patient_list.php" data-toggle="collapse" data-target="#collapse2"
+                    aria-expanded="true" aria-controls="collapse2">
                     <i class="fa-solid fa-users"></i>
                     <span>Manage Patients</span>
                 </a>
-                <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionSidebar">
+                <div id="collapse2" class="collapse" aria-labelledby="heading2" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Manage Patient</h6>
                         <a class="collapse-item" href="./patient_add.php">Add</a>
@@ -86,12 +89,12 @@ $user_name=$_SESSION['user_data']['user_name'] ?? '';
 
            ?>
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse5"
-                    aria-expanded="true" aria-controls="collapse5">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse3"
+                    aria-expanded="true" aria-controls="collapse3">
                     <i class="fas fa-calendar-check"></i>
                     <span>Manage Blood</span>
                 </a>
-                <div id="collapse5" class="collapse" aria-labelledby="heading5" data-parent="#accordionSidebar">
+                <div id="collapse3" class="collapse" aria-labelledby="heading3" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Manage Blood</h6>
                         <a class="collapse-item" href="./blood_donor_add.php">Add</a>
@@ -105,12 +108,12 @@ $user_name=$_SESSION['user_data']['user_name'] ?? '';
 
            ?>
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse6"
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse4"
                     aria-expanded="true" aria-controls="6">
                     <i class="fas fa-calendar-check"></i>
                     <span>Manage Bed</span>
                 </a>
-                <div id="collapse6" class="collapse" aria-labelledby="heading5" data-parent="#accordionSidebar">
+                <div id="collapse4" class="collapse" aria-labelledby="heading4" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Manage Blood</h6>
                         <a class="collapse-item" href="./bed_add.php">Add Bed</a>
@@ -125,12 +128,12 @@ $user_name=$_SESSION['user_data']['user_name'] ?? '';
 
            ?>
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFour"
-                    aria-expanded="true" aria-controls="collapseFour">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse5"
+                    aria-expanded="true" aria-controls="collapse5">
                     <i class="fas fa-calendar-check"></i>
                     <span>Manage Appointments</span>
                 </a>
-                <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionSidebar">
+                <div id="collapse5" class="collapse" aria-labelledby="heading5" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Manage Appointment</h6>
                         <a class="collapse-item" href="./appointment_list.php">List</a>
@@ -144,12 +147,12 @@ $user_name=$_SESSION['user_data']['user_name'] ?? '';
 
            ?>
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFive"
-                    aria-expanded="true" aria-controls="collapseFive">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse6"
+                    aria-expanded="true" aria-controls="collapse6">
                     <i class="fas fa-file-alt"></i>
                     <span>Reports</span>
                 </a>
-                <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordionSidebar">
+                <div id="collapse6" class="collapse" aria-labelledby="heading6" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Reports</h6>
                         <a class="collapse-item" href="employee-list.html">List</a>
@@ -157,7 +160,39 @@ $user_name=$_SESSION['user_data']['user_name'] ?? '';
                 </div>
             </li>
            <?php } ?>
-       
+          
+           <?php
+            if($user_type==='pharmacist'){
+           ?>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse7"
+                    aria-expanded="true" aria-controls="collapse7">
+                    <i class="fas fa-plus-circle"></i> 
+                    <span>Medicine Category</span>
+                </a>
+                <div id="collapse7" class="collapse" aria-labelledby="heading7" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Medicine Category</h6>
+                        <a class="collapse-item" href="medicine_add_catgeory.php">Medicine Category Add</a>
+                        <a class="collapse-item" href="medicine_list_catgeory.php">Medicine Category List</a>
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse8"
+                    aria-expanded="true" aria-controls="collapse8">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>Manage Medicine </span>
+                </a>
+                <div id="collapse8" class="collapse" aria-labelledby="heading8" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Manage Medicine</h6>
+                        <a class="collapse-item" href="medicine_add.php">Medicine Add</a>
+                        <a class="collapse-item" href="medicine_list.php">Medicine List</a>
+                    </div>
+                </div>
+            </li>
+           <?php }  ?>
             <!-- Heading -->
            
 
