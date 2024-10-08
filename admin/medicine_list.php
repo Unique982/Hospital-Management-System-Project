@@ -2,7 +2,12 @@
 include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
-$select_query = "SELECT * FROM medicine ORDER BY  id DESC ";
+$select_query = "SELECT m.id, m.medicine_name, c.medicine_name AS category, m.price,m.description,
+m.manufacuturin_company,m.manufacuturin_date,m.stock
+ FROM medicine AS m
+ INNER JOIN medicine_cat AS c ON m.category  = c.id 
+ ORDER BY m.id ASC
+ ";
 $result = mysqli_query($conn, $select_query);
 $count = mysqli_num_rows($result);
 if($count){
@@ -29,9 +34,6 @@ if($count){
                             <th>Category</th>
                             <th>Description</th>
                             <th>Price</th>
-                            <th>ManCompany</th>
-                            <th>Manu Date</th>
-                            <th>Stock</th>
                             <th>Action</th>
                           
                         </tr>
@@ -49,9 +51,7 @@ if($count){
                             <td><?php echo $record['category'] ?></td>
                             <td><?php echo $record['description'] ?></td>
                             <td><?php echo $record['price'] ?></td>
-                            <td><?php echo $record['manufacuturin_company'] ?></td>
-                            <td><?php echo $record['manufacuturin_date'] ?></td>
-                            <td><?php echo $record['stock'] ?></td>
+                           
                             
                             <td><a href="medicine_view.php?id=<?php echo $record['id'] ?>"><button type="button" class="btn btn-warning mr-2"><i class="fas fa-eye"></i></button></a>
                           <a href="medicine_edit.php?id=<?php echo $record['id'] ?>" class="btn btn-outline-success mr-2"><i class="fas fa-edit"></i></a>     

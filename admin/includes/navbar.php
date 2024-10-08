@@ -150,12 +150,13 @@ $user_name=$_SESSION['user_data']['user_name'] ?? '';
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse6"
                     aria-expanded="true" aria-controls="collapse6">
                     <i class="fas fa-file-alt"></i>
-                    <span>Reports</span>
+                    <span>Manage Report</span>
                 </a>
                 <div id="collapse6" class="collapse" aria-labelledby="heading6" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Reports</h6>
-                        <a class="collapse-item" href="employee-list.html">List</a>
+                        <h6 class="collapse-header">Manage Reports</h6>
+                        <a class="collapse-item" href="report_add.php">Report Add</a>
+                        <a class="collapse-item" href="manage_report.php">Manage Report</a>
                     </div>
                 </div>
             </li>
