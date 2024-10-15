@@ -57,8 +57,6 @@ if($count){
                             $sn = +1;
                             while($record = mysqli_fetch_assoc($result)){
                                 if($record['report_type']=='other'){
-
-                           
                            ?>
                            <td><?php echo $sn; ?></td>
                            <td><?php echo $record['patient'] ?></td>
@@ -66,10 +64,10 @@ if($count){
                            <td><?php echo $record['report_type']?> </td>
                            <td><?php echo $record['date']?> </td>
                            
-                            <td><a href=""><button type="button" class="btn btn-outline-warning mr-2">View</button></a>
-                          <a href="" class="btn btn-outline-success mr-2">Edit</a>     
-                          <form action="" method="POST" id="deleteForm" style="display:inline-block; margin:2px;">
-                              <input type="hidden" name="" value="">
+                            <td><a href="report_view.php?rep_id=<?php echo $record['rep_id'] ?>"><button type="button" class="btn btn-outline-warning mr-2">View</button></a>
+                          <a href="report_edit.php?rep_id=<?php echo $record['rep_id'] ?>" class="btn btn-outline-success mr-2">Edit</a>     
+                          <form action="report_delete.php" method="POST" id="deleteForm" style="display:inline-block; margin:2px;">
+                              <input type="hidden" name="id" value="<?php echo $record['rep_id'] ?>">
                               <button type="submit" name="delete" class="btn btn-outline-danger" onclick="confirmDetele()">Delete</button>
                               </form> 
 
