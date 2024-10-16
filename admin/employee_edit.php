@@ -69,19 +69,19 @@ if (isset($_POST['update'])) {
                    </select>
                 </div> -->
                  
-                        <div class="form-group">
-                            <label for="">Role</label>
-                            <select name="role" id="role" class="form-control" value="<?php echo $row['row'] ?>">
-                            
+                  <div class="form-group">
+    <label for="role">Role</label>
+    <select name="role" id="role" class="form-control">
         <option selected>Select</option>
-       <option value="admin"<?php echo ($row['role'] =='admin') ?'selected' :''; ?>>Admin</option>
-       <option value="doctor"<?php echo ($row['role'] =='doctor') ?'selected' :''; ?>>Doctor</option>
-       <option value="nurse"<?php echo ($row['role'] =='nurse') ?'selected' :''; ?>>Nurse</option>
-       <option value="patient"<?php echo ($row['role'] =='patient') ?'selected' :''; ?>>Patient</option>
-       <option value="receptionist"<?php echo ($row['role'] =='receptionist') ?'selected' :''; ?>>Reciptionst</option>
+        <option value="admin" <?php echo ($row['role'] == 'admin') ? 'selected' : ''; ?>>Admin</option>
+        <option value="doctor" <?php echo ($row['role'] == 'doctor') ? 'selected' : ''; ?>>Doctor</option>
+        <option value="nurse" <?php echo ($row['role'] == 'nurse') ? 'selected' : ''; ?>>Nurse</option>
+        <option value="pharmacist" <?php echo ($row['role'] == 'pharmacist') ? 'selected' : ''; ?>>Pharmacist</option>
+        <option value="laboratorist" <?php echo ($row['role'] == 'laboratorist') ? 'selected' : ''; ?>>Laboratorist</option>
+        <option value="accountant" <?php echo ($row['role'] == 'accountant') ? 'selected' : ''; ?>>Accountant</option>
+    </select>
+</div>
 
-                            </select>
-                        </div>
 
 
                         <div class="modal-footer">

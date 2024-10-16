@@ -45,8 +45,13 @@ $user_name=$_SESSION['user_data']['user_name'] ?? '';
                 <div id="collapse1" class="collapse" aria-labelledby="heading1" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Empolyee Manage</h6>
+                      
                         <a class="collapse-item" href="./doctor_specialization.php">Doctor Specialization</a>
-                        <a class="collapse-item" href="./employee_add.php">Manage Empolyee</a>
+                        <a class="collapse-item" href="./employee_add.php">Manage Doctor</a>
+                        <a class="collapse-item" href="./manage_nurse.php">Manage Nurse</a>
+                        <a class="collapse-item" href="./manage_pharmacist.php">Manage pharmacist</a>
+                        <a class="collapse-item" href="./manage_accountant.php">Manage Accountant</a>
+                        <a class="collapse-item" href="./manage_laboratorist.php">Manage Laboratorist</a>
                     </div>
                 </div>
             </li>

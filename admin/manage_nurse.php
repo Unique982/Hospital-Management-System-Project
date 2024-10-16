@@ -118,7 +118,7 @@ if(isset($_POST['add'])){
         </div>
         <div class="card-body">
             <?php 
-                $data_display = "SELECT * FROM user_tbl WHERE role='doctor' ORDER BY `id` DESC";
+             $data_display = "SELECT * FROM user_tbl WHERE role='nurse' ORDER BY `id` DESC";
              $result1 = mysqli_query($conn,$data_display) or die("Query failed");
              $count_row = mysqli_num_rows($result1);
         if($count_row > 0){

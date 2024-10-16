@@ -43,22 +43,14 @@ if (isset($_POST['Update'])) {
                         <input type="hidden" name="rep_id" value="<?php echo $data['rep_id'] ?>">
                         <div class="form-group">
                             <label for="">Report Type</label>
-                            <select name="report_type" id="" class="form-control">
-                             <?php
-                $report_select = "SELECT * FROM report";
-                $report_result  = mysqli_query($conn,$report_select);
-                while($report= mysqli_fetch_assoc($report_result)){
-                  if($report['rep_id']==$data['report_type']){
-                    $selected = 'selected';
-                  }
-                  else{
-                    $selected = '';
-
-                  }
-                    echo "<option value='".$report['rep_id']."'$selected>".$report['report_type']."</option>";
-                }
-                ?>
-                            </select>
+                            <select name="report_type" id="report_type" class="form-control">
+        <option disabled >Select</option>
+        <option value="operation" <?php echo ($data['report_type'] == 'operation') ? 'selected' : ''; ?>>Operation</option>
+        <option value="birth" <?php echo ($data['report_type'] == 'birth') ? 'selected' : ''; ?>>Birth</option>
+        <option value="death" <?php echo ($data['report_type'] == 'death') ? 'selected' : ''; ?>>Death</option>
+        <option value="other" <?php echo ($data['report_type'] == 'other') ? 'selected' : ''; ?>>Other</option>
+    
+    </select>
                         </div>
                         <div class="form-group">
                             <label for="">Description</label>

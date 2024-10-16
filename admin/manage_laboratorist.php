@@ -118,7 +118,7 @@ if(isset($_POST['add'])){
         </div>
         <div class="card-body">
             <?php 
-                $data_display = "SELECT * FROM user_tbl WHERE role='doctor' ORDER BY `id` DESC";
+                $data_display = "SELECT * FROM user_tbl WHERE role='laboratorist' ORDER BY `id` DESC";
              $result1 = mysqli_query($conn,$data_display) or die("Query failed");
              $count_row = mysqli_num_rows($result1);
         if($count_row > 0){
@@ -153,7 +153,7 @@ if(isset($_POST['add'])){
                             <td><?php echo ucfirst($row['role']) ;?></td>
                             <td><?php echo date("Y M d ", strtotime($row['created_at'])) ?></td>
                             <td><a href="employee_view.php?id=<?php echo $row['id']; ?>"><button type="button" class="btn btn-outline-warning mr-2">View</button></a>
-                          <a href="employee_edit.php?id=<?php echo $row['id']; ?>" class="btn btn-outline-success mr-2">Edit</a>     
+                          <a href="manage_laboratorist.php?id=<?php echo $row['id']; ?>" class="btn btn-outline-success mr-2">Edit</a>     
                           <form action="employee_delete.php" method="POST" id="deleteForm" style="display:inline-block; margin:2px;">
                               <input type="hidden" name="id" value="<?php echo $row['id'] ?>">
                               <button type="submit" name="delete" class="btn btn-outline-danger" onclick="confirmDetele()">Delete</button>
