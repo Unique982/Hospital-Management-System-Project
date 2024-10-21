@@ -5,7 +5,7 @@ if(isset($_POST['login'])){
     $user_name_or_email= mysqli_real_escape_string($conn,$_POST['user_name_or_email']);
     $user_type = mysqli_real_escape_string($conn,$_POST['user_type']);
     $password = mysqli_real_escape_string($conn,$_POST['password']);
-if($user_type==='admin' || $user_type==='doctor' || $user_type==='nurse' || $user_type==='pharmacist' || $user_type==='accountant'){
+if($user_type==='admin' || $user_type==='doctor' || $user_type==='nurse' || $user_type==='pharmacist' || $user_type==='laboratorist'||  $user_type==='accountant'){
     $sql = "SELECT user_name, user_email, role, password FROM user_tbl 
     WHERE (user_name = '$user_name_or_email' OR user_email = '$user_name_or_email') 
     AND role = '$user_type'";
@@ -20,22 +20,31 @@ if($user_type==='admin' || $user_type==='doctor' || $user_type==='nurse' || $use
         $_SESSION['alert_code'] ="success";
                 header("Location:dashboard.php");
                 exit();
+                break;
                 case 'doctor':
                     $_SESSION['alert'] ="Login successful";
                     $_SESSION['alert_code'] ="success";
                     header("Location:dashboard.php");
                 exit();
+                break;
                     case 'nurse':
                         $_SESSION['alert'] ="Login successful";
                         $_SESSION['alert_code'] ="success";
                         header("Location:dashboard.php");
                         exit();
+                        break;
                         case 'pharmacist':
                             $_SESSION['alert'] ="Login successful";
                             $_SESSION['alert_code'] ="success";
                             header("Location:dashboard.php");
                             exit();
-                       
+                            break;
+                            case 'laboratorist':
+                            $_SESSION['alert'] ="Login successful";
+                            $_SESSION['alert_code'] ="success";
+                            header("Location:dashboard.php");
+                            exit();
+                            break;     
     }
  }
  else {

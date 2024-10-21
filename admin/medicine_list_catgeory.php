@@ -50,7 +50,13 @@ if($count){
                               </form> 
 
                             </td>
-                            <?php 
+                          
+                        </tr>
+                       
+                     
+                    </tbody>
+                  
+                    <?php 
                         $sn++;
                             }
                             
@@ -61,12 +67,8 @@ if($count){
                             echo "No records found";
                         }
                         ?>
-                        </tr>
-                       
-                     
-                    </tbody>
-                  
                 </table>
+                
             </div>
         </div>
     </div>
