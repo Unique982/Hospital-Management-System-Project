@@ -1,5 +1,6 @@
 <?php
 include('../database/config.php');
+session_start();
 $errors = [
   'name' => '',
   'email' => '',
@@ -21,46 +22,44 @@ if (isset($_POST['add_patient'])) {
   $pt_blood = mysqli_real_escape_string($conn, trim($_POST['pt_blood']));
   $pt_password = mysqli_real_escape_string($conn, password_hash($_POST['pt_password'], PASSWORD_BCRYPT));
 
-
-  //regular Expression
+  // Regular expressions
   $namePattern = "/^[a-zA-Z\s]+$/";
+  
   $emailPattern = "/^[a-z\._\-[0-9]*[@][a-z]*[\.][a-z]{2,4}$/";
-  $phonePattern = "/^\+977[-\s]?[\d]{1}[-\s]?[\d]{3}?[\d]{4}$/";
+  // $phonePattern = "/^\+977[-\s]?9\d{1}[-\s]?\d{3}[-\s]?\d{4}$/";
   $addressPattern = "/^[a-zA-Z0-9\s]*$/";
-  $dobPattern = "/^\d{2}-\d{2}-\d{4}$/";
+  // $dobPattern = "/^\d{2}-\d{2}-\d{4}$/";
   $passwordPattern = "/^[a-zA-Z0-9\s]*$/";
 
-
-
-  // validation Name 
+  // Name validation
   if (empty($pt_name)) {
     $errors['name'] = "Please enter name";
   } elseif (!preg_match($namePattern, $pt_name)) {
-    $errors['name'] = "Invalid Name. Only letter and space are allowed";
+    $errors['name'] = "Invalid Name. Only letters and spaces are allowed";
   }
 
-  // Validaton Email 
+  // Email validation
   if (empty($pt_email)) {
-    $errors['email'] = "Please enter a email address";
-  } elseif (!preg_match($emailPattern, $pt_name)) {
-    $errors['email'] = "Please enter email formate";
+    $errors['email'] = "Please enter an email address";
+  } elseif (!preg_match($emailPattern, $pt_email)) {
+    $errors['email'] = "Please enter a valid email address";
   }
 
-  //Phone Number Validations
-  if (empty($pt_phone)) {
-    $errors['phone'] = "Please enter phone number";
-  } else if (!preg_match($phonePattern, $pt_phone)) {
-    $errors['phone'] = "Phone number must be start with 977 and be in the formate +977-9-xx-xxxx. ";
-  }
+  // // Phone number validation
+  // if (empty($pt_phone)) {
+  //   $errors['phone'] = "Please enter a phone number";
+  // } elseif (!preg_match($phonePattern, $pt_phone)) {
+  //   $errors['phone'] = "Phone number must start with +977 and be in the format +977-9-xx-xxxx.";
+  // }
 
-  // Address Validation
+  // Address validation
   if (empty($pt_address)) {
-    $errors['address'] = "Please enter address";
+    $errors['address'] = "Please enter an address";
   } elseif (!preg_match($addressPattern, $pt_address)) {
-    $errors['address'] = "Invalid Address. Only latter,numper and space are allowed";
+    $errors['address'] = "Invalid address. Only letters, numbers, and spaces are allowed";
   }
 
-  // Gender Validation 
+  // Gender validation
   $genderValid = ['male', 'female', 'other'];
   if (empty($pt_sex)) {
     $errors['gender'] = "Select a gender";
@@ -68,59 +67,55 @@ if (isset($_POST['add_patient'])) {
     $errors['gender'] = "Invalid gender selected";
   }
 
-  // dob validation 
-  if (empty($pt_dob)) {
-    $errors['dob'] = "Please enter dob";
-  } elseif (!preg_match($dobPattern, $pt_dob)) {
-    $errors['dob'] = "Invalid formate.please use mm-dd-yyyy formate.";
-  }
+  // DOB validation
+  // if (empty($pt_dob)) {
+  //   $errors['dob'] = "Please enter date of birth";
+  // } elseif (!preg_match($dobPattern, $pt_dob)) {
+  //   $errors['dob'] = "Invalid format. Please use mm-dd-yyyy format.";
+  // }
 
-  // blood validation 
-  $bloodValid = ['A+', 'A-','B+','B-','AB+','Ab-','O+','O-'];
-  if(empty($pt_blood)){
-    $errors['blood'] = "Please select blood group";
-  }
-  elseif(!in_array($pt_blood,$bloodValid)){
+  // Blood group validation
+  $bloodValid = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
+  if (empty($pt_blood)) {
+    $errors['blood'] = "Please select a blood group";
+  } elseif (!in_array($pt_blood, $bloodValid)) {
     $errors['blood'] = "Invalid blood group selected";
   }
-  // password validation 
-  if(empty($pt_password)){
-    $errors['password'] = "Please enter passwords";
-  }
-  elseif(strlen($pt_password<8)){
-    $errors['password'] = "password must be at least 8 characters long.";
-  }
-  elseif(!preg_match($passwordPattern,$pt_password)){
-    $errors['password'] = "Invalid";
 
+  // Password validation
+  if (empty($pt_password)) {
+    $errors['password'] = "Please enter a password";
+  } elseif (strlen($_POST['pt_password']) < 8) {
+    $errors['password'] = "Password must be at least 8 characters long.";
+  } elseif (!preg_match($passwordPattern, $_POST['pt_password'])) {
+    $errors['password'] = "Invalid password format.";
   }
-  // check user already exists or not
+
+  // If no errors, proceed with database insertion
   if (empty(array_filter($errors))) {
-    $select_query = "SELECT  email, phone FROM `patient` WHERE email = '$pt_email' OR phone='$pt_phone'";
+    $select_query = "SELECT email, phone FROM `patient` WHERE email = '$pt_email' OR phone = '$pt_phone'";
     $result = mysqli_query($conn, $select_query) or die("Query failed");
     if (mysqli_num_rows($result) > 0) {
-
-      $_SESSION['alert'] = " Patient Already Add ";
+      $_SESSION['alert'] = "Patient already exists";
       $_SESSION['alert_code'] = "info";
       header("Location:index.php");
     } else {
-
-      $insert_query = "INSERT INTO `patient`( `name`, `sex`, `dob`, `blood_group`, `address`, `phone`, `password`, `email`) 
-        VALUES('$pt_name','$pt_sex','$pt_dob','$pt_blood','$pt_address','$pt_phone','$pt_password','$pt_email')";
+      $insert_query = "INSERT INTO `patient` (`name`, `sex`, `dob`, `blood_group`, `address`, `phone`, `password`, `email`)
+                       VALUES ('$pt_name', '$pt_sex', '$pt_dob', '$pt_blood', '$pt_address', '$pt_phone', '$pt_password', '$pt_email')";
       if (mysqli_query($conn, $insert_query)) {
-
-        $_SESSION['alert'] = "Patient Add Successfully ";
+        $_SESSION['alert'] = "Patient added successfully";
         $_SESSION['alert_code'] = "success";
         header("Location:index.php");
         exit();
       } else {
-        $_SESSION['alert'] = "Failed";
+        $_SESSION['alert'] = "Failed to add patient";
         $_SESSION['alert_code'] = "error";
       }
     }
   }
 }
 ?>
+
 
 <!doctype html>
 <html lang="en">
@@ -182,7 +177,7 @@ if (isset($_POST['add_patient'])) {
                   <div class="form-group">
                     <label>Patient Gender:</label>
                     <select name="pt_sex" id="sex" class="form-control">
-                      <option selected>Select Option</option>
+                      <option disabled selected>Select Option</option>
                       <option value="male">Male</option>
                       <option value="female">Female</option>
                       <option value="other">Other</option>
@@ -197,7 +192,7 @@ if (isset($_POST['add_patient'])) {
                   <div class="form-group">
                     <label>Patient Blood:</label>
                     <select name="pt_blood" id="" class="form-control">
-                      <option selected>Select Option</option>
+                      <option disabled selected>Select Option</option>
                       <option value="A+">A+</option>
                       <option value="A-">A-</option>
                       <option value="B+">B+</option>

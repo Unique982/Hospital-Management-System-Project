@@ -2,6 +2,18 @@
 require_once("includes/header.php");
 require_once("includes/navbar.php");
 include('../database/config.php');
+
+$errors = [
+  'Med_name' =>'',
+  'Med_category' =>'',
+  'Med_description' =>'',
+  'Med_price' =>'',
+  'Mf_company' =>'',
+  'Mf_date' =>'',
+  'Stock' =>''
+];
+
+
 if (isset($_POST['add_med'])) {
   $med_name = mysqli_real_escape_string($conn, $_POST['med_name']);
   $med_category = mysqli_real_escape_string($conn, $_POST['med_category']);
@@ -10,7 +22,21 @@ if (isset($_POST['add_med'])) {
   $mf_company = mysqli_real_escape_string($conn, $_POST['mf_company']);
   $mf_date = mysqli_real_escape_string($conn, $_POST['mf_date']);
   $stock = mysqli_real_escape_string($conn, $_POST['stock']);
-  $insert_query = "INSERT INTO `medicine`(`medicine_name`, `category`, `price`, `description`, `manufacuturin_company`, `manufacuturin_date`, `stock`) VALUES
+  
+// regular Expression
+$med_namePattern = '/^[a-zA-Z0-9\s]+$/';
+$med_pricePattern = '/^[0-9]+$/';
+$mf_company = '/^[A-Za-z]+$/';
+$mf_date = '';
+
+  if(empty($med_name)){
+    $errors['Med_name'] = "Enter Medicine Name";
+  }
+  
+ 
+ 
+ 
+ $insert_query = "INSERT INTO `medicine`(`medicine_name`, `category`, `price`, `description`, `manufacuturin_company`, `manufacuturin_date`, `stock`) VALUES
     ('$med_name','$med_category','$med_price','$med_des','$mf_company','$mf_date','$stock')";
   if (mysqli_query($conn, $insert_query)) {
 

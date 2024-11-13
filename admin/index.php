@@ -1,11 +1,28 @@
 <?php
 session_start();
 include('../database/config.php');
+$errors = [
+    'user_name' => '',
+    'user_type' => '',
+    'password'=> ''
+];
+
 if(isset($_POST['login'])){
     $user_name_or_email= mysqli_real_escape_string($conn,$_POST['user_name_or_email']);
     $user_type = mysqli_real_escape_string($conn,$_POST['user_type']);
     $password = mysqli_real_escape_string($conn,$_POST['password']);
-if($user_type==='admin' || $user_type==='doctor' || $user_type==='nurse' || $user_type==='pharmacist' || $user_type==='laboratorist'||  $user_type==='accountant'){
+if(empty($user_name_or_email)){
+    $errors['user_name'] = 'Required user name or email';
+}
+
+if(empty($user_type)){
+    $errors['user_type'] = "Select User Type";
+}
+
+if(empty($password)){
+    $errors['password'] = "Password Required";
+}
+    if($user_type==='admin' || $user_type==='doctor' || $user_type==='nurse' || $user_type==='pharmacist' || $user_type==='laboratorist'||  $user_type==='accountant'){
     $sql = "SELECT user_name, user_email, role, password FROM user_tbl 
     WHERE (user_name = '$user_name_or_email' OR user_email = '$user_name_or_email') 
     AND role = '$user_type'";
@@ -14,6 +31,7 @@ if($user_type==='admin' || $user_type==='doctor' || $user_type==='nurse' || $use
     $user_data = mysqli_fetch_assoc($result);
     if(password_verify($password,$user_data['password'])){
         $_SESSION['user_data'] = $user_data;
+        // $_SESSION['user_id'] = $user_data['id'];
         switch($user_type){
             case 'admin':   
         $_SESSION['alert'] ="Login successful";
@@ -117,11 +135,12 @@ if($user_type==='admin' || $user_type==='doctor' || $user_type==='nurse' || $use
                 <div class="form-group">
                     <label for="">Username or Email</label>
                     <input type="text" name="user_name_or_email" class="form-control" placeholder="Username/Email">
+                    <span style='color:red' ;><?php echo $errors['user_name'] ?></span>
                 </div>
                 <div class="form-group">
                     <label for="">User Type:</label>
                     <select name="user_type" id="" class="form-control">
-                        <option selected>Select User Type</option>
+                        <option  disabled selected>Select User Type</option>
                         <option value="admin">Admin</option>
                         <option value="doctor">Doctor</option>
                         <option value="nurse">Nurse</option>
@@ -129,11 +148,14 @@ if($user_type==='admin' || $user_type==='doctor' || $user_type==='nurse' || $use
                         <option value="laboratorist">Laboratorist</option>
                         <option value="accountant">Accountant</option>
                         <option value="patient">Patient</option>
+                        
                     </select>
+                    <span style='color:red' ;><?php echo $errors['user_type'] ?></span>
                 </div>
                 <div class="fomr-group">
                     <label for="">Password</label>
                     <input type="password" class="form-control" name="password">
+                    <span style='color:red' ;><?php echo $errors['password'] ?></span>
                 </div>
                 <div class="form-check mt-2">
                     <input type="checkbox" name="remember" class="form-check-input">

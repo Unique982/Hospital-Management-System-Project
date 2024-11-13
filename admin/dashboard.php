@@ -1,6 +1,6 @@
 <?php 
 session_start();
-if(isset($_SESSION['user_data']) && isset($_SESSION['patient_data'])){
+if(!isset($_SESSION['user_data']) && !isset($_SESSION['patient_data'])){
     header("location:index.php");
     exit();
 }

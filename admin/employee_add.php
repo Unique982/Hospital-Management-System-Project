@@ -10,7 +10,7 @@ if(isset($_POST['add'])){
       $phone = mysqli_real_escape_string($conn, $_POST['phone']);
       $address = mysqli_real_escape_string($conn, $_POST['address']);
       $role = mysqli_real_escape_string($conn, $_POST['role']);
-      $password = mysqli_real_escape_string($conn, $_POST['password']);
+      $password = mysqli_real_escape_string($conn, password_hash( $_POST['password'],PASSWORD_BCRYPT));
       $confrim_password = mysqli_real_escape_string($conn, $_POST['confrim_password']);
 
        // Query 
