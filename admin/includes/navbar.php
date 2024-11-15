@@ -200,8 +200,44 @@ $user_name=$_SESSION['user_data']['user_name'] ?? '';
             </li>
            <?php }  ?>
             <!-- Heading -->
-           
+            <?php
+            if($user_type==='admin'){
+           ?>
+                  <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse8"
+                    aria-expanded="true" aria-controls="collapse8">
+                    <i class="fa-solid fa-message"></i>
+                    <span>Contact Query </span>
+                </a>
+                <div id="collapse8" class="collapse" aria-labelledby="heading8" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Contact Query</h6>
+                        <a class="collapse-item" href="unread.php">Unread Query</a>
+                        <a class="collapse-item" href="read.php">Read Query</a>
+                    </div>
+                </div>
+            </li>
+             <!-- Nav Item - Pages Collapse Menu -->
+             <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
+                    aria-expanded="true" aria-controls="collapsePages">
+                    <i class="fas fa-fw fa-folder"></i>
+                    <span>Pages</span>
+                </a>
+                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Pages</h6>
+                        <a class="collapse-item" href="about_page.php">About Us</a>
+                        <a class="collapse-item" href="contact_page.php">Contact Us</a>
+                        
+                      
+                    </div>
+                </div>
+            </li>
 
+            <?php
+            }
+           ?>
       
 
             <!-- Sidebar Toggler (Sidebar) -->

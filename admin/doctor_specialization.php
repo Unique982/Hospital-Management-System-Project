@@ -2,15 +2,32 @@
 include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
+$errors = [
+    'specialization' =>''
+];
+
 if(isset($_POST['add'])){
     $specialization = mysqli_real_escape_string($conn, $_POST['specialization']);
+  // 
+  $specializationPattern = "/^[a-zA-Z\s]+$/";
+  if(empty($specialization)){
+    $errors['specialization'] = "Please enter a specialization";
+  }
+  else if(!preg_match($specializationPattern,$specialization)){
+    $errors['specialization'] = "Invalid specialization. Only latter and spaces are allowed.";
+  }
+  if(empty(array_filter($errors))){
     $sql = "INSERT INTO `specialization`(specialization,created_at) VALUES ('$specialization', Now())";
    if(mysqli_query($conn, $sql)){
-    echo "Data inserted successfully";
+    $_SESSION['alert'] = "Added successfully";
+    $_SESSION['alert_code'] = "success";
+   
     }
     else{
-        echo "Data not inserted";
+        $_SESSION['alert'] = "Failed";
+        $_SESSION['alert_code'] = "error";
     }
+}
 }
 ?>
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -27,7 +44,7 @@ if(isset($_POST['add'])){
                 <div class="form-group">
                     <label for="">Specialization</label>
                     <input type="text" name="specialization" class="form-control" placeholder="Enter Specialization">
-                   
+                    <span style='color:red' ;><?php echo $errors['specialization'] ?></span> 
                 </div>
                
             </div>
