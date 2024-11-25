@@ -50,11 +50,11 @@ if($count){
                             <td><?php echo $row['sex'] ?></td>
                             <td><?php echo $row['blood_group'] ?></td>
                             <td><?php echo $row['dob'] ?></td>
-                            <td><a href="patient_view.php?patient_id=<?php echo $row['patient_id'] ?>"><button type="button" class="btn btn-outline-warning mr-2">View</button></a>
-                          <a href="patient_edit.php?patient_id=<?php echo $row['patient_id']  ?>" class="btn btn-outline-success mr-2">Edit</a>     
+                            <td><a href="patient_view.php?patient_id=<?php echo $row['patient_id'] ?>"><button type="button" class="btn btn-outline-warning btn-sm">View</button></a>
+                          <a href="patient_edit.php?patient_id=<?php echo $row['patient_id']  ?>" class="btn btn-outline-success btn-sm">Edit</a>     
                           <form action="patient_delete.php" method="POST" id="deleteForm" style="display:inline-block; margin:2px;">
-                              <input type="hidden" name="patient_id" value="<?php echo $row['patient_id'] ?>">
-                              <button type="submit" name="delete" class="btn btn-outline-danger" onclick="confirmDetele()">Delete</button>
+                              <input type="hidden" name="patient_id" value="<?php echo $row['patient_id'] ?>" class="delete_id">
+                              <button type="submit" name="delete" class="btn btn-outline-danger btn-sm deletebtn" data-delete-url="patient_delete.php">Delete</button>
                               </form> 
 
                             </td>

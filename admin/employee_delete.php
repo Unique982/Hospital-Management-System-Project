@@ -1,11 +1,11 @@
 <?php
 include('../database/config.php');
-if(isset($_POST['delete'])){
-    $id = $_POST['id'];
-    $delete_query = "DELETE FROM user_tbl WHERE id = $id";
+if(isset($_POST['delete_btn_set'])){
+    $del_id = $_POST['delete_id'];
+    $delete_query = "DELETE FROM user_tbl WHERE id = $del_id";
     $result = mysqli_query($conn, $delete_query);
     if($result){
-        echo "<script>alert('User Delete successfully')</script>";
+      
         header('location:employee_add.php');
         exit();
     }

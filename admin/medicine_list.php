@@ -53,11 +53,11 @@ if($count){
                             <td><?php echo $record['price'] ?></td>
                            
                             
-                            <td><a href="medicine_view.php?id=<?php echo $record['id'] ?>"><button type="button" class="btn btn-warning mr-2"><i class="fas fa-eye"></i></button></a>
-                          <a href="medicine_edit.php?id=<?php echo $record['id'] ?>" class="btn btn-outline-success mr-2"><i class="fas fa-edit"></i></a>     
+                            <td><a href="medicine_view.php?id=<?php echo $record['id'] ?>"><button type="button" class="btn btn-warning btn-sm"><i class="fas fa-eye"></i></button></a>
+                          <a href="medicine_edit.php?id=<?php echo $record['id'] ?>" class="btn btn-outline-success btn-sm"><i class="fas fa-edit"></i></a>     
                           <form action="medicine_delete.php" method="POST" id="deleteForm" style="display:inline-block; margin:2px;">
-                              <input type="hidden" name="id" value="<?php echo $record['id'] ?>">
-                              <button type="submit" name="delete" class="btn btn-outline-danger" onclick="confirmDetele()"><i class="fas fa-trash-alt"></i></button>
+                              <input type="hidden" name="id" value="<?php echo $record['id'] ?>" class="delete_id">
+                              <button type="submit" name="delete" class="btn btn-outline-danger btn-sm deletebtn" data-delete-url="medicine_delete.php"><i class="fas fa-trash-alt"></i></button>
                               </form> 
 
                             </td>
@@ -68,14 +68,17 @@ if($count){
                             
                         
                       
-                        }
-                        else {
-                            echo "No records found";
-                        }
+                        
                         ?>
                        
                      
                     </tbody>
+                    <?php 
+                  }  else {
+                        echo "No records found";
+                    }
+                    ?>
+                 
                   
                 </table>
             </div>

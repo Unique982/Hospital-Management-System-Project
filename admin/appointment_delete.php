@@ -2,24 +2,18 @@
 
 include('../database/config.php');
 session_start();
-if(isset($_POST['delete'])){
-$id = $_POST['id'];
-$delete_query = "DELETE FROM appointments WHERE id ='$id'";
+if(isset($_POST['delete_btn_set'])){
+$del_id = $_POST['delete_id'];
+$delete_query = "DELETE FROM appointments WHERE id =$del_id";
 $result = mysqli_query($conn, $delete_query);
     if($result){
-        $_SESSION['alert'] =" Delete Successfully appointment";
-        $_SESSION['alert_code'] ="success";
+        
         header('location:appointment_list.php');
         exit();
     }
 else{
-    $_SESSION['alert'] ="Detele Failed";
-    $_SESSION['alert_code'] ="error";
+   echo "failed to delete";
 
 }
 }
-?>
-<?php
-
-include('includes/scripts.php');
 ?>

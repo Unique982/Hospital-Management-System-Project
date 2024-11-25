@@ -101,11 +101,11 @@ if(isset($_POST['add'])){
                             <td><?php echo $row['specialization'] ?></td>
                             <td><?php echo date("Y M d ", strtotime($row['created_at'])) ; ?></td>
                             <td>2024/12/12</td>
-                            <td><button type="button" class="btn btn-outline-warning mr-2">View</button>
-                              <a href="doctor_specialization_edit.php?id=<?php echo $row['id'] ?>" class="btn btn-outline-success mr-2">Edit</a> 
+                            <td><button type="button" class="btn btn-outline-warning btn-sm">View</button>
+                              <a href="doctor_specialization_edit.php?id=<?php echo $row['id'] ?>" class="btn btn-outline-success btn-sm">Edit</a> 
                               <form action="doctor_specialization_delete.php" method="POST" id="deleteForm" style="display:inline-block; margin:2px;">
-                              <input type="hidden" name="id" value="<?php echo $row['id'] ?>">
-                              <button type="submit" name="delete" class="btn btn-outline-danger mr-2" onclick="confirmDetele()">Delete</button>
+                              <input type="hidden" name="id" value="<?php echo $row['id'] ?>" class="dalete_id">
+                              <button type="submit" name="delete" class="btn btn-outline-danger btn-sm deletebtn" data-delete-url="doctor_specialization_delete.php">Delete</button>
                             
                             </form> 
                               

@@ -152,11 +152,11 @@ if(isset($_POST['add'])){
                             <td><?php echo $row['address']; ?></td>
                             <td><?php echo ucfirst($row['role']) ;?></td>
                             <td><?php echo date("Y M d ", strtotime($row['created_at'])) ?></td>
-                            <td><a href="employee_view.php?id=<?php echo $row['id']; ?>"><button type="button" class="btn btn-outline-warning mr-2">View</button></a>
-                          <a href="employee_edit.php?id=<?php echo $row['id']; ?>" class="btn btn-outline-success mr-2">Edit</a>     
+                            <td><a href="employee_view.php?id=<?php echo $row['id']; ?>"><button type="button" class="btn btn-outline-warning btn-sm">View</button></a>
+                          <a href="employee_edit.php?id=<?php echo $row['id']; ?>" class="btn btn-outline-success btn-sm">Edit</a>     
                           <form action="employee_delete.php" method="POST" id="deleteForm" style="display:inline-block; margin:2px;">
-                              <input type="hidden" name="id" value="<?php echo $row['id'] ?>">
-                              <button type="submit" name="delete" class="btn btn-outline-danger" onclick="confirmDetele()">Delete</button>
+                              <input type="hidden" name="id" value="<?php echo $row['id'] ?>"class="delete_id">
+                              <button type="submit" name="delete" class="btn btn-outline-danger btn-sm deletebtn" data-delete-url="employee_delete.php">Delete</button>
                               </form> 
 
                             </td>

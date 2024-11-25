@@ -51,11 +51,11 @@ if($count){
                             <td><?php  echo date("Y M d ", strtotime($row['last_donated'])) ?></td>
                           
                             
-                            <td><a href="blood_donor_view.php?blood_donor_id=<?php echo $row['blood_donor_id'] ?>"><button type="button" class="btn btn-outline-warning mr-2">View</button></a>
-                          <a href="blood_donor_edit.php?blood_donor_id=<?php echo $row['blood_donor_id'] ?>" class="btn btn-outline-success mr-2">Edit</a>     
+                            <td><a href="blood_donor_view.php?blood_donor_id=<?php echo $row['blood_donor_id'] ?>"><button type="button" class="btn btn-outline-warning btn-sm">View</button></a>
+                          <a href="blood_donor_edit.php?blood_donor_id=<?php echo $row['blood_donor_id'] ?>" class="btn btn-outline-success btn-sm">Edit</a>     
                           <form action="blood_donor_delete.php" method="POST" id="deleteForm" style="display:inline-block; margin:2px;">
-                              <input type="hidden" name="blood_donor_id" value="<?php echo $row['blood_donor_id'] ?>">
-                              <button type="submit" name="delete" class="btn btn-outline-danger" onclick="confirmDetele()">Delete</button>
+                              <input type="hidden" name="blood_donor_id" value="<?php echo $row['blood_donor_id'] ?>" class="delete_id">
+                              <button type="submit" name="delete" class="btn btn-outline-danger btn-sm deletebtn" data-delete-url="blood_donor_delete.php" >Delete</button>
                               </form> 
 
                             </td>
@@ -75,6 +75,13 @@ if($count){
 
 </div>
 
+<!-- <script>
+    function checkdelete(){
+        return confirm('Are you sure you want to delete this data?');
+
+    }
+
+</script> -->
 <?php
 include('includes/scripts.php');
 include('includes/footer.php');

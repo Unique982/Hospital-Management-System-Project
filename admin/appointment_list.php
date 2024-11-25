@@ -122,12 +122,12 @@ if(isset($_POST['add'])){
                         <td><?php echo date("Y M d ", strtotime( $app['appointment_date'] )) ?></td>
                         <td><?php echo date("Y M d ", strtotime( $app['created_at'] ))?></td>
                         <td>
-                            <a href=""><button type="button" class="btn btn-outline-warning mr-2">View</button></a>
-                            <a href="appointment_edit.php?id=<?php echo $app['id'];?>" class="btn btn-outline-success mr-2">Edit</a>
+                            <a href=""><button type="button" class="btn btn-outline-warning btn-sm">View</button></a>
+                            <a href="appointment_edit.php?id=<?php echo $app['id'];?>" class="btn btn-outline-success btn-sm">Edit</a>
                             
                             <form action="appointment_delete.php" method="POST" id="deleteForm" style="display:inline-block; margin:2px;">
-                                <input type="hidden" name="id" value="<?php echo $app['id'] ?>">
-                                <button type="submit" name="delete" class="btn btn-outline-danger" onclick="return confirmDelete()">Delete</button>
+                                <input type="hidden" name="id" value="<?php echo $app['id'] ?>" class="delete_id">
+                                <button type="submit" name="delete" class="btn btn-outline-danger btn-sm deletebtn" data-delete-url="appointment_delete.php">Delete</button>
                             </form> 
                         </td>
                     </tr>

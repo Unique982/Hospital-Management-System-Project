@@ -1,11 +1,11 @@
 <?php 
 include('../database/config.php');
-if(isset($_POST['delete'])){
-    $bed_id = $_POST['bed_id'];
-    $delete_query = "DELETE FROM bed WHERE bed_id = $bed_id";
+if(isset($_POST['delete_btn_set'])){
+    $del_id = $_POST['delete_id'];
+    $delete_query = "DELETE FROM bed WHERE bed_id = $del_id";
     $result = mysqli_query($conn, $delete_query) or die('Query failed');
     if($result){
-        echo "<script>alert('Bed Delete successfully')</script>";
+        
         header('location:bed_list.php');
         exit();
     }
