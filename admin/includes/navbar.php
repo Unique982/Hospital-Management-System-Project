@@ -29,6 +29,30 @@ $user_name=$_SESSION['user_data']['user_name'] ?? '';
             <!-- Divider -->
             <hr class="sidebar-divider">
 
+<?php
+if($user_type === 'patient'){
+
+ ?>
+   <li class="nav-item">
+                <a class="nav-link collapsed" href="./employee_add.php" data-toggle="collapse" data-target="#collapse1"
+                    aria-expanded="true" aria-controls="collapse1">
+                    <i class="fas fa-user-md"></i>
+                    <span>Empolyee Manage</span>
+                </a>
+                <div id="collapse1" class="collapse" aria-labelledby="heading1" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Empolyee Manage</h6>
+                      
+                        <a class="collapse-item" href="./doctor_specialization.php">Doctor Specialization</a>
+                        <a class="collapse-item" href="./employee_add.php">Manage Doctor</a>
+                        <a class="collapse-item" href="./manage_nurse.php">Manage Nurse</a>
+                        <a class="collapse-item" href="./manage_pharmacist.php">Manage pharmacist</a>
+                        <a class="collapse-item" href="./manage_accountant.php">Manage Accountant</a>
+                        <a class="collapse-item" href="./manage_laboratorist.php">Manage Laboratorist</a>
+                    </div>
+                </div>
+            </li>
+ <?php } ?>
 
            <?php
            if($user_type==='admin'){
@@ -445,7 +469,7 @@ $user_name=$_SESSION['user_data']['user_name'] ?? '';
                         <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                         Settings
                     </a>
-                    <a class="dropdown-item" href="#">
+                    <a class="dropdown-item" href="activity_log_view.php">
                         <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                         Activity Log
                     </a>

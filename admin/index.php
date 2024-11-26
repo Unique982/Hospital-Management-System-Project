@@ -1,107 +1,114 @@
 <?php
 session_start();
 include('../database/config.php');
+
 $errors = [
     'user_name' => '',
     'user_type' => '',
-    'password'=> ''
+    'password' => ''
 ];
 
 if(isset($_POST['login'])){
-    $user_name_or_email= mysqli_real_escape_string($conn,$_POST['user_name_or_email']);
-    $user_type = mysqli_real_escape_string($conn,$_POST['user_type']);
-    $password = mysqli_real_escape_string($conn,$_POST['password']);
-if(empty($user_name_or_email)){
-    $errors['user_name'] = 'Required user name or email';
-}
+    $user_name_or_email = mysqli_real_escape_string($conn, $_POST['user_name_or_email']);
+    $user_type = mysqli_real_escape_string($conn, $_POST['user_type']);
+    $password = mysqli_real_escape_string($conn, $_POST['password']);
 
-if(empty($user_type)){
-    $errors['user_type'] = "Select User Type";
-}
+    if(empty($user_name_or_email)){
+        $errors['user_name'] = 'Required user name or email';
+    }
 
-if(empty($password)){
-    $errors['password'] = "Password Required";
-}
-    if($user_type==='admin' || $user_type==='doctor' || $user_type==='nurse' || $user_type==='pharmacist' || $user_type==='laboratorist'||  $user_type==='accountant'){
-    $sql = "SELECT user_name, user_email, role, password FROM user_tbl 
-    WHERE (user_name = '$user_name_or_email' OR user_email = '$user_name_or_email') 
-    AND role = '$user_type'";
- $result = mysqli_query($conn,$sql); 
- if(mysqli_num_rows($result)>0){
-    $user_data = mysqli_fetch_assoc($result);
-    if(password_verify($password,$user_data['password'])){
-        $_SESSION['user_data'] = $user_data;
-        // $_SESSION['user_id'] = $user_data['id'];
-        switch($user_type){
-            case 'admin':   
-        $_SESSION['alert'] ="Login successful";
-        $_SESSION['alert_code'] ="success";
-                header("Location:dashboard.php");
-                exit();
-                break;
-                case 'doctor':
-                    $_SESSION['alert'] ="Login successful";
-                    $_SESSION['alert_code'] ="success";
-                    header("Location:dashboard.php");
-                exit();
-                break;
-                    case 'nurse':
-                        $_SESSION['alert'] ="Login successful";
-                        $_SESSION['alert_code'] ="success";
-                        header("Location:dashboard.php");
-                        exit();
-                        break;
+    if(empty($user_type)){
+        $errors['user_type'] = "Select User Type";
+    }
+
+    if(empty($password)){
+        $errors['password'] = "Password Required";
+    }
+
+    if (empty($errors['user_name']) && empty($errors['user_type']) && empty($errors['password'])) {
+        if ($user_type === 'admin' || $user_type === 'doctor' || $user_type === 'nurse' || $user_type === 'pharmacist' || $user_type === 'laboratorist' || $user_type === 'accountant') {
+            $sql = "SELECT user_name, user_email, role, password FROM user_tbl 
+                    WHERE (user_name = '$user_name_or_email' OR user_email = '$user_name_or_email') 
+                    AND role IN ('admin', 'doctor', 'nurse', 'pharmacist', 'laboratorist', 'accountant')";
+            $result = mysqli_query($conn, $sql); 
+
+            if(mysqli_num_rows($result) > 0){
+                $user_data = mysqli_fetch_assoc($result);
+                if(password_verify($password, $user_data['password'])){
+                    $_SESSION['user_name'] = $user_data['user_name'];
+                    $_SESSION['user_data'] = $user_data;
+                    $user_type = $_SESSION['user_data']['role'];
+                    $ip_address = $local_ip = getHostByName(getHostName());
+                    $status = "active";
+                    $time = date('Y-m-d H:i:s');
+                    $insert_query = "INSERT INTO activity_log(user_name, user_type, status, ip_address, time) 
+                                     VALUES('".$_SESSION['user_name']."', '$user_type', '$status', '$ip_address', '$time')";
+                    if (!mysqli_query($conn, $insert_query)) {
+                        $_SESSION['alert'] = "Activity Log insertion failed: " . mysqli_error($conn);
+                        $_SESSION['alert_code'] = "warning";
+                    }
+                    
+                    // User redirect based on role
+                    switch($user_type){
+                        case 'admin':   
+                        case 'doctor':
+                        case 'nurse':
                         case 'pharmacist':
-                            $_SESSION['alert'] ="Login successful";
-                            $_SESSION['alert_code'] ="success";
-                            header("Location:dashboard.php");
+                        case 'laboratorist':
+                            $_SESSION['alert'] = "Login successful";
+                            $_SESSION['alert_code'] = "success";
+                            header("Location: dashboard.php");
                             exit();
                             break;
-                            case 'laboratorist':
-                            $_SESSION['alert'] ="Login successful";
-                            $_SESSION['alert_code'] ="success";
-                            header("Location:dashboard.php");
-                            exit();
-                            break;     
+                    }
+                } else {
+                    $_SESSION['alert'] = "Invalid password";
+                    $_SESSION['alert_code'] = "warning";
+                }
+            } else {
+                $_SESSION['alert'] = "Invalid username or email";
+                $_SESSION['alert_code'] = "warning";
+            }
+        } else if ($user_type === 'patient') {
+            $sql1 = "SELECT name, email, password FROM patient 
+                     WHERE (name = '$user_name_or_email' OR email = '$user_name_or_email')";
+            $result2 = mysqli_query($conn, $sql1);
+            
+            if(mysqli_num_rows($result2) > 0){
+                $patient_data = mysqli_fetch_assoc($result2);
+                if(password_verify($password, $patient_data['password'])){
+                    $_SESSION['patient_data'] = $patient_data;
+                    $user_name = $patient_data['name'];
+                    $user_type = 'patient';// user Type 
+                    $status = 'active';
+                    $ip_address = $local_ip = getHostByName(getHostName());
+                    $time = date('Y-m-d H:i:s');
+                    $insert_query1 = "INSERT INTO activity_log(user_name, user_type, status, ip_address, time) 
+                                      VALUES('$user_name', '$user_type', '$status', '$ip_address', '$time')";
+                    if(mysqli_query($conn, $insert_query1)){
+                        header("Location: dashboard.php");
+                        exit();
+                    } else {
+                        $_SESSION['alert'] = "Activity Log insertion failed: " . mysqli_error($conn);
+                        $_SESSION['alert_code'] = "warning";
+                    }
+                } else {
+                    $_SESSION['alert'] = "Invalid Password";
+                    $_SESSION['alert_code'] = "warning";
+                }
+            } else {
+                $_SESSION['alert'] = "Invalid Username or email";
+                $_SESSION['alert_code'] = "warning";
+            }
+        } else {
+            $_SESSION['alert'] = "Please Select a Valid UserType";
+            $_SESSION['alert_code'] = "warning";
+        }
     }
- }
- else {
-    $_SESSION['alert'] ="Invalid Password";
-    $_SESSION['alert_code'] ="warning";
- }}
- else{
-    $_SESSION['alert'] ="Invalid username or email";
-    $_SESSION['alert_code'] ="warning";
- }
-}
- else if($user_type==='patient') {
-    $sql1 = "SELECT name, email, password FROM patient WHERE (name = '$user_name_or_email' OR email = '$user_name_or_email')";
-    $result2 = mysqli_query($conn, $sql1);
- if(mysqli_num_rows($result2)>0){
-    $pateint_data = mysqli_fetch_assoc($result2);
-    if(password_verify($password,$pateint_data['password'])){
-        $_SESSION['pateint_data'] = $pateint_data;
-        header("location:dashboard.php");
-     exit();
-    }
-    else{
-       
-        $_SESSION['alert'] ="Invalid Password";
-        $_SESSION['alert_code'] ="warning";
-    }
- }
- else{
-    $_SESSION['alert'] ="Invalid Username or email";
-    $_SESSION['alert_code'] ="warning";
-   
- }
- }
- else{
-    $_SESSION['alert'] ="Please Select a Valid UserType";
-    $_SESSION['alert_code'] ="warning";
- }
 }
 ?>
+
+
 <!doctype html>
 <html lang="en">
   <head>
