@@ -227,6 +227,7 @@ if($user_type === 'patient'){
             <?php
             if($user_type==='admin'){
            ?>
+           
                   <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse8"
                     aria-expanded="true" aria-controls="collapse8">
@@ -473,6 +474,14 @@ if($user_type === 'patient'){
                         <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                         Activity Log
                     </a>
+                    <?php
+            if($user_type==='admin'){
+           ?>
+           <a class="dropdown-item" href="system_backup_file.php">
+                        <i class="fas fa-cloud-upload-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                        Backup
+                    </a>
+           <?php  } ?>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="../logout.php" data-toggle="modal" data-target="#logoutModal">
                         <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>

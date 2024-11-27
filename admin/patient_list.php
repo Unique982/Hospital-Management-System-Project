@@ -13,8 +13,12 @@ if($count){
     <div class="card  mb-4">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">Patient List
-              <a href="patient_add.php">  <button type="button"  class="btn btn-primary mr-2" data-toggle="modal" data-target="#exampleModal">
+              <a href="patient_add.php">  <button type="button"  class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal">
                     Add New Patient
+                </button>
+                </a>
+                <a href="patient_report_print.php">  <button type="button"  class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal">
+                   Print pdf
                 </button>
                 </a>
             </h6>

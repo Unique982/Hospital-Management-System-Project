@@ -9,7 +9,7 @@ INNER JOIN user_tbl AS d ON r.doctor_id = d.id
 ";
 $result = mysqli_query($conn,$select_query);
 $count = mysqli_num_rows($result);
-if($count){
+
 
 
 
@@ -54,7 +54,8 @@ if($count){
                     <tbody>
                         <tr>
                             <?php 
-                            $sn = +1;
+                            $sn = 1;
+                            if($count > 0){
                             while($record = mysqli_fetch_assoc($result)){
                                 if($record['report_type']=='death'){
 
@@ -75,12 +76,20 @@ if($count){
 
                             </td>
                         </tr>
+                       
                         <?php 
                         
-                                }$sn++;
+                                $sn++;
                             }
                         }
+                    }else{
+                        
                         ?>
+                        <tr>
+                                 <td colspan="6" class="text-center">No Record found</td>
+                            
+                        </tr>
+                        <?php } ?>
                      
                     </tbody>
                   
