@@ -147,6 +147,8 @@ if($user_type === 'patient'){
                         <h6 class="collapse-header">Manage Blood</h6>
                         <a class="collapse-item" href="./bed_add.php">Add Bed</a>
                         <a class="collapse-item" href="./bed_list.php">List Bed</a>
+                        <a class="collapse-item" href="./allocate_bed_add.php">Bed allotment</a>
+                        <a class="collapse-item" href="./allocate_bed_list.php">Bed Allotment List</a>
                     </div>
                 </div>
             </li>
@@ -223,6 +225,26 @@ if($user_type === 'patient'){
                 </div>
             </li>
            <?php }  ?>
+           <?php
+           if($user_type==='admin' || $user_type==='doctor' || $user_type==='nurse'){
+
+           ?>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse7"
+                    aria-expanded="true" aria-controls="collapse7">
+                    <i class="fas fa-file-alt"></i>
+                    <span>Manage Invoice</span>
+                </a>
+                <div id="collapse7" class="collapse" aria-labelledby="heading7" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Manage Payment</h6>
+                        <a class="collapse-item" href="invoice_add.php">Manage Invoice</a>
+                        <a class="collapse-item" href="invoice_list.php">View Invoice</a>
+                    </div>
+                </div>
+            </li>
+           <?php } ?>
+          
             <!-- Heading -->
             <?php
             if($user_type==='admin'){
