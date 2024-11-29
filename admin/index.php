@@ -127,7 +127,9 @@ if(isset($_POST['login'])){
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
+    
     }
+    
 </style>
   <body>
       <div class="container mt-5 ">

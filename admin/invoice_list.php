@@ -2,7 +2,7 @@
 include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
-$select_query = "SELECT i.invoice_id, i.invoice_num, p.name AS patient_name, i.title, i.payment_method, i.amount, i.payment_status, i.invoice_date 
+$select_query = "SELECT i.invoice_id, i.invoice_num, p.name AS patient_id, i.title, i.payment_method, i.amount, i.payment_status, i.invoice_date 
 FROM invoice  i
 INNER JOIN patient p on i.patient_id = p.patient_id
 ORDER BY i.invoice_id DESC ";
@@ -70,11 +70,30 @@ if($count){
                            ?>
                             <td><?php echo $sn; ?></td>
                             <td><?php echo $row['invoice_num'] ?></td>
-                            <td><?php echo $row['patient_name'] ?></td>
+                            <td><?php echo $row['patient_id'] ?></td>
                             <td><?php echo $row['title'] ?></td>
                             <td><?php echo $row['amount'] ?></td>
                             <td><?php echo $row['payment_method'] ?></td>
-                            <td><?php echo $row['payment_status'] ?></td>
+                            <td>
+                                
+    <?php if ($row['payment_status'] == 'unpaid') { ?>
+        <span class="badge badge-danger">Unpaid</span>
+        <form action="verify_payment.php" method="POST" style="display: inline;">
+            <input type="hidden" name="payment_id" value="<?php echo $row['invoice_id']; ?>">
+            <input type="hidden" name="title" value="<?php echo $row['title']; ?>">
+            <input type="hidden" name="invoice_num" value="<?php echo $row['invoice_num']; ?>">
+            <input type="hidden" name="patient_id" value="<?php echo $row['patient_id'] ?>">
+            <input type="hidden" name="amount" value="<?php echo $row['amount']; ?>">
+            <input type="hidden" name="payment_method" value="<?php echo $row['payment_method']; ?>">
+            <input type="hidden" name="transcation_id">
+            <input type="submit" name="save" value="Payment Vriefy" class="btn btn-gray btn-mini" 
+                   onclick="return confirm('Are you sure you want to mark this payment as paid?');">
+        </form>
+    <?php } else { ?>
+        Paid
+    <?php } ?>
+</td>
+
                             <td><a href="invoice_view.php?invoice_id=<?php echo $row['invoice_id'] ?>"><button type="button" class="btn btn-outline-warning btn-sm">View</button></a>
                           <a href="invoice_edit.php?invoice_id=<?php echo $row['invoice_id'] ?>" class="btn btn-outline-success btn-sm">Edit</a>     
                           <form action="invoice_delete.php" method="POST" id="deleteForm" style="display:inline-block; margin:2px;">

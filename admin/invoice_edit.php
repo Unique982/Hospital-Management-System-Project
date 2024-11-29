@@ -79,7 +79,7 @@ if(isset($_POST['update'])){
                             <select name="payment_status" id="" class="form-control">
                             <option value="paid" <?php echo ($row['payment_status'] == 'paid') ? 'selected' : ''; ?>>Paid</option>
                                 <option value="unpaid" <?php echo ($row['payment_status'] == 'unpaid') ? 'selected' : ''; ?>>Unpaid</option>
-                                <option value="pending" <?php echo ($row['payment_status'] == 'pending') ? 'selected' : ''; ?>>Pending</option>
+                                
                             </select>
                         </div>
 

@@ -74,7 +74,7 @@ if(isset($_POST['save'])){
                             <option selected disabled>Select Payment Status</option>
                             <option value="paid">Paid</option>
                             <option value="unpaid">Unpaid</option>
-                            <option value="pending">Pending</option>
+                            
                             
                             </select>
                         </div>

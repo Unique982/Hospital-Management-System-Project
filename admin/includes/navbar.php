@@ -240,6 +240,7 @@ if($user_type === 'patient'){
                         <h6 class="collapse-header">Manage Payment</h6>
                         <a class="collapse-item" href="invoice_add.php">Manage Invoice</a>
                         <a class="collapse-item" href="invoice_list.php">View Invoice</a>
+                        <a class="collapse-item" href="payment_history.php">Payment History</a>
                     </div>
                 </div>
             </li>
@@ -264,6 +265,7 @@ if($user_type === 'patient'){
                     </div>
                 </div>
             </li>
+            
              <!-- Nav Item - Pages Collapse Menu -->
              <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
@@ -276,6 +278,7 @@ if($user_type === 'patient'){
                         <h6 class="collapse-header">Pages</h6>
                         <a class="collapse-item" href="about_page.php">About Us</a>
                         <a class="collapse-item" href="contact_page.php">Contact Us</a>
+                        <a class="collapse-item" href="notice_board_list.php">Manage Notice</a>
                         
                       
                     </div>
@@ -350,55 +353,48 @@ if($user_type === 'patient'){
 
             <!-- Nav Item - Alerts -->
             <li class="nav-item dropdown no-arrow mx-1">
-                <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
+            <?php 
+                    $select_query = "SELECT * FROM notice_board ";
+                    $result = mysqli_query($conn,$select_query);
+                    $count = mysqli_num_rows($result);
+                    if($count){
+                        
+                    ?>    
+            <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fas fa-bell fa-fw"></i>
                     <!-- Counter - Alerts -->
-                    <span class="badge badge-danger badge-counter">3+</span>
+                    <span class="badge badge-danger badge-counter">1+</span>
                 </a>
                 <!-- Dropdown - Alerts -->
                 <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                     aria-labelledby="alertsDropdown">
                     <h6 class="dropdown-header bg-gradient-dark">
-                        Alerts Center
+                        Notice Alerts
                     </h6>
-                    <a class="dropdown-item d-flex align-items-center" href="#">
+                    <?php while($row = mysqli_fetch_assoc($result)){ ?>
+                    <a class="dropdown-item d-flex align-items-center" href="notice_board_view.php?notice_id=<?php echo$row['notice_id'] ?>">
                         <div class="mr-3">
                             <div class="icon-circle bg-primary">
                                 <i class="fas fa-file-alt text-white"></i>
                             </div>
                         </div>
                         <div>
-                            <div class="small text-gray-500">December 12, 2019</div>
-                            <span class="font-weight-bold">A new monthly report is ready to download!</span>
+                            
+                            <div class="small text-gray-500"><td><?php echo date('F d, Y', strtotime($row['created_at'])); ?></td></div>
+                            <span class="font-weight-bold"><?php echo $row['notice_title'] ?></span>
                         </div>
                     </a>
-                    <a class="dropdown-item d-flex align-items-center" href="#">
-                        <div class="mr-3">
-                            <div class="icon-circle bg-success">
-                                <i class="fas fa-donate text-white"></i>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="small text-gray-500">December 7, 2019</div>
-                            $290.29 has been deposited into your account!
-                        </div>
-                    </a>
-                    <a class="dropdown-item d-flex align-items-center" href="#">
-                        <div class="mr-3">
-                            <div class="icon-circle bg-warning">
-                                <i class="fas fa-exclamation-triangle text-white"></i>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="small text-gray-500">December 2, 2019</div>
-                            Spending Alert: We've noticed unusually high spending for your account.
-                        </div>
-                    </a>
+                
+                <?php 
+              
+                } } ?>
+                
                     <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
                 </div>
+                
             </li>
-
+ 
             <!-- Nav Item - Messages -->
             <li class="nav-item dropdown no-arrow mx-1">
                 <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
