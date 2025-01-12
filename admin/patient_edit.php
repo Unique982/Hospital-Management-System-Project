@@ -8,12 +8,11 @@ if(isset($_POST['update'])){
     $pt_email = mysqli_real_escape_string($conn, $_POST['pt_email']);
     $pt_phone = mysqli_real_escape_string($conn, $_POST['pt_phone']);
     $pt_address = mysqli_real_escape_string($conn,$_POST['pt_address']);
-    $pt_dob = mysqli_real_escape_string($conn,$_POST['pt_dob']);
     $pt_age = mysqli_real_escape_string($conn,$_POST['pt_age']);
     $pt_sex = mysqli_real_escape_string($conn,$_POST['pt_sex']);
     $pt_blood = mysqli_real_escape_string($conn,$_POST['pt_blood']);
 
-        $update_query = "UPDATE `patient` SET `name`='$pt_name',`age`='$pt_age',`sex`='$pt_sex',`dob`='$pt_dob',`blood_group`='$pt_blood',`address`='$pt_address',`phone`='$pt_phone',`email`='$pt_email' WHERE patient_id = $patient_id";
+        $update_query = "UPDATE `patient` SET `name`='$pt_name',`age`='$pt_age',`sex`='$pt_sex',`blood_group`='$pt_blood',`address`='$pt_address',`phone`='$pt_phone',`email`='$pt_email' WHERE patient_id = $patient_id";
       if(mysqli_query($conn, $update_query)){
        
         echo '<div class="alert alert-danger">Update Successfully </div>';
@@ -75,10 +74,6 @@ if(isset($_POST['update'])){
                             <option value="female"<?php echo ($row['sex'] =='female') ?'selected' :''; ?>>Female</option>
                             <option value="other"<?php echo ($row['sex'] =='other') ?'selected' :''; ?>>Other</option>
                           </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Patient DOB:</label>
-                            <input type="date" name="pt_dob" value="<?php echo $row['dob'] ?>" class="form-control" placeholder="Enter Patient Name">
                         </div>
                         <div class="form-group">
                             <label>Patient Blood:</label>

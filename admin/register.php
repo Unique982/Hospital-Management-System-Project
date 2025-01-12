@@ -6,7 +6,6 @@ $errors = [
   'email' => '',
   'phone' => '',
   'address' => '',
-  'dob' => '',
   'gender' => '',
   'blood' => '',
   'password' => '',
@@ -17,17 +16,17 @@ if (isset($_POST['add_patient'])) {
   $pt_email = mysqli_real_escape_string($conn, trim($_POST['pt_email']));
   $pt_phone = mysqli_real_escape_string($conn,  trim($_POST['pt_phone']));
   $pt_address = mysqli_real_escape_string($conn, trim($_POST['pt_address']));
-  $pt_dob = mysqli_real_escape_string($conn, trim($_POST['pt_dob']));
-  $pt_sex = mysqli_real_escape_string($conn, trim($_POST['pt_sex']));
-  $pt_blood = mysqli_real_escape_string($conn, trim($_POST['pt_blood']));
+
+  $pt_sex =isset($_POST['pt_sex']) ? mysqli_real_escape_string($conn, trim($_POST['pt_sex'])):'';
+  $pt_blood =isset($_POST['pt_blood']) ? mysqli_real_escape_string($conn, trim($_POST['pt_blood'])):'';
   $pt_password = mysqli_real_escape_string($conn, password_hash($_POST['pt_password'], PASSWORD_BCRYPT));
 
   // Regular expressions
   $namePattern = "/^[a-zA-Z\s]+$/";
   
   $emailPattern = "/^[a-z\._\-[0-9]*[@][a-z]*[\.][a-z]{2,4}$/";
-  // $phonePattern = "/^\+977[-\s]?9\d{1}[-\s]?\d{3}[-\s]?\d{4}$/";
-  $addressPattern = "/^[a-zA-Z0-9\s]*$/";
+  $phonePattern = "/^\d{10}$/";
+    $addressPattern = "/^[a-zA-Z0-9\s]*$/";
   // $dobPattern = "/^\d{2}-\d{2}-\d{4}$/";
   $passwordPattern = "/^[a-zA-Z0-9\s]*$/";
 
@@ -45,13 +44,16 @@ if (isset($_POST['add_patient'])) {
     $errors['email'] = "Please enter a valid email address";
   }
 
-  // // Phone number validation
-  // if (empty($pt_phone)) {
-  //   $errors['phone'] = "Please enter a phone number";
-  // } elseif (!preg_match($phonePattern, $pt_phone)) {
-  //   $errors['phone'] = "Phone number must start with +977 and be in the format +977-9-xx-xxxx.";
-  // }
-
+  //Phone
+  if(empty($pt_phone)) {
+    $errors['phone'] = "Please enter  phone number";
+  }
+  elseif (!preg_match($phonePattern,$pt_phone)){
+$errors['phone'] = "Please enter a valid phone number";
+  }
+    
+  
+  
   // Address validation
   if (empty($pt_address)) {
     $errors['address'] = "Please enter an address";
@@ -66,13 +68,7 @@ if (isset($_POST['add_patient'])) {
   } elseif (!in_array($pt_sex, $genderValid)) {
     $errors['gender'] = "Invalid gender selected";
   }
-
-  // DOB validation
-  // if (empty($pt_dob)) {
-  //   $errors['dob'] = "Please enter date of birth";
-  // } elseif (!preg_match($dobPattern, $pt_dob)) {
-  //   $errors['dob'] = "Invalid format. Please use mm-dd-yyyy format.";
-  // }
+  
 
   // Blood group validation
   $bloodValid = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
@@ -90,7 +86,7 @@ if (isset($_POST['add_patient'])) {
   } elseif (!preg_match($passwordPattern, $_POST['pt_password'])) {
     $errors['password'] = "Invalid password format.";
   }
-
+  
   // If no errors, proceed with database insertion
   if (empty(array_filter($errors))) {
     $select_query = "SELECT email, phone FROM `patient` WHERE email = '$pt_email' OR phone = '$pt_phone'";
@@ -100,8 +96,8 @@ if (isset($_POST['add_patient'])) {
       $_SESSION['alert_code'] = "info";
       header("Location:index.php");
     } else {
-      $insert_query = "INSERT INTO `patient` (`name`, `sex`, `dob`, `blood_group`, `address`, `phone`, `password`, `email`)
-                       VALUES ('$pt_name', '$pt_sex', '$pt_dob', '$pt_blood', '$pt_address', '$pt_phone', '$pt_password', '$pt_email')";
+      $insert_query = "INSERT INTO `patient` (`name`, `sex`, `blood_group`, `address`, `phone`, `password`, `email`)
+                       VALUES ('$pt_name', '$pt_sex', '$pt_blood', '$pt_address', '$pt_phone', '$pt_password', '$pt_email')";
       if (mysqli_query($conn, $insert_query)) {
         $_SESSION['alert'] = "Patient added successfully";
         $_SESSION['alert_code'] = "success";
@@ -112,6 +108,7 @@ if (isset($_POST['add_patient'])) {
         $_SESSION['alert_code'] = "error";
       }
     }
+ 
   }
 }
 ?>
@@ -148,8 +145,7 @@ if (isset($_POST['add_patient'])) {
             <h1> Register Form</h1>
           </div>
           <div class="card-body">
-            <form action="" method="POST" enctype="multipart/form-data">
-              <div class="row">
+            <form action="" method="POST" enctype="multipart/form-data" autocapitalize="off" >             <div class="row">
                 <div class="col-md-6">
                   <div class="form-group">
                     <label>Patient Name:</label>
@@ -184,11 +180,7 @@ if (isset($_POST['add_patient'])) {
                     </select>
                     <span style='color:red' ;><?php echo $errors['gender'] ?></span>
                   </div>
-                  <div class="form-group">
-                    <label>Patient DOB:</label>
-                    <input type="date" name="pt_dob" class="form-control" placeholder="Enter Patient Name">
-                    <span style='color:red' ;><?php echo $errors['dob'] ?></span>
-                  </div>
+                 
                   <div class="form-group">
                     <label>Patient Blood:</label>
                     <select name="pt_blood" id="" class="form-control">

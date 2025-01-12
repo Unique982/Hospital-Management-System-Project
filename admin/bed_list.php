@@ -5,7 +5,7 @@ include('../database/config.php');
 $select_query = "SELECT * FROM bed ORDER BY  bed_id DESC ";
 $result = mysqli_query($conn, $select_query);
 $count = mysqli_num_rows($result);
-if($count){
+
 ?>
 <div class="container-fluid">
     <!-- DataTales Example -->             
@@ -36,6 +36,7 @@ if($count){
                         <tr>
                             <?php 
                             $sn = +1;
+                            if($count >0){
                             while($row = mysqli_fetch_assoc($result)){
 
                            
@@ -56,6 +57,9 @@ if($count){
                         <?php 
                         $sn++;
                             }
+                        }
+                        else{
+                            echo "<tr><td colspan='5' class='text-center'>Data Not Found</td></tr>";
                         }
                         ?>
                      

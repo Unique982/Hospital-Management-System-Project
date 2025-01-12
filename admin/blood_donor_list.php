@@ -6,7 +6,7 @@ include('../database/config.php');
 $select_query = "SELECT * FROM blood_donors";
 $result = mysqli_query($conn, $select_query);
 $count = mysqli_num_rows($result);
-if($count){
+
 
 
 ?>
@@ -41,6 +41,7 @@ if($count){
                     <tbody>
                         <?php 
                         $sn = +1;
+                        if($count >0){
                         while($row = mysqli_fetch_assoc($result)){ ?>
                         <tr>
                             <td><?php echo $sn; ?></td>
@@ -61,10 +62,15 @@ if($count){
                             </td>
                         </tr>
                         <?php 
+                        
                         $sn++;
                             }
+                        }else{
+                            echo "<tr><td colspan='7' class='text-center'>Not Found Data</td></tr>";
                         }
-                        ?>
+                            
+                        
+                    ?>
                      
                     </tbody>
                   

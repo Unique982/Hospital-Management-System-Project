@@ -1,9 +1,7 @@
 <?php 
 session_start();
 
-if(isset($_SESSION['user_name'])){
-    header("location:index.php");
-}
+
 include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
@@ -47,10 +45,7 @@ if(mysqli_num_rows($result)>0){
                      <th>Sex:</th>
                     <td><?php echo $record['sex'] ?></td>
                    </tr>
-                   <tr>
-                     <th>Date Of Birth:</th>
-                    <td><?php echo $record['dob'] ?></td>
-                   </tr>
+                   
 
                    <tr>
                      <th>Phone:</th>

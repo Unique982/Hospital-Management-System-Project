@@ -107,8 +107,8 @@ if($user_type === 'patient'){
                 <div id="collapse2" class="collapse" aria-labelledby="heading2" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Manage Patient</h6>
-                        <a class="collapse-item" href="./patient_add.php">Add</a>
-                        <a class="collapse-item" href="./patient_list.php">List</a>
+                        <a class="collapse-item" href="./patient_add.php">Patient Add</a>
+                        <a class="collapse-item" href="./patient_list.php">Patient List</a>
                     </div>
                 </div>
             </li>
@@ -126,8 +126,8 @@ if($user_type === 'patient'){
                 <div id="collapse3" class="collapse" aria-labelledby="heading3" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Manage Blood</h6>
-                        <a class="collapse-item" href="./blood_donor_add.php">Add</a>
-                        <a class="collapse-item" href="./blood_donor_list.php">List</a>
+                        <a class="collapse-item" href="./blood_donor_add.php">Blood Add</a>
+                        <a class="collapse-item" href="./blood_donor_list.php">Blood List</a>
                     </div>
                 </div>
             </li>
@@ -144,9 +144,9 @@ if($user_type === 'patient'){
                 </a>
                 <div id="collapse4" class="collapse" aria-labelledby="heading4" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Manage Blood</h6>
-                        <a class="collapse-item" href="./bed_add.php">Add Bed</a>
-                        <a class="collapse-item" href="./bed_list.php">List Bed</a>
+                        <h6 class="collapse-header">Manage Bed</h6>
+                        <a class="collapse-item" href="./bed_add.php">Bed Add</a>
+                        <a class="collapse-item" href="./bed_list.php">Bed List</a>
                         <a class="collapse-item" href="./allocate_bed_add.php">Bed allotment</a>
                         <a class="collapse-item" href="./allocate_bed_list.php">Bed Allotment List</a>
                     </div>

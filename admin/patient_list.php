@@ -5,7 +5,7 @@ include('../database/config.php');
 $select_query = "SELECT * FROM patient ORDER BY  patient_id DESC";
 $result = mysqli_query($conn,$select_query);
 $count = mysqli_num_rows($result);
-if($count){
+
 
 ?>
 <div class="container-fluid">
@@ -35,14 +35,14 @@ if($count){
                             <th>Phone</th>
                             <th>Sex</th>
                             <th>Blood Group</th>
-                            <th>DOB</th>
-                            <th>Action</th>
+                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <?php 
                             $sn = +1;
+                            if($count >0){
                             while($row = mysqli_fetch_assoc($result)){
 
                            
@@ -53,7 +53,6 @@ if($count){
                             <td><?php echo $row['phone'] ?></td>
                             <td><?php echo $row['sex'] ?></td>
                             <td><?php echo $row['blood_group'] ?></td>
-                            <td><?php echo $row['dob'] ?></td>
                             <td><a href="patient_view.php?patient_id=<?php echo $row['patient_id'] ?>"><button type="button" class="btn btn-outline-warning btn-sm">View</button></a>
                           <a href="patient_edit.php?patient_id=<?php echo $row['patient_id']  ?>" class="btn btn-outline-success btn-sm">Edit</a>     
                           <form action="patient_delete.php" method="POST" id="deleteForm" style="display:inline-block; margin:2px;">
@@ -65,7 +64,10 @@ if($count){
                         </tr>
                         <?php 
                         $sn++;
-                            }}
+                            }
+                        }else{
+                            echo "<tr><td colspan='7' class='text-center'>Not Found Data</td></tr>";
+                        }
                         ?>
                      
                     </tbody>

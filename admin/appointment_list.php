@@ -2,20 +2,47 @@
 include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
+
+ $errors = [
+     'doctor' => '',
+     'patient' => '',
+     'date' => '',
+ ];
 if(isset($_POST['add'])){
-    $doctor = mysqli_real_escape_string($conn,$_POST['doctor']);
-    $patient = mysqli_real_escape_string($conn,$_POST['patient']);
+    $doctor = isset($_POST['doctor']) ? mysqli_real_escape_string($conn,trim($_POST['doctor'])):'';
+    $patient = isset($_POST['patient']) ? mysqli_real_escape_string($conn,$_POST['patient']):'';
     $date = mysqli_real_escape_string($conn,$_POST['date']);
     
+    // bed number validation 
+if(empty($doctor) || $doctor==='Select One'){
+    $errors['doctor'] = 'Doctor is required';
+
+}
+
+// patient 
+if(empty($patient) || $patient === 'Select One'){
+    $errors['patient'] = 'Patient number is required';
+}
+// Date validation 
+if(empty($date)){
+    $errors['date'] = 'Appointment date is required';
+}
+
+
+    if (empty(array_filter($errors))) {
     $insert_query = "INSERT INTO `appointments`(`patient_id`, `doctor_id`, `appointment_date`, `created_at`)
      VALUES('$patient','$doctor','$date',Now())";
      if(mysqli_query($conn,$insert_query)){
-        echo '<div class="alert alert-success role="alert">Appointment Add Sucessful?</div>';
+        $_SESSION['alert'] = "Your Appointment successfully";
+        $_SESSION['alert_code'] = "success";
+       
      }
      else{
-     echo '<div class="alert alert-success role="alert"> Appointment failed.<div>';
+        $_SESSION['alert'] = "Your appointemnt Failed";
+        $_SESSION['alert_code'] = "error";
      }
 
+}
 }
 ?>
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -42,6 +69,7 @@ if(isset($_POST['add'])){
                 }
                 ?>
                  </select>
+                 <span style='color:red' ;><?php echo $errors['doctor'] ?></span>
               
             </div>
             <div class="form-group">
@@ -58,11 +86,13 @@ if(isset($_POST['add'])){
             }
                   ?>
                 </select>
+                <span style='color:red' ;><?php echo $errors['patient'] ?></span>
               
             </div>
             <div class="form-group">
                 <label for="">Date</label>
                 <input type="date" name="date" class="form-control" required>
+                <span style='color:red' ;><?php echo $errors['date'] ?></span>
             </div>
         </div>
         <div class="modal-footer">
@@ -146,11 +176,7 @@ if(isset($_POST['add'])){
 </div>
 </div>
 
-<script>
-function confirmDelete() {
-    return confirm("Are you sure you want to delete this appointment?");
-}
-</script>
+
 
 <?php
 include('includes/scripts.php');

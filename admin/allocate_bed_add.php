@@ -2,14 +2,48 @@
 include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
+
+$errors =[
+    'number' =>'',
+    'patient' =>'',
+    'allocation_time' =>'',
+    'discharge_time' =>'',
+];
+
+
 if(isset($_POST['save'])){
     $bed_number = mysqli_real_escape_string($conn,$_POST['bed_number']);
     $patient = mysqli_real_escape_string($conn,$_POST['patient']);
     $allocate_time = mysqli_real_escape_string($conn,$_POST['allocate_time']);
     $discharge_time = mysqli_real_escape_string($conn,$_POST['discharge_time']);
 
+
+
+
+// bed number validation 
+if(empty($bed_number) || $bed_number==='Select'){
+    $errors['number'] = 'Bed number is required';
+
+}
+
+// patient 
+if(empty($patient) || $patient === 'Select'){
+    $errors['patient'] = 'Patient number is required';
+}
+
+// allocate_time validation 
+if(empty($allocate_time)){
+     $errors['allocation_time'] = 'Allocation time is required';
+}
+if(empty($discharge_time)){
+    $errors['discharge_time'] = 'Discharge time is required';
+}
+
+    if (empty(array_filter($errors))) {
     $duplicate_date = "SELECT bed_id,pateint_id FROM bed_allocate WHERE bed_id='$bed_number' OR pateint_id='$patient'";
     $result = mysqli_query($conn,$duplicate_date) or die("Query failed");
+   
+
     if(mysqli_num_rows($result) >0){
         
         $_SESSION['alert'] ="Bednumber  Already bocked by patient";
@@ -28,6 +62,7 @@ if(isset($_POST['save'])){
    $_SESSION['alert_code'] ="warning";
 }
         }
+}
 }
 ?>
 <div class="container-fluid">
@@ -54,12 +89,13 @@ if(isset($_POST['save'])){
             }
                   ?>
                 </select>
+                <span style='color:red' ;><?php echo $errors['number'] ?></span>
                            
                         </div>
                         <div class="form-group">
                             <label for=""> Patient</label>
                             <select name="patient" id="patient" class="form-control">
-                                <option selected> Selct Now</option>
+                                <option selected>Select</option>
                                 <?php 
                     $select_query_patient_table = "SELECT * FROM patient";
                     $result = mysqli_query($conn,$select_query_patient_table);
@@ -70,14 +106,17 @@ if(isset($_POST['save'])){
             }
                   ?>
                 </select>
+                <span style='color:red' ;><?php echo $errors['patient'] ?></span>
                         </div>
                         <div class="form-group">
                             <label for="">Allocate Time</label>
                        <input type="datetime-local" name="allocate_time" class="form-control">
+                       <span style='color:red' ;><?php echo $errors['allocation_time'] ?></span>
                         </div>
                         <div class="form-group">
                             <label for="">Discharge Time</label>
                             <input type="datetime-local" name="discharge_time" class="form-control">
+                            <span style='color:red' ;><?php echo $errors['discharge_time'] ?></span>
                         </div>
                         <div class="form-group">
                             <button type="submit" name="save" class="btn btn-outline-primary">Add New Bed</button>

@@ -27,7 +27,7 @@ include('../database/config.php');
                             <th>Phone</th>
                             <th>Sex</th>
                             <th>Blood Group</th>
-                            <th>DOB</th>
+                            
                             
                         </tr>
                     </thead>
@@ -46,7 +46,7 @@ include('../database/config.php');
                             <td><?php echo $row['phone'] ?></td>
                             <td><?php echo $row['sex'] ?></td>
                             <td><?php echo $row['blood_group'] ?></td>
-                            <td><?php echo $row['dob'] ?></td>
+                         
                             
                         </tr>
                         <?php 

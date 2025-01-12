@@ -73,7 +73,7 @@ if(empty($description)){
         <div class="col-12">
             <div class="card mb-4">
                 <div class="card-header">
-                    Add Patient
+                   Add Bed
                 </div>
                 <div class="card-body">
                     <form action="" method="POST" enctype="multipart/form-data">

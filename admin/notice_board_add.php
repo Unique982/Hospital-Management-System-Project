@@ -10,7 +10,7 @@ if (isset($_POST['add'])) {
     ('$title','$notice',NOW())";
   if (mysqli_query($conn, $insert_query)) {
 
-    $_SESSION['alert'] = "update sucessfully";
+    $_SESSION['alert'] = "Insert Notice sSucessfully";
     $_SESSION['alert_code'] = "success";
   } else {
     $_SESSION['alert'] = "failed";

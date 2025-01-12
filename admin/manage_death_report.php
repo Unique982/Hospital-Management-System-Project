@@ -9,10 +9,6 @@ INNER JOIN user_tbl AS d ON r.doctor_id = d.id
 ";
 $result = mysqli_query($conn,$select_query);
 $count = mysqli_num_rows($result);
-
-
-
-
 ?>
 <div class="container-fluid">
     <!-- DataTales Example -->          

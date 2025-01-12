@@ -17,6 +17,8 @@ if(isset($_POST['save'])){
         
 $_SESSION['alert'] = "Vrefiy payment Successfully";
 $_SESSION['alert_code'] = "success";
+header("location:invoice_list.php");
+exit();
 } else {
 $_SESSION['alert'] = "failed";
 $_SESSION['alert_code'] = "warning";

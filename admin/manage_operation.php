@@ -9,7 +9,7 @@ INNER JOIN user_tbl AS d ON r.doctor_id = d.id
 ";
 $result = mysqli_query($conn,$select_query);
 $count = mysqli_num_rows($result);
-if($count){
+
 
 
 
@@ -55,6 +55,7 @@ if($count){
                         <tr>
                             <?php 
                             $sn = +1;
+                            if($count >0){
                             while($record = mysqli_fetch_assoc($result)){
                                 if($record['report_type']=='operation'){
 
@@ -76,10 +77,15 @@ if($count){
                             </td>
                         </tr>
                         <?php 
+                        $sn++;
                         
-                                }$sn++;
+                                }
                             }
                         }
+                        else{
+                            echo "<tr><td colspan='5' class='text-center'>Not Found Data</td></td>";
+                        
+                    }
                         ?>
                      
                     </tbody>

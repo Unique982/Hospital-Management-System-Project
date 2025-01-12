@@ -8,7 +8,7 @@ INNER JOIN patient p on i.patient_id = p.patient_id
 ORDER BY i.invoice_id DESC ";
 $result = mysqli_query($conn, $select_query);
 $count = mysqli_num_rows($result);
-if($count){
+
 ?>
 <div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 <div class="modal-dialog">
@@ -64,6 +64,7 @@ if($count){
                         <tr>
                             <?php 
                             $sn = +1;
+                            if($count >0 ){
                             while($row = mysqli_fetch_assoc($result)){
 
                            
@@ -107,6 +108,11 @@ if($count){
                         $sn++;
                             }
                         }
+                        
+                        else{
+                            echo "<tr><td colspan='8'class='text-center'>Not Data Found</td></tr>";
+                        }
+                    
                         ?>
                      
                     </tbody>
