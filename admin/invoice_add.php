@@ -2,15 +2,58 @@
 include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
+ $errors = [
+    'patient' => '',
+    'title' => '',
+    'amount' =>'',
+    'payment_status' => '',
+    'payment_method' => '',
+
+ ];
+
+
 if(isset($_POST['save'])){
     
     $patient = mysqli_real_escape_string($conn,$_POST['patient']);
     $title = mysqli_real_escape_string($conn,$_POST['title']);
     $amount = mysqli_real_escape_string($conn,$_POST['amount']);
-    $payment_method = mysqli_real_escape_string($conn,$_POST['payment_method']);
-    $payment_status = mysqli_real_escape_string($conn,$_POST['payment_status']); 
+    $payment_method = isset($_POST['payment_method']) ? mysqli_real_escape_string($conn,trim($_POST['payment_method'])):'';
+    $payment_status = isset($_POST['payment_status']) ? mysqli_real_escape_string($conn,trim($_POST['payment_status'])):''; 
     $invoice_number = rand(100000,999999);
-   
+ 
+    // validation Patient 
+    if(empty($patient)|| $patient==='Select Patient Name'){
+        $errors['patient'] = 'Patient filled is required';
+    }
+    // title validation 
+    if(empty($title)){
+        $errors['title'] = 'Title is required';
+    }
+    elseif(!preg_match('/^[a-zA-Z\s]+$/',$title)){
+        $errors['title'] = 'Title must contain only letter or space';
+    }
+    elseif(strlen($title)>50){
+        $errors['title'] = 'Title must be at least 50 characters';
+    }
+// amount validation 
+    if(empty($amount)){
+        $errors['amount'] = 'Amount is required';
+    }
+    elseif(!is_numeric($amount)){
+        $errors['amount'] = 'Amount must be a valid number';
+    }
+    elseif($amount <= 0 || $amount > 10000000){
+        $errors['amount'] = 'Amount must be greater than 0 and amount cannot exceed 1,000,0000';
+    }
+    // payment status validation
+     if(empty($payment_status) || $payment_status==='Select Payment Status'){
+        $errors['payment_status'] = 'Payment status must be required';
+     }
+     if(empty($payment_method) || $payment_method==='Select Payment Method'){
+        $errors['payment_method'] = 'Payment method must be required';
+     }
+
+     if (empty(array_filter($errors))) {
             $insert_query = "INSERT INTO `invoice`(`invoice_num`, `patient_id`, `title`,`payment_method`,`amount`,`payment_status`, `invoice_date`) 
              VALUES ('$invoice_number','$patient','$title','$payment_method','$amount','$payment_status',Now())";
    if(mysqli_query($conn,$insert_query)){
@@ -22,7 +65,7 @@ if(isset($_POST['save'])){
    $_SESSION['alert_code'] ="warning";
 }
         }
-
+    }
 ?>
 <div class="container-fluid">
 
@@ -38,7 +81,7 @@ if(isset($_POST['save'])){
                         <div class="form-group">
                             <label for=""> Patient</label>
                             <select name="patient" id="patient" class="form-control">
-                                <option selected> Select Patient Name</option>
+                                <option selected>Select Patient Name</option>
                                 <?php 
                     $select_query_patient_table = "SELECT * FROM patient";
                     $result = mysqli_query($conn,$select_query_patient_table);
@@ -49,34 +92,37 @@ if(isset($_POST['save'])){
             }
                   ?>
                 </select>
+                <span style='color:red' ;><?php echo $errors['patient'] ?></span>
                         </div>
                         <div class="form-group">
                         <label for="">Title</label>
                        <input type="text" name="title" class="form-control">
+                       <span style='color:red' ;><?php echo $errors['title'] ?></span>
                         </div>
                         <div class="form-group">
                             <label for="">Amount</label>
                        <input type="number" name="amount" class="form-control">
+                       <span style='color:red' ;><?php echo $errors['amount'] ?></span>
                         </div>
                         <div class="form-group">
                             <label for="">Payment Method</label>
                             <select name="payment_method" id="" class="form-control">
-                            <option selected disabled>Select Payment Method</option>
+                            <option selected >Select Payment Method</option>
                             <option value="cash">Cash</option>
                             <option value="card">Card</option>
                             <option value="online">Online</option>
                             <option value="insurance">Insurance</option>
                             </select>
+                            <span style='color:red' ;><?php echo $errors['payment_method'] ?></span>
                         </div>
                         <div class="form-group">
                             <label for="">Payment Status</label>
                             <select name="payment_status" id="" class="form-control">
-                            <option selected disabled>Select Payment Status</option>
+                            <option selected>Select Payment Status</option>
                             <option value="paid">Paid</option>
-                            <option value="unpaid">Unpaid</option>
-                            
-                            
+                            <option value="unpaid">Unpaid</option>    
                             </select>
+                            <span style='color:red' ;><?php echo $errors['payment_status'] ?></span>
                         </div>
 
                         <div class="form-group">

@@ -6,7 +6,7 @@ $select_query = "SELECT * FROM payment
 ORDER BY payment_id DESC ";
 $result = mysqli_query($conn, $select_query);
 $count = mysqli_num_rows($result);
-if($count){
+
 ?>
 
 <div class="container-fluid">
@@ -46,6 +46,7 @@ if($count){
                         <tr>
                             <?php 
                             $sn = +1;
+                            if($count >0 ){
                             while($row = mysqli_fetch_assoc($result)){
                            ?>
                             <td><?php echo $sn; ?></td>
@@ -61,6 +62,9 @@ if($count){
                         <?php 
                         $sn++;
                             }
+                        }
+                        else{
+                            echo "<tr><td colspan='7' class='text-center'>No Date Found</td></tr>";
                         }
                         ?>
                      

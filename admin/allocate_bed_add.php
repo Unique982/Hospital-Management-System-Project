@@ -17,9 +17,6 @@ if(isset($_POST['save'])){
     $allocate_time = mysqli_real_escape_string($conn,$_POST['allocate_time']);
     $discharge_time = mysqli_real_escape_string($conn,$_POST['discharge_time']);
 
-
-
-
 // bed number validation 
 if(empty($bed_number) || $bed_number==='Select'){
     $errors['number'] = 'Bed number is required';

@@ -27,6 +27,15 @@ if(empty($patient) || $patient === 'Select One'){
 if(empty($date)){
     $errors['date'] = 'Appointment date is required';
 }
+elseif(!preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)){
+    $errors['date'] = "Invalid date Formate. Please use YYYY-MM-DD";
+ }
+ elseif($date < date('Y-m-d')){
+ $errors['date'] = "Please select today or a future date";
+    }
+
+ 
+
 
 
     if (empty(array_filter($errors))) {
@@ -44,6 +53,7 @@ if(empty($date)){
 
 }
 }
+
 ?>
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 <div class="modal-dialog">
