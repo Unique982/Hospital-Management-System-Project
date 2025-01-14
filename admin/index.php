@@ -2,6 +2,7 @@
 session_start();
 include('../database/config.php');
 
+
 $errors = [
     'user_name' => '',
     'user_type' => '',
@@ -29,7 +30,7 @@ if(isset($_POST['login'])){
         if ($user_type === 'admin' || $user_type === 'doctor' || $user_type === 'nurse' || $user_type === 'pharmacist' || $user_type === 'laboratorist' || $user_type === 'accountant') {
             $sql = "SELECT user_name, user_email, role, password FROM user_tbl 
                     WHERE (user_name = '$user_name_or_email' OR user_email = '$user_name_or_email') 
-                    AND role IN ('admin', 'doctor', 'nurse', 'pharmacist', 'laboratorist', 'accountant')";
+                    AND role ='$user_type'";
             $result = mysqli_query($conn, $sql); 
 
             if(mysqli_num_rows($result) > 0){
@@ -79,6 +80,7 @@ if(isset($_POST['login'])){
                 if(password_verify($password, $patient_data['password'])){
                     $_SESSION['patient_data'] = $patient_data;
                     $user_name = $patient_data['name'];
+                    $_SESSION['user_data'] = $patient_data;
                     $user_type = 'patient';// user Type 
                     $status = 'active';
                     $ip_address = $local_ip = getHostByName(getHostName());
@@ -86,7 +88,7 @@ if(isset($_POST['login'])){
                     $insert_query1 = "INSERT INTO activity_log(user_name, user_type, status, ip_address, time) 
                                       VALUES('$user_name', '$user_type', '$status', '$ip_address', '$time')";
                     if(mysqli_query($conn, $insert_query1)){
-                        header("Location: dashboard.php");
+                        header("location:../patient/dashboard.php");
                         exit();
                     } else {
                         $_SESSION['alert'] = "Activity Log insertion failed: " . mysqli_error($conn);

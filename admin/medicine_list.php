@@ -49,7 +49,7 @@ if($count){
                             <td><?php echo $sn; ?></td>
                             <td><?php echo $record['medicine_name'] ?></td>
                             <td><?php echo $record['category'] ?></td>
-                            <td><?php echo $record['description'] ?></td>
+                            <td><?php echo substr($record['description'],0,50,) .'...' ?></td>
                             <td><?php echo $record['price'] ?></td>
                            
                             

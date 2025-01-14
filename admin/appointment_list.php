@@ -12,6 +12,7 @@ if(isset($_POST['add'])){
     $doctor = isset($_POST['doctor']) ? mysqli_real_escape_string($conn,trim($_POST['doctor'])):'';
     $patient = isset($_POST['patient']) ? mysqli_real_escape_string($conn,$_POST['patient']):'';
     $date = mysqli_real_escape_string($conn,$_POST['date']);
+    $time = mysqli_real_escape_string($conn,$_POST['time']);
     
     // bed number validation 
 if(empty($doctor) || $doctor==='Select One'){
@@ -39,8 +40,8 @@ elseif(!preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)){
 
 
     if (empty(array_filter($errors))) {
-    $insert_query = "INSERT INTO `appointments`(`patient_id`, `doctor_id`, `appointment_date`, `created_at`)
-     VALUES('$patient','$doctor','$date',Now())";
+    $insert_query = "INSERT INTO `appointments`(`patient_id`, `doctor_id`,`status`, `appointment_date`,`appointment_time`)
+     VALUES('$patient','$doctor','confirmed','$date','$time')";
      if(mysqli_query($conn,$insert_query)){
         $_SESSION['alert'] = "Your Appointment successfully";
         $_SESSION['alert_code'] = "success";
@@ -104,6 +105,11 @@ elseif(!preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)){
                 <input type="date" name="date" class="form-control" required>
                 <span style='color:red' ;><?php echo $errors['date'] ?></span>
             </div>
+            <div class="form-group">
+                <label for="">Time</label>
+                <input type="time" name="time" class="form-control" required>
+                <span style='color:red' ;></span>
+            </div>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -125,7 +131,7 @@ elseif(!preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)){
         <!-- fetch Data  -->
          <?php 
          $appoinment_data = "SELECT appointments.id, patient.name AS patient_name,user_tbl.user_name AS
-          doctor_name, appointments.appointment_date, appointments.created_at
+          doctor_name, appointments.status,appointment_date, appointment_time
          FROM appointments
          INNER JOIN patient ON appointments.patient_id= patient.patient_id
          INNER JOIN user_tbl ON appointments.doctor_id = user_tbl.id
@@ -143,8 +149,9 @@ elseif(!preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)){
                         <th>ID</th>
                         <th>Patient Name</th>
                         <th>Doctor</th>
+                        <th>Status</th>
                         <th>Appointment Date</th>
-                        <th>Created_at</th>
+                        <th>Appointment Time</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -159,10 +166,15 @@ elseif(!preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)){
                         <td><?php echo $sn ?></td>
                         <td><?php echo $app['patient_name'] ?></td>
                         <td><?php echo $app['doctor_name'] ?></td>
+                        <td><?php echo $app['status'] ?></td>
                         <td><?php echo date("Y M d ", strtotime( $app['appointment_date'] )) ?></td>
-                        <td><?php echo date("Y M d ", strtotime( $app['created_at'] ))?></td>
+                        <td><?php echo date("Y M d ", strtotime( $app['appointment_time'] ))?></td>
                         <td>
-                            <a href=""><button type="button" class="btn btn-outline-warning btn-sm">View</button></a>
+                        <form action="appointment_status.php" method="GET" style="display:inline-block; margin:2px;">
+                                <input type="hidden" name="id" value="<?php echo $app['id'] ?>">
+                                <button type="submit" name="checkin" class="btn btn-outline-danger btn-sm ">Check In</button>
+                            </form> 
+                            <!-- <a href=""><button type="button" class="btn btn-outline-warning btn-sm">Checkin</button></a> -->
                             <a href="appointment_edit.php?id=<?php echo $app['id'];?>" class="btn btn-outline-success btn-sm">Edit</a>
                             
                             <form action="appointment_delete.php" method="POST" id="deleteForm" style="display:inline-block; margin:2px;">

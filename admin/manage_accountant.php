@@ -104,10 +104,7 @@ if(isset($_POST['add'])){
         </div>
     </div>
 </div>
-<div class="container-fluid">
-    <!-- DataTales Example -->
-  
-                                 
+<div class="container-fluid">                            
     <div class="card  mb-4">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">Employee List
@@ -120,11 +117,7 @@ if(isset($_POST['add'])){
             <?php 
              $data_display = "SELECT * FROM user_tbl WHERE role='accountant' ORDER BY `id` DESC";
              $result1 = mysqli_query($conn,$data_display) or die("Query failed");
-             $count_row = mysqli_num_rows($result1);
-        if($count_row > 0){
-
-             
-            
+             $count_row = mysqli_num_rows($result1); 
             ?>
             <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -144,6 +137,7 @@ if(isset($_POST['add'])){
                         <tr>
                             <?php 
                             $sn = +1;
+                            if($count_row > 0){
                             while($row = mysqli_fetch_assoc($result1)){ ?>
                             <td><?php echo $sn; ?></td>
                             <td><?php echo $row['user_name'] ;?></td>
@@ -163,10 +157,15 @@ if(isset($_POST['add'])){
                         </tr>
                         <?php
                      $sn++;
+                            }
+                            }
+                        else{
+                            echo "<tr><td colspan='7' class='text-center'>Not Found</td></tr>";
+                        }
                     
-                    }?>
+                ?>
                     </tbody>
-                    <?php } ?>
+                  
                 </table>
             </div>
         </div>

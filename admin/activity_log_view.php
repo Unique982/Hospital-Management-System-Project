@@ -3,8 +3,6 @@ include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
 
-// Check if user is logged in
-
 ?>
 
 <div class="container-fluid">
@@ -29,15 +27,16 @@ include('../database/config.php');
                     </thead>
                     <tbody>
                         <?php
-                       $select_query = "SELECT * FROM activity_log";
+                       $select_query = "SELECT * FROM activity_log Order by id DESC";
                        $result = mysqli_query($conn,$select_query);
+                       if($count > 0){
                        $sn = 1;
                        while ($row = mysqli_fetch_array($result)){
                         
                        
                         ?>
                         <tr>
-                            <td><?php echo $sn++ ?></td>
+                            <td><?php echo $sn; ?></td>
                             <td><?php echo $row['user_name'] ?></td>
                             <td><?php echo $row['user_type'] ?></td>
                             <td><?php  if ($row['status']=='active'){ ?>
@@ -55,7 +54,7 @@ include('../database/config.php');
                         <?php
                     $sn ++;    
                     }
-                        
+                }
                         
                         ?>
                     </tbody>

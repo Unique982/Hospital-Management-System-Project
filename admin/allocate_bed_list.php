@@ -10,7 +10,7 @@ INNER JOIN patient p on ba.pateint_id = p.patient_id
 ORDER BY ba.bed_allocate_id DESC ";
 $result = mysqli_query($conn, $select_query);
 $count = mysqli_num_rows($result);
-if($count){
+
 ?>
 <div class="container-fluid">
     <!-- DataTales Example -->             
@@ -42,6 +42,7 @@ if($count){
                         <tr>
                             <?php 
                             $sn = +1;
+                        if($count >0){
                             while($row = mysqli_fetch_assoc($result)){
 
                            
@@ -64,6 +65,12 @@ if($count){
                         $sn++;
                             }
                         }
+                        else{
+                            echo "<tr><td colspan='6' class='text-center'>Not Found</td></tr>";
+
+
+                        }
+                    
                         ?>
                      
                     </tbody>

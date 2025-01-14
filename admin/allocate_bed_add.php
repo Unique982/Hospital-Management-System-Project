@@ -68,7 +68,7 @@ if(empty($discharge_time)){
         <div class="col-12">
             <div class="card mb-4">
                 <div class="card-header">
-                    Add Patient
+                    Add Allocate Bed
                 </div>
                 <div class="card-body">
                     <form action="" method="POST" enctype="multipart/form-data">
