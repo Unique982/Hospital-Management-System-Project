@@ -1,4 +1,5 @@
 <?php
+ob_start();// output buffering
 include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
@@ -46,6 +47,7 @@ if(empty($description)){
   if(mysqli_num_rows($result)>0){
     $_SESSION['alert'] ="Already exists";
     $_SESSION['alert_code'] ="info";
+   
     
  }
 
@@ -53,8 +55,11 @@ if(empty($description)){
     $insert_query = "INSERT INTO `bed`(`bed_num`, `bed_type`, `description`, `created_at`) VALUES
     ('$bed_number', '$bed_type', '$description', Now())";
  if(mysqli_query($conn, $insert_query)){
-    $_SESSION['alert'] ="Added Successfully appointment";
+    $_SESSION['alert'] ="Added Successfully";
         $_SESSION['alert_code'] ="success";
+        header('location:bed_list.php');
+        exit();
+
  }
  else{
     $_SESSION['alert'] ="Failed";
@@ -65,7 +70,7 @@ if(empty($description)){
   }
 
 }
-
+ob_end_flush();// output buffering data after header() redirection
 ?>
 <div class="container-fluid">
 
@@ -79,17 +84,17 @@ if(empty($description)){
                     <form action="" method="POST" enctype="multipart/form-data">
                         <div class="form-group">
                             <label for="">Bed Number</label>
-                            <input type="text" name="bed_number" class="form-control">
+                            <input type="text" name="bed_number" class="form-control" value="<?php echo isset($bed_number) ? $bed_number:'';?>">
                             <span style='color:red' ;><?php echo $errors['bedNumber'] ?></span>
                         </div>
                         <div class="form-group">
                             <label for=""> Bed Type</label>
-                           <input type="text" name="bed_type" class="form-control">
-                           <span style='color:red' ;><?php echo $errors['bed_type'] ?></span>
+                           <input type="text" name="bed_type" class="form-control" value="<?php echo isset($bed_type) ? $bed_type:'';?>">
+                           <span style='color:red';><?php echo $errors['bed_type'] ?></span>
                         </div>
                         <div class="form-group">
                             <label for="">Description</label>
-                            <textarea name="description" class="form-control" id=""></textarea>
+                            <textarea name="description" class="form-control" id=""><?php echo isset($description) ? $description:'';?></textarea>
                             <span style='color:red' ;><?php echo $errors['description'] ?></span>
                         </div>
                         <div class="form-group">

@@ -1,5 +1,5 @@
 <?php 
-
+ob_start();
 include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
@@ -113,6 +113,8 @@ if(isset($_POST['add_patient'])){
         
     $_SESSION['alert'] ="Patient Add Successfully ";
     $_SESSION['alert_code'] ="success";
+    header('location:patient_list.php');
+    exit();
       }
       else{
     $_SESSION['alert'] ="Failed";
@@ -134,36 +136,36 @@ if(isset($_POST['add_patient'])){
                     <form action="" method="POST" enctype="multipart/form-data">
                         <div class="form-group">
                             <label>Patient Name:</label>
-                            <input type="text" name="pt_name" class="form-control" placeholder="Enter Patient Name">
+                            <input type="text" name="pt_name" class="form-control" placeholder="Enter Patient Name" value="<?php echo isset($pt_name)? $pt_name:''?>">
                             <span style='color:red' ;><?php echo $errors['name'] ?></span>
                           </div>
                         <div class="form-group">
                             <label>Patient Email:</label>
-                            <input type="email" name="pt_email" class="form-control" placeholder="Enter Patient Email">
+                            <input type="email" name="pt_email" class="form-control" placeholder="Enter Patient Email" value="<?php echo isset($pt_email) ? $pt_email:'' ?>">
                             <span style='color:red' ;><?php echo $errors['email'] ?></span>
                           </div>
                         <div class="form-group">
                             <label>Patient Phone No:</label>
-                            <input type="number" name="pt_phone" class="form-control" placeholder="Enter Patient Phone No">
+                            <input type="number" name="pt_phone" class="form-control" placeholder="Enter Patient Phone No" value="<?php echo isset($pt_phone) ? $pt_phone:'' ?>">
                             <span style='color:red' ;><?php echo $errors['phone'] ?></span>
                           </div>
                         <div class="form-group">
                             <label>Patient Address:</label>
-                            <input type="text" name="pt_address" class="form-control" placeholder="Enter Patient Address">
+                            <input type="text" name="pt_address" class="form-control" placeholder="Enter Patient Address" value="<?php echo isset($pt_address) ? $pt_address:'' ?>">
                             <span style='color:red' ;><?php echo $errors['address'] ?></span>
                           </div>
                         <div class="form-group">
                             <label>Patient Age:</label>
-                            <input type="number" name="pt_age" class="form-control" placeholder="Enter Patient Age">
+                            <input type="number" name="pt_age" class="form-control" placeholder="Enter Patient Age" value="<?php echo isset($pt_age) ? $pt_age:'' ?>">
                             <span style='color:red' ;><?php echo $errors['age'] ?></span>
                           </div>
                         <div class="form-group">
                             <label>Patient Sex:</label>
                           <select name="pt_sex" id="sex" class="form-control">
                             <option selected>Select Option</option>
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
-                            <option value="other">Other</option>
+                            <option value="male" <?php  echo isset($pt_sex) && $pt_sex=='male' ? 'selected' :'' ;?>>Male</option>
+                            <option value="female" <?php echo isset($pt_sex) && $pt_sex=='female' ? 'selected' :''; ?>>Female</option>
+                            <option value="other" <?php echo isset($pt_sex) && $pt_sex=='other' ? 'selected' :''; ?>>Other</option>
                           </select>
                           <span style='color:red' ;><?php echo $errors['gender'] ?></span>
                         </div>
@@ -172,19 +174,20 @@ if(isset($_POST['add_patient'])){
                             <label>Patient Blood:</label>
                           <select name="pt_blood" id="" class="form-control">
                             <option selected>Select Option</option>
-                            <option value="A+">A+</option>
-                            <option value="A-">A-</option>
-                            <option value="B+">B+</option>
-                            <option value="B-">B-</option>
-                            <option value="AB+">AB+</option>
-                            <option value="AB-">AB-</option>
-                            <option value="O+">O+</option>
-                            <option value="O-">O-</option>
+                            <option value="A+" <?php echo isset($pt_blood) && $pt_blood=='A+' ? 'selected' :''; ?>>A+</option>
+                            <option value="A-" <?php echo isset($pt_bllod) && $pt_blood=='A-'? 'selected' :''; ?> >A-</option>
+                            <option value="B+" <?php echo isset($pt_blood) && $pt_blood=='B+' ? 'selected' :''; ?>>B+</option>
+                            <option value="B-"<?php echo isset($pt_blood) && $pt_blood=='B-' ? 'selected' :''; ?>>B-</option>
+                            <option value="AB+" <?php echo isset($pt_blood) && $pt_blood=='AB+' ? 'selected' :''; ?>>AB+</option>
+                            <option value="AB-" <?php echo isset($pt_blood) && $pt_blood=='AB-' ? 'selected' :''; ?>>AB-</option>
+                            <option value="O+" <?php echo isset($pt_blood) && $pt_blood=='O+' ? 'selected' :''; ?>>O+</option>
+                            <option value="O-" <?php echo isset($pt_blood) && $pt_blood=='O-' ? 'selected' :''; ?>>O-</option>
                           </select>
                           <span style='color:red' ;><?php echo $errors['blood'] ?></span>
                         </div>
                         <div class="form-group">
                             <label>Patient Password:</label>
+                            
                             <input type="password" name="pt_password" class="form-control" placeholder="Enter Patient Password">
                             <span style='color:red' ;><?php echo $errors['password'] ?></span>
                           </div>
