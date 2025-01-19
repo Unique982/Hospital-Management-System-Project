@@ -1,28 +1,71 @@
 <?php
+ob_start();
 include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
-if(isset($_POST['update'])){
-    $invoice_id = mysqli_real_escape_string($conn,$_POST['invoice_id']);
-    $patient = mysqli_real_escape_string($conn,$_POST['patient']);
-    $title = mysqli_real_escape_string($conn,$_POST['title']);
-    $amount = mysqli_real_escape_string($conn,$_POST['amount']);
-    $payment_method = mysqli_real_escape_string($conn,$_POST['payment_method']);
-    $payment_status = mysqli_real_escape_string($conn,$_POST['payment_status']); 
+$errors = [
+    'patient' => '',
+    'title' => '',
+    'amount' =>'',
+    'payment_status' => '',
+    'payment_method' => '',
+
+ ];
+
+if (isset($_POST['update'])) {
+    $invoice_id = mysqli_real_escape_string($conn, $_POST['invoice_id']);
+    $patient = mysqli_real_escape_string($conn, $_POST['patient']);
+    $in_title = mysqli_real_escape_string($conn, $_POST['in_title']);
+    $amount = mysqli_real_escape_string($conn, $_POST['amount']);
+    $payment_method = mysqli_real_escape_string($conn, $_POST['payment_method']);
+    $payment_status = mysqli_real_escape_string($conn, $_POST['payment_status']);
     // $invoice_number = rand(100000,999999);
-   
-            $update_query = "UPDATE `invoice` SET `patient_id`='$patient',`title`='$title',
+
+
+    // validation Patient 
+    if (empty($patient) || $patient === 'Select Patient Name') {
+        $errors['patient'] = 'Patient filled is required';
+    }
+    // title validation 
+    if (empty($in_title)) {
+        $errors['title'] = 'Title is required';
+    } elseif (!preg_match('/^[a-zA-Z\s]+$/', $in_title)) {
+        $errors['title'] = 'Title must contain only letter or space';
+    } elseif (strlen($in_title) > 50) {
+        $errors['title'] = 'Title must be at least 50 characters';
+    }
+    // amount validation 
+    if (empty($amount)) {
+        $errors['amount'] = 'Amount is required';
+    } elseif (!is_numeric($amount)) {
+        $errors['amount'] = 'Amount must be a valid number';
+    } elseif ($amount <= 0 || $amount > 10000000) {
+        $errors['amount'] = 'Amount must be greater than 0 and amount cannot exceed 1,000,0000';
+    }
+    // payment status validation
+    if (empty($payment_status) || $payment_status === 'Select Payment Status') {
+        $errors['payment_status'] = 'Payment status must be required';
+    }
+    if (empty($payment_method) || $payment_method === 'Select Payment Method') {
+        $errors['payment_method'] = 'Payment method must be required';
+    }
+
+    if (empty(array_filter($errors))) {
+
+        $update_query = "UPDATE `invoice` SET `patient_id`='$patient',`title`='$in_title',
             `payment_method`='$payment_method',`amount`='$amount',`payment_status`='$payment_status' WHERE invoice_id='$invoice_id'";
-   if(mysqli_query($conn,$update_query)){
-    $_SESSION['alert'] ="Update Successfully";
-    $_SESSION['alert_code'] ="info";
-   }
-   else{
-   $_SESSION['alert'] ="Update Failed";
-   $_SESSION['alert_code'] ="warning";
-}
+        if (mysqli_query($conn, $update_query)) {
+            $_SESSION['alert'] = "Update Successfully";
+            $_SESSION['alert_code'] = "info";
+            header('location:invoice_list.php');
+            exit();
+        } else {
+            $_SESSION['alert'] = "Update Failed";
+            $_SESSION['alert_code'] = "warning";
         }
-    
+    }
+}
+ob_end_flush();
 
 ?>
 <div class="container-fluid">
@@ -37,66 +80,71 @@ if(isset($_POST['update'])){
                 $invoice_id = $_GET['invoice_id'];
                 $select_query = "SELECT * FROM invoice WHERE invoice_id = $invoice_id";
                 $result = mysqli_query($conn, $select_query) or die("Query Failed");
-                if(mysqli_num_rows($result)>0){
+                if (mysqli_num_rows($result) > 0) {
                     $row = mysqli_fetch_array($result);
                 ?>
-                <div class="card-body">
-                    <form action="" method="POST" enctype="multipart/form-data">
-                  <input type="hidden" name="invoice_id" value="<?php echo $row['invoice_id'] ?>">
-                        <div class="form-group">
-                            <label for=""> Patient</label>
-                            <select name="patient" id="patient" class="form-control">
-                            <?php 
-                    $select_query = "SELECT * FROM patient";
-                    $result2 = mysqli_query($conn,$select_query);
-                    while($record = mysqli_fetch_assoc($result2)){
-                     $selected = ($record['patient_id']== $row['patient_id'])? 'selected' : '';
-                        echo "<option value='".$record['patient_id']."'$selected>".$record['name']."</option>";
-            }
-        
-              ?>
-                </select>
-                        </div>
-                        <div class="form-group">
-                        <label for="">Title</label>
-                       <input type="text" name="title" class="form-control" value="<?php echo $row['title'] ?>">
-                        </div>
-                        <div class="form-group">
-                            <label for="">Amount</label>
-                       <input type="number" name="amount" class="form-control" value="<?php echo $row['amount'] ?>">
-                        </div>
-                        <div class="form-group">
-                            <label for="">Payment Method</label>
-                            <select name="payment_method" id="" class="form-control">
-                            <option value="cash"<?php echo ($row['payment_method'] =='cash') ?'selected' :''; ?>>Cash</option>
-                            <option value="card"<?php echo ($row['payment_method'] =='card') ?'selected' :''; ?>>Card</option>
-                            <option value="online"<?php echo ($row['payment_method'] =='online') ?'selected' :''; ?>>Online</option>
-                            <option value="insurance" <?php echo ($row['payment_method'] =='insurance') ?'selected' :''; ?>>Insurance</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="">Payment Status</label>
-                            <select name="payment_status" id="" class="form-control">
-                            <option value="paid" <?php echo ($row['payment_status'] == 'paid') ? 'selected' : ''; ?>>Paid</option>
-                                <option value="unpaid" <?php echo ($row['payment_status'] == 'unpaid') ? 'selected' : ''; ?>>Unpaid</option>
-                                
-                            </select>
-                        </div>
+                    <div class="card-body">
+                        <form action="" method="POST" enctype="multipart/form-data">
+                            <input type="hidden" name="invoice_id" value="<?php echo $row['invoice_id'] ?>">
+                            <div class="form-group">
+                                <label for=""> Patient</label>
+                                <select name="patient" id="patient" class="form-control">
+                                    <?php
+                                    $select_query = "SELECT * FROM patient";
+                                    $result2 = mysqli_query($conn, $select_query);
+                                    while ($record = mysqli_fetch_assoc($result2)) {
+                                        $selected = ($record['patient_id'] == $row['patient_id']) ? 'selected' : '';
+                                        echo "<option value='" . $record['patient_id'] . "'$selected>" . $record['name'] . "</option>";
+                                    }
 
-                        <div class="form-group">
-                        <a href="invoice_list.php" class="btn btn-danger">Cancel</a>
-                            <button type="submit" name="update" class="btn btn-primary btn-md">Update</button>
-                        </div>
-                      
-                    </form>
-                    
-                </div>
+                                    ?>
+                                </select>
+                                <span style='color:red' ;><?php echo $errors['patient'] ?></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Title</label>
+                                <input type="text" name="in_title" class="form-control" value="<?php echo $row['title'] ?>">
+                                <span style='color:red' ;><?php echo $errors['title'] ?></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Amount</label>
+                                <input type="number" name="amount" class="form-control" value="<?php echo $row['amount'] ?>">
+                                <span style='color:red' ;><?php echo $errors['amount'] ?></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Payment Method</label>
+                                <select name="payment_method" id="" class="form-control">
+                                    <option value="cash" <?php echo ($row['payment_method'] == 'cash') ? 'selected' : ''; ?>>Cash</option>
+                                    <option value="card" <?php echo ($row['payment_method'] == 'card') ? 'selected' : ''; ?>>Card</option>
+                                    <option value="online" <?php echo ($row['payment_method'] == 'online') ? 'selected' : ''; ?>>Online</option>
+                                    <option value="insurance" <?php echo ($row['payment_method'] == 'insurance') ? 'selected' : ''; ?>>Insurance</option>
+                                </select>
+                                <span style='color:red' ;><?php echo $errors['payment_method'] ?></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Payment Status</label>
+                                <select name="payment_status" id="" class="form-control">
+                                    <option value="paid" <?php echo ($row['payment_status'] == 'paid') ? 'selected' : ''; ?>>Paid</option>
+                                    <option value="unpaid" <?php echo ($row['payment_status'] == 'unpaid') ? 'selected' : ''; ?>>Unpaid</option>
+
+                                </select>
+                                <span style='color:red' ;><?php echo $errors['payment_status'] ?></span>
+                            </div>
+
+                            <div class="form-group">
+                                <a href="invoice_list.php" class="btn btn-danger">Cancel</a>
+                                <button type="submit" name="update" class="btn btn-primary btn-md">Update</button>
+                            </div>
+
+                        </form>
+
+                    </div>
             </div>
         </div>
     </div>
-    <?php }  ?>
+<?php }  ?>
 
-    <?php
-    include('includes/scripts.php');
-    include('includes/footer.php');
-    ?>
+<?php
+include('includes/scripts.php');
+include('includes/footer.php');
+?>

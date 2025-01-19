@@ -1,4 +1,5 @@
 <?php
+ob_start();
 include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
@@ -15,7 +16,7 @@ include('../database/config.php');
 if(isset($_POST['save'])){
     
     $patient = mysqli_real_escape_string($conn,$_POST['patient']);
-    $title = mysqli_real_escape_string($conn,$_POST['title']);
+    $in_title = mysqli_real_escape_string($conn,$_POST['in_title']);
     $amount = mysqli_real_escape_string($conn,$_POST['amount']);
     $payment_method = isset($_POST['payment_method']) ? mysqli_real_escape_string($conn,trim($_POST['payment_method'])):'';
     $payment_status = isset($_POST['payment_status']) ? mysqli_real_escape_string($conn,trim($_POST['payment_status'])):''; 
@@ -26,13 +27,13 @@ if(isset($_POST['save'])){
         $errors['patient'] = 'Patient filled is required';
     }
     // title validation 
-    if(empty($title)){
+    if(empty($in_title)){
         $errors['title'] = 'Title is required';
     }
-    elseif(!preg_match('/^[a-zA-Z\s]+$/',$title)){
+    elseif(!preg_match('/^[a-zA-Z\s]+$/',$in_title)){
         $errors['title'] = 'Title must contain only letter or space';
     }
-    elseif(strlen($title)>50){
+    elseif(strlen($in_title)>50){
         $errors['title'] = 'Title must be at least 50 characters';
     }
 // amount validation 
@@ -55,10 +56,12 @@ if(isset($_POST['save'])){
 
      if (empty(array_filter($errors))) {
             $insert_query = "INSERT INTO `invoice`(`invoice_num`, `patient_id`, `title`,`payment_method`,`amount`,`payment_status`, `invoice_date`) 
-             VALUES ('$invoice_number','$patient','$title','$payment_method','$amount','$payment_status',Now())";
+             VALUES ('$invoice_number','$patient','$in_title','$payment_method','$amount','$payment_status',Now())";
    if(mysqli_query($conn,$insert_query)){
     $_SESSION['alert'] ="Invoice Successfully";
     $_SESSION['alert_code'] ="info";
+    header('location:invoice_lis.php');
+    exit();
    }
    else{
    $_SESSION['alert'] ="invoice Failed";
@@ -66,6 +69,7 @@ if(isset($_POST['save'])){
 }
         }
     }
+    ob_end_flush();
 ?>
 <div class="container-fluid">
 
@@ -96,22 +100,22 @@ if(isset($_POST['save'])){
                         </div>
                         <div class="form-group">
                         <label for="">Title</label>
-                       <input type="text" name="title" class="form-control">
+                       <input type="text" name="in_title" class="form-control" value="<?php echo isset($in_title) ? $in_title:''; ?>">
                        <span style='color:red' ;><?php echo $errors['title'] ?></span>
                         </div>
                         <div class="form-group">
                             <label for="">Amount</label>
-                       <input type="number" name="amount" class="form-control">
+                       <input type="number" name="amount" class="form-control" value="<?php echo isset($amount) ? $amount:'' ?>">
                        <span style='color:red' ;><?php echo $errors['amount'] ?></span>
                         </div>
                         <div class="form-group">
                             <label for="">Payment Method</label>
                             <select name="payment_method" id="" class="form-control">
                             <option selected >Select Payment Method</option>
-                            <option value="cash">Cash</option>
-                            <option value="card">Card</option>
-                            <option value="online">Online</option>
-                            <option value="insurance">Insurance</option>
+                            <option value="cash" <?php echo isset($payment_method) && $payment_method =='cash' ? 'selected':'';  ?>>Cash</option>
+                            <option value="card" <?php echo isset($payment_method) && $payment_method=='card' ? 'selected':''; ?>>Card</option>
+                            <option value="online" <?php echo isset($payment_method) && $payment_method=='online' ? 'selected':'' ; ?>>Online</option>
+                            <option value="insurance" <?php echo isset($payment_method) && $payment_method=='insurance' ? 'selected':''; ?>>Insurance</option>
                             </select>
                             <span style='color:red' ;><?php echo $errors['payment_method'] ?></span>
                         </div>
@@ -119,8 +123,8 @@ if(isset($_POST['save'])){
                             <label for="">Payment Status</label>
                             <select name="payment_status" id="" class="form-control">
                             <option selected>Select Payment Status</option>
-                            <option value="paid">Paid</option>
-                            <option value="unpaid">Unpaid</option>    
+                            <option value="paid" <?php  echo isset($payment_status) && $payment_status =='paid' ? 'selected':'';?>>Paid</option>
+                            <option value="unpaid" <?php echo isset($payment_status) && $payment_status=='unpaid' ? 'selected':''; ?>>Unpaid</option>    
                             </select>
                             <span style='color:red' ;><?php echo $errors['payment_status'] ?></span>
                         </div>

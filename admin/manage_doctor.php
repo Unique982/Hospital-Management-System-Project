@@ -3,9 +3,9 @@ include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
 
-$data_display = "SELECT nurse.nurse_id,nurse.phone, nurse.address,nurse.gender,nurse.qualification, user_tbl.user_name as username, user_tbl.user_email,user_tbl.role, user_tbl.id   FROM `nurse` 
-INNER JOIN `user_tbl` ON nurse.user_id = user_tbl.id
-";
+$data_display = "SELECT doctors.id as doctors_id, doctors.first_name, doctors.last_name, doctors.specialization,
+doctors.phone,doctors.address, doctors.created_at, user_tbl.user_name as username, user_tbl.user_email,user_tbl.role, user_tbl.id   FROM `doctors` 
+INNER JOIN `user_tbl` ON doctors.user_id = user_tbl.id";
 $result1 = mysqli_query($conn, $data_display) or die("Query failed");
 $count_row = mysqli_num_rows($result1);
 
@@ -14,9 +14,9 @@ $count_row = mysqli_num_rows($result1);
         <!-- DataTales Example -->
         <div class="card  mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary"> Nurse List
-                    <a href="nurse_add.php"> <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#exampleModal">
-                            Add Nurse
+                <h6 class="m-0 font-weight-bold text-primary"> Doctor List
+                    <a href="doctors_add.php"> <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#exampleModal">
+                            Add Doctor
                         </button>
                     </a>
                 </h6>
@@ -31,9 +31,9 @@ $count_row = mysqli_num_rows($result1);
                                 <th>Name</th>
                                 <th>Email</th>
                                 <th>Phone</th>
-                                <th>Gender</th>
+                                <th>Address</th>
                                 <th>Position</th>
-                                <!-- <th>Start date</th> -->
+                                <th>Start date</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -47,13 +47,14 @@ $count_row = mysqli_num_rows($result1);
                                     <td><?php echo $row['username']; ?></td>
                                     <td><?php echo $row['user_email']; ?></td>
                                     <td><?php echo $row['phone']; ?></td>
-                                    <td><?php echo ucfirst($row['gender']); ?></td>
+                                    <td><?php echo $row['address']; ?></td>
                                     <td><?php echo ucfirst($row['role']); ?></td>
-                                    <td><a href="nurse_view.php?id=<?php echo $row['nurse_id']; ?>"><button type="button" class="btn btn-outline-warning btn-sm">View</button></a>
-                                        <a href="nurse_edit.php?id=<?php echo $row['nurse_id']; ?>" class="btn btn-outline-success btn-sm">Edit</a>
-                                        <form action="nurse_delete.php" method="POST" id="deleteForm" style="display:inline-block; margin:2px;">
-                                            <input type="hidden" name="id" value="<?php echo $row['nurse_id'] ?>" class="delete_id">
-                                            <button type="submit" name="delete" class="btn btn-outline-danger btn-sm deletebtn" data-delete-url="nurse_delete.php">Delete</button>
+                                    <td><?php echo date("Y M d ", strtotime($row['created_at'])) ?></td>
+                                    <td><a href="doctors_view.php?id=<?php echo $row['id']; ?>"><button type="button" class="btn btn-outline-warning btn-sm">View</button></a>
+                                        <a href="doctors_edit.php?id=<?php echo $row['id']; ?>" class="btn btn-outline-success btn-sm">Edit</a>
+                                        <form action="doctors_delete.php" method="POST" id="deleteForm" style="display:inline-block; margin:2px;">
+                                            <input type="hidden" name="id" value="<?php echo $row['id'] ?>" class="delete_id">
+                                            <button type="submit" name="delete" class="btn btn-outline-danger btn-sm deletebtn" data-delete-url="employee_delete.php">Delete</button>
                                         </form>
 
                                     </td>

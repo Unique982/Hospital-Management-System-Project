@@ -1,19 +1,49 @@
 <?php
-
+ob_start();
 include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
+$errors = [
+    'specialization' =>'',
+    'description' =>''
+];
+
 if(isset($_POST['update'])){
     $id =mysqli_real_escape_string($conn, $_POST['id']);
     $specialization = mysqli_real_escape_string($conn,$_POST['specialization']);
-    $update_query= "UPDATE specialization SET specialization = '$specialization' WHERE id = '$id'";
+    $description = mysqli_real_escape_string($conn,$_POST['description']);
+    $specializationPattern = "/^[a-zA-Z\s]+$/";
+  if(empty($specialization)){
+    $errors['specialization'] = "Please enter a specialization";
+  }
+  else if(!preg_match($specializationPattern,$specialization)){
+    $errors['specialization'] = "Invalid specialization. Only latter and spaces are allowed.";
+  }
+
+   // validation description
+   if(empty($description)){
+    $errors['description'] = 'Description is required';
+   }
+  
+  elseif(strlen($description) > 1000){
+    $errors['description'] = 'Description must be at least 1000 characters';
+  }
+  if(empty(array_filter($errors))){
+    $update_query= "UPDATE specialization SET specialization = '$specialization', description='$description' WHERE id = '$id'";
+   
     if(mysqli_query($conn,$update_query)){
-        echo "<div class='alert alert-primary' role='alert'>Update Successfully</div>";
+        $_SESSION['alert'] = "Update successfully";
+    $_SESSION['alert_code'] = "success";
+    header('location:manage_specialization.php');
+    exit();
     }
     else{
-        echo "<div class='alert alert-danger' role='alert'>Update failed</div>";
+        $_SESSION['alert'] = "Failed";
+        $_SESSION['alert_code'] = "error";
     }
 }
+}
+ob_end_flush();
 ?>
 <div class="container-fluid">
 
@@ -24,7 +54,6 @@ if(isset($_POST['update'])){
                 Edit Doctor Details
             </div>
             <?php 
-            
                        $id=$_GET['id'];
                 $select_query = "SELECT * FROM `specialization` WHERE id ='$id'";
                 $result = mysqli_query($conn, $select_query) or die("Query Failed");
@@ -39,10 +68,15 @@ if(isset($_POST['update'])){
                 <div class="form-group">
                     <label for="">Specialization</label>
                     <input type="text" name="specialization" value="<?php echo $row['specialization'] ?>" class="form-control" placeholder="Enter Specialization">
-                   
+                    <span style='color:red' ;><?php echo $errors['specialization'] ?></span>
                 </div>
                 <div class="form-group">
-                <a href="doctor_specialization.php" class="btn btn-danger">Cancel</a>
+                            <label>Description:</label>
+                           <textarea name="description" id="" class="form-control" placeholder="Enter Description"><?php echo  $row['description']?></textarea>
+                           <span style='color:red' ;><?php echo $errors['description'] ?></span>
+                          </div>
+                <div class="form-group">
+                <a href="manage_specialization.php" class="btn btn-danger">Cancel</a>
                     <button class="btn btn-primary" type="submit" name="update">Update</button>
                    
                     

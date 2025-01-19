@@ -6,6 +6,7 @@ if(!isset($_SESSION['user_data']) && !isset($_SESSION['patient_data'])){
 }
 include("includes/header.php");
 include("includes/navbar.php");
+
 ?>
 
 
