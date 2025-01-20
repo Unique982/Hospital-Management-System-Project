@@ -76,32 +76,32 @@ if(mysqli_num_rows($check_result) > 0){
     // check user_tbl data same xa ki nai 
         $_SESSION['alert'] ="User already exists";
         $_SESSION['alert_code'] ="info";
-        header('location:manage_doctor.php');
+        header('location:manage_pharmacist.php');
         exit();
     
 }else{
         $insert_usertbale = "insert into user_tbl(user_name,user_email,role,password) 
-        Values('$username','$email','nurse','$password')";
+        Values('$username','$email','pharmacist','$password')";
      }
     if(mysqli_query($conn,$insert_usertbale)){
         $user_id = mysqli_insert_id($conn);
        // check data same xa ki nai doctors tabls
-       $sql = "SELECT user_id,  phone FROM nurse WHERE user_id = '$user_id' OR phone= '$phone'";
+       $sql = "SELECT user_id,  phone FROM pharmacist WHERE user_id = '$user_id' OR phone= '$phone'";
        $result = mysqli_query($conn, $sql) or die("Query failed");
        if(mysqli_num_rows($result) <0){
-    $_SESSION['alert'] ="Nurse already exists";
+    $_SESSION['alert'] ="User already exists";
     $_SESSION['alert_code'] ="info";
-    header('location:manage_nurse.php');
+    header('location:manage_pharmacist.php');
         exit();
        }
        else{
-        $insert_query = "INSERT INTO `nurse`(`user_id`, `phone`, `address`, `gender`, `qualification`) 
+        $insert_query = "INSERT INTO `pharmacist` (`user_id`, `phone`, `address`, `gender`, `qualification`) 
 VALUES('$user_id','$phone','$address','$gender','$qualification')";
          if(mysqli_query($conn,$insert_query)){
             
-    $_SESSION['alert'] ="Add Nurse Successfully ";
+    $_SESSION['alert'] ="Add Pharmacist Successfully ";
     $_SESSION['alert_code'] ="success";
-    header('location:manage_nurse.php');
+    header('location:manage_pharmacist.php');
     exit();
   
          }
@@ -123,7 +123,7 @@ ob_end_flush();
         <div class="col-12">
             <div class="card mb-4">
                 <div class="card-header">
-                   Add New Doctor
+                   Add New Pharmacist
                 </div>
                 <div class="card-body">
                 <form action="" method="POST" class="needs-validation" novalidate>

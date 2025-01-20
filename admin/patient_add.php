@@ -4,6 +4,7 @@ include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
 $errors = [
+  'username' =>'',
     'name' => '',
     'email' => '',
     'phone' => '',
@@ -14,6 +15,7 @@ $errors = [
     'password' => '',
   ];
 if(isset($_POST['add_patient'])){
+  $username = mysqli_real_escape_string($conn,$_POST['username']);
     $pt_name = mysqli_real_escape_string($conn, $_POST['pt_name']);
     $pt_email = mysqli_real_escape_string($conn, $_POST['pt_email']);
     $pt_phone = mysqli_real_escape_string($conn, $_POST['pt_phone']);
@@ -21,6 +23,7 @@ if(isset($_POST['add_patient'])){
     $pt_age = mysqli_real_escape_string($conn,$_POST['pt_age']);
     $pt_sex = mysqli_real_escape_string($conn,$_POST['pt_sex']);
     $pt_blood = mysqli_real_escape_string($conn,$_POST['pt_blood']);
+   
     $pt_password = mysqli_real_escape_string($conn,password_hash($_POST['pt_password'],PASSWORD_BCRYPT));
     
     // validation 
@@ -30,6 +33,15 @@ if(isset($_POST['add_patient'])){
     $addressPattern= '/^[a-zA-Z]+$/';
     $passwordPattern = "/^[a-zA-Z0-9\s]*$/";
     $agePattern = '/^\d{2}$/';
+
+//user name 
+if (empty($username)) {
+  $errors['username'] = "Please enter name";
+} elseif (!preg_match($namePattern, $username)) {
+  $errors['username'] = "Invalid Name. Only letters and spaces are allowed";
+}
+
+
 
     // Name validation
     if (empty($pt_name)) {
@@ -96,33 +108,66 @@ if(isset($_POST['add_patient'])){
     
     // If no errors, proceed with database insertion
     if (empty(array_filter($errors))) {
+       // check user_tbal is record exists
+      $check = "SELECT user_email FROM user_tbl WHERE user_email ='$pt_email'";
+      $check_result = mysqli_query($conn,$check);
+      if(mysqli_num_rows($check_result)< 0){
+        $_SESSION['alert'] = 'User already exists';
+        $_SESSION ['alert_code'] = 'info';
+        header('location:patient_list.php');
+        exit();
 
-    // check user already exists or not
-    $select_query = "SELECT  email, phone FROM `patient` WHERE email = '$pt_email' OR phone='$pt_phone'";
-    $result = mysqli_query($conn, $select_query) or die("Query failed");
-    if(mysqli_num_rows($result) >0){
+      }else{
+        $insert_user_table = "INSERT INTO `user_tbl`(user_name,user_email,role,password)VALUES
+        ('$username','$pt_email','patient','$pt_password')";    
+      if(mysqli_query($conn,$insert_user_table)){
+        $user_id = mysqli_insert_id($conn);
+        // insert data table patient 
+        $insert_pateint = "INSERT INTO patient (`user_id`, `name`, `age`, `sex`, `blood_group`, `address`, `phone`)
+        VALUES('$user_id','$pt_name','$pt_age','$pt_sex','$pt_blood','$pt_address','$pt_phone')";
+        if(mysqli_query($conn,$insert_pateint)){
+          $_SESSION['alert'] = "Add Successfully";
+          $_SESSION['alert_code'] = "success";
+          header('location:patient_list.php');
+          exit();
+                }
+        else{
+          $_SESSION['alert'] = 'falied';
+          $_SESSION['alert_code'] = 'error';
+
+        }
+      }
+    }
+  }
+
+    // // check user already exists or not
+    // $select_query = "SELECT  email, phone FROM `patient` WHERE email = '$pt_email' OR phone='$pt_phone'";
+    // $result = mysqli_query($conn, $select_query) or die("Query failed");
+    // if(mysqli_num_rows($result) >0){
         
-    $_SESSION['alert'] =" Patient Already Add ";
-    $_SESSION['alert_code'] ="info";
+    // $_SESSION['alert'] =" Patient Already Add ";
+    // $_SESSION['alert_code'] ="info";
        
-    }
-    else{
-        $insert_query = "INSERT INTO `patient`( `name`, `age`, `sex`,  `blood_group`, `address`, `phone`, `password`, `email`) 
-        VALUES('$pt_name','$pt_age','$pt_sex','$pt_blood','$pt_address','$pt_phone','$pt_password','$pt_email')";
-      if(mysqli_query($conn, $insert_query)){
+    // }
+    // else{
+    //     $insert_query = "INSERT INTO `patient`( `name`, `age`, `sex`,  `blood_group`, `address`, `phone`, `password`, `email`) 
+    //     VALUES('$pt_name','$pt_age','$pt_sex','$pt_blood','$pt_address','$pt_phone','$pt_password','$pt_email')";
+    //   if(mysqli_query($conn, $insert_query)){
         
-    $_SESSION['alert'] ="Patient Add Successfully ";
-    $_SESSION['alert_code'] ="success";
-    header('location:patient_list.php');
-    exit();
-      }
-      else{
-    $_SESSION['alert'] ="Failed";
-    $_SESSION['alert_code'] ="error";
-      }
-    }
+    // $_SESSION['alert'] ="Patient Add Successfully ";
+    // $_SESSION['alert_code'] ="success";
+    // header('location:patient_list.php');
+    // exit();
+    //   }
+    //   else{
+    // $_SESSION['alert'] ="Failed";
+    // $_SESSION['alert_code'] ="error";
+    //   }
+    // }
 }  
-}
+
+
+ob_end_flush();
 ?>
 <div class="container-fluid">
 
@@ -134,7 +179,12 @@ if(isset($_POST['add_patient'])){
                 </div>
                 <div class="card-body">
                     <form action="" method="POST" enctype="multipart/form-data">
-                        <div class="form-group">
+                    <div class="form-group">
+                            <label>User Name:</label>
+                            <input type="text" name="username" class="form-control" placeholder="Enter User Name" value="<?php echo isset($username)? $username:''?>">
+                            <span style='color:red' ;><?php echo $errors['username'] ?></span>
+                          </div>    
+                    <div class="form-group">
                             <label>Patient Name:</label>
                             <input type="text" name="pt_name" class="form-control" placeholder="Enter Patient Name" value="<?php echo isset($pt_name)? $pt_name:''?>">
                             <span style='color:red' ;><?php echo $errors['name'] ?></span>

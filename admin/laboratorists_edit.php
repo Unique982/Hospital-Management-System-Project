@@ -62,11 +62,11 @@ if (isset($_POST['update'])) {
     if (empty(array_filter($errors))) {
         $user_tbl_update = "UPDATE user_tbl SET user_name='$username', user_email='$email' WHERE id=$id ";
         if (mysqli_query($conn, $user_tbl_update)) {
-            $nurse_table_update = "UPDATE nurse SET  phone='$phone',address='$address',gender='$gender',qualification='$qualification' WHERE user_id= $id";
-            if (mysqli_query($conn, $nurse_table_update)) {
+            $laboratorists_table_update = "UPDATE laboratorists SET  phone='$phone',address='$address',gender='$gender',qualification='$qualification' WHERE user_id= $id";
+            if (mysqli_query($conn, $laboratorists_table_update)) {
                 $_SESSION['alert'] = "update successfully";
                 $_SESSION['alert_code'] = "success";
-                header('location:manage_nurse.php');
+                header('location:manage_laboratorists.php');
                 exit();
             } else {
                 $_SESSION['alert'] = "Update failed";
@@ -83,14 +83,14 @@ ob_end_flush();
         <div class="col-12">
             <div class="card mb-4">
                 <div class="card-header">
-                    Edit Nurse Details
+                    Edit Pharmacist Details
                 </div>
                 <?php
                 $id = $_GET['id'];
-                $select_query = "SELECT n.nurse_id,
-                n.phone,n.address, n.gender,n.qualification,user_tbl.user_name as username, user_tbl.user_email,user_tbl.role, user_tbl.id 
-  FROM nurse as n
-INNER JOIN `user_tbl` ON n.user_id = user_tbl.id
+                $select_query = "SELECT l.id,
+                l.phone,l.address, l.gender,l.qualification,user_tbl.user_name as username, user_tbl.user_email,user_tbl.role, user_tbl.id 
+  FROM laboratorists as l
+INNER JOIN `user_tbl` ON l.user_id = user_tbl.id
  WHERE user_id = $id";
                 $result = mysqli_query($conn, $select_query) or die("Query failed");
                 if (mysqli_num_rows($result) > 0) {
@@ -99,7 +99,7 @@ INNER JOIN `user_tbl` ON n.user_id = user_tbl.id
 
                         <div class="card-body">
                             <form action="" method="POST" enctype="multipart/form-data">
-                                <input type="hidden" name="id" value="<?php echo $row['nurse_id'] ?>">
+                                <input type="hidden" name="id" value="<?php echo $row['id'] ?>">
                                 <div class="form-group">
                                     <label for="">User Name</label>
                                     <input type="text" name="username" class="form-control" placeholder="Enter username" value="<?php echo $row['username'] ?>">
@@ -141,7 +141,7 @@ INNER JOIN `user_tbl` ON n.user_id = user_tbl.id
 
                                 <div class="modal-footer">
 
-                                    <a href="manage_nurse.php" class="btn btn-danger">Cancel</a>
+                                    <a href="manage_pharmacist.php" class="btn btn-danger">Cancel</a>
                                     <button type="submit" name="update" class="btn btn-primary">Update</button>
                                 </div>
                             </form>

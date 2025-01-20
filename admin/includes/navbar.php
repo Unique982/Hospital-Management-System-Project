@@ -48,7 +48,7 @@ $user_name = $_SESSION['user_data']['user_name'] ?? '';
                     <a class="collapse-item" href="./manage_nurse.php">Manage Nurse</a>
                     <a class="collapse-item" href="./manage_pharmacist.php">Manage pharmacist</a>
                     <a class="collapse-item" href="./manage_accountant.php">Manage Accountant</a>
-                    <a class="collapse-item" href="./manage_laboratorist.php">Manage Laboratorist</a>
+                    <a class="collapse-item" href="./manage_laboratorists.php">Manage Laboratorist</a>
                 </div>
             </div>
         </li>
@@ -75,7 +75,7 @@ $user_name = $_SESSION['user_data']['user_name'] ?? '';
                     <a class="collapse-item" href="./manage_nurse.php">Manage Nurse</a>
                     <a class="collapse-item" href="./manage_pharmacist.php">Manage pharmacist</a>
                     <a class="collapse-item" href="./manage_accountant.php">Manage Accountant</a>
-                    <a class="collapse-item" href="./manage_laboratorist.php">Manage Laboratorist</a>
+                    <a class="collapse-item" href="./manage_laboratorists.php">Manage Laboratorist</a>
                 </div>
             </div>
         </li>

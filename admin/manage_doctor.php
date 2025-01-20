@@ -3,9 +3,10 @@ include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
 
-$data_display = "SELECT doctors.id as doctors_id, doctors.first_name, doctors.last_name, doctors.specialization,
+$data_display = "SELECT doctors.id as doctors_id, doctors.first_name, doctors.last_name, specialization.specialization,
 doctors.phone,doctors.address, doctors.created_at, user_tbl.user_name as username, user_tbl.user_email,user_tbl.role, user_tbl.id   FROM `doctors` 
-INNER JOIN `user_tbl` ON doctors.user_id = user_tbl.id";
+INNER JOIN `user_tbl` ON doctors.user_id = user_tbl.id
+INNER JOIN `specialization` ON doctors.specialization = specialization.id";
 $result1 = mysqli_query($conn, $data_display) or die("Query failed");
 $count_row = mysqli_num_rows($result1);
 
@@ -30,10 +31,8 @@ $count_row = mysqli_num_rows($result1);
                                 <th>ID</th>
                                 <th>Name</th>
                                 <th>Email</th>
-                                <th>Phone</th>
-                                <th>Address</th>
+                                <th>specialization</th>
                                 <th>Position</th>
-                                <th>Start date</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -46,10 +45,8 @@ $count_row = mysqli_num_rows($result1);
                                     <td><?php echo $sn; ?></td>
                                     <td><?php echo $row['username']; ?></td>
                                     <td><?php echo $row['user_email']; ?></td>
-                                    <td><?php echo $row['phone']; ?></td>
-                                    <td><?php echo $row['address']; ?></td>
+                                    <td><?php echo $row['specialization']; ?></td>
                                     <td><?php echo ucfirst($row['role']); ?></td>
-                                    <td><?php echo date("Y M d ", strtotime($row['created_at'])) ?></td>
                                     <td><a href="doctors_view.php?id=<?php echo $row['id']; ?>"><button type="button" class="btn btn-outline-warning btn-sm">View</button></a>
                                         <a href="doctors_edit.php?id=<?php echo $row['id']; ?>" class="btn btn-outline-success btn-sm">Edit</a>
                                         <form action="doctors_delete.php" method="POST" id="deleteForm" style="display:inline-block; margin:2px;">
