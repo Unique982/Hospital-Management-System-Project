@@ -5,8 +5,8 @@ if(isset($_POST['delete_btn_set'])){
     $delete_query = "DELETE FROM user_tbl WHERE id = $del_id";
     if(mysqli_query($conn,$delete_query)){
         // doctor table delete data 
-    $delete_doctor = "DELETE FROM pharmacist  WHERE user_id = $del_id";
-    $result = mysqli_query($conn, $delete_doctor);
+    $delete_pharmacist = "DELETE FROM pharmacist  WHERE user_id = $del_id";
+    $result = mysqli_query($conn, $delete_pharmacist);
     if($result){
         header('location:manage_pharmacist.php');
         exit();

@@ -2,6 +2,7 @@
 include('../database/config.php');
 session_start();
 $errors = [
+  'username' =>'',
   'name' => '',
   'email' => '',
   'phone' => '',
@@ -9,14 +10,16 @@ $errors = [
   'gender' => '',
   'blood' => '',
   'password' => '',
+  'age' =>'',
 ];
 
 if (isset($_POST['add_patient'])) {
+  $username = mysqli_real_escape_string($conn,trim($_POST['username']));
   $pt_name = mysqli_real_escape_string($conn, trim($_POST['pt_name']));
   $pt_email = mysqli_real_escape_string($conn, trim($_POST['pt_email']));
   $pt_phone = mysqli_real_escape_string($conn,  trim($_POST['pt_phone']));
   $pt_address = mysqli_real_escape_string($conn, trim($_POST['pt_address']));
-
+  $pt_age = mysqli_real_escape_string($conn,trim($_POST['pt_age']));
   $pt_sex =isset($_POST['pt_sex']) ? mysqli_real_escape_string($conn, trim($_POST['pt_sex'])):'';
   $pt_blood =isset($_POST['pt_blood']) ? mysqli_real_escape_string($conn, trim($_POST['pt_blood'])):'';
   $pt_password = mysqli_real_escape_string($conn, password_hash($_POST['pt_password'], PASSWORD_BCRYPT));
@@ -29,6 +32,13 @@ if (isset($_POST['add_patient'])) {
     $addressPattern = "/^[a-zA-Z0-9\s]*$/";
   // $dobPattern = "/^\d{2}-\d{2}-\d{4}$/";
   $passwordPattern = "/^[a-zA-Z0-9\s]*$/";
+
+  // username validation 
+  if (empty($username)) {
+    $errors['username'] = "username is requird";
+  } elseif (!preg_match($namePattern, $username)) {
+    $errors['username'] = "Invalid Name. Only letters and spaces are allowed";
+  }
 
   // Name validation
   if (empty($pt_name)) {
@@ -89,27 +99,37 @@ $errors['phone'] = "Please enter a valid phone number";
   
   // If no errors, proceed with database insertion
   if (empty(array_filter($errors))) {
-    $select_query = "SELECT email, phone FROM `patient` WHERE email = '$pt_email' OR phone = '$pt_phone'";
-    $result = mysqli_query($conn, $select_query) or die("Query failed");
-    if (mysqli_num_rows($result) > 0) {
-      $_SESSION['alert'] = "Patient already exists";
-      $_SESSION['alert_code'] = "info";
-      header("Location:index.php");
-    } else {
-      $insert_query = "INSERT INTO `patient` (`name`, `sex`, `blood_group`, `address`, `phone`, `password`, `email`)
-                       VALUES ('$pt_name', '$pt_sex', '$pt_blood', '$pt_address', '$pt_phone', '$pt_password', '$pt_email')";
-      if (mysqli_query($conn, $insert_query)) {
-        $_SESSION['alert'] = "Patient added successfully";
-        $_SESSION['alert_code'] = "success";
-        header("Location:index.php");
-        exit();
-      } else {
-        $_SESSION['alert'] = "Failed to add patient";
-        $_SESSION['alert_code'] = "error";
-      }
-    }
- 
-  }
+    // check user_tbal is record exists
+   $check = "SELECT user_email FROM user_tbl WHERE user_email ='$pt_email'";
+   $check_result = mysqli_query($conn,$check);
+   if(mysqli_num_rows($check_result)< 0){
+     $_SESSION['alert'] = 'User already exists';
+     $_SESSION ['alert_code'] = 'info';
+     header('location:index.php');
+     exit();
+
+   }else{
+     $insert_user_table = "INSERT INTO `user_tbl`(user_name,user_email,role,password)VALUES
+     ('$username','$pt_email','patient','$pt_password')";    
+   if(mysqli_query($conn,$insert_user_table)){
+     $user_id = mysqli_insert_id($conn);
+     // insert data table patient 
+     $insert_pateint = "INSERT INTO patient (`user_id`, `name`, `age`, `sex`, `blood_group`, `address`, `phone`)
+     VALUES('$user_id','$pt_name','$pt_age','$pt_sex','$pt_blood','$pt_address','$pt_phone')";
+     if(mysqli_query($conn,$insert_pateint)){
+       $_SESSION['alert'] = "Register Successfully";
+       $_SESSION['alert_code'] = "success";
+       header('location:index.php');
+       exit();
+             }
+     else{
+       $_SESSION['alert'] = 'falied';
+       $_SESSION['alert_code'] = 'error';
+
+     }
+   }
+ }
+}
 }
 ?>
 
@@ -147,6 +167,11 @@ $errors['phone'] = "Please enter a valid phone number";
           <div class="card-body">
             <form action="" method="POST" enctype="multipart/form-data" autocapitalize="off" >             <div class="row">
                 <div class="col-md-6">
+                <div class="form-group">
+                    <label>User Name:</label>
+                    <input type="text" name="username" class="form-control" placeholder="Enter username">
+                    <span style='color:red' ;><?php echo $errors['username'] ?></span>
+                  </div>
                   <div class="form-group">
                     <label>Patient Name:</label>
                     <input type="text" name="pt_name" class="form-control" placeholder="Enter Patient Name">
@@ -163,13 +188,17 @@ $errors['phone'] = "Please enter a valid phone number";
                     <span style='color:red' ;><?php echo $errors['phone'] ?></span>
                   </div>
                   <div class="form-group">
+                    <label>Patient Age:</label>
+                    <input type="number" name="pt_age" class="form-control" placeholder="Enter age">
+                    <span style='color:red' ;><?php echo $errors['age'] ?></span>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                <div class="form-group">
                     <label>Patient Address:</label>
                     <input type="text" name="pt_address" class="form-control" placeholder="Enter Patient Address">
                     <span style='color:red' ;><?php echo $errors['address'] ?></span>
                   </div>
-
-                </div>
-                <div class="col-md-6">
                   <div class="form-group">
                     <label>Patient Gender:</label>
                     <select name="pt_sex" id="sex" class="form-control">

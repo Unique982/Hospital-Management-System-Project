@@ -1,21 +1,21 @@
 <?php 
-if(!isset($_SESSION['user_name'])){
-    header("location:index.php");
-}
 include('../database/config.php');
 if(isset($_POST['delete_btn_set'])){
     $del_id = $_POST['delete_id'];
-    $delete_query = "DELETE FROM patient WHERE patient_id = $del_id";
-    $result = mysqli_query($conn, $delete_query) or die('Query failed');
+    $delete_query_user = "DELETE FROM user_tbl WHERE id = $del_id";
+    if(mysqli_query($conn,$delete_query_user )){
+        // pateint table delete data 
+    $delete_query ="DELETE FROM patient  WHERE user_id = $del_id";
+    $result = mysqli_query($conn, $delete_query);
     if($result){
-        echo "<script>alert('Patient Delete successfully')</script>";
-        header('location:patient_list.php');
+
+        header('location:pateint_list.php');
         exit();
     }
-else{
-    echo "<script>alert('Not Delete Data')</script>";
+    else{
+        echo "<script>alert('Not Delete Data')</script>";
+    }
 }
-
 }
 
 

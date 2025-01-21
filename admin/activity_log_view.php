@@ -3,6 +3,11 @@ include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
 
+$select_query = "SELECT a.user_id,a.user_type,a.status,a.ip_address,a.time, user_tbl.id,user_tbl.user_name  FROM activity_log as a
+INNER JOIN user_tbl ON a.user_id = user_tbl.id
+ WHERE user_id='".$_SESSION['id']."'";
+$result = mysqli_query($conn,$select_query);
+
 ?>
 
 <div class="container-fluid">
@@ -26,14 +31,9 @@ include('../database/config.php');
                         </tr>
                     </thead>
                     <tbody>
-                        <?php
-                       $select_query = "SELECT * FROM activity_log Order by id DESC";
-                       $result = mysqli_query($conn,$select_query);
-                       if($count > 0){
+                       <?php 
                        $sn = 1;
                        while ($row = mysqli_fetch_array($result)){
-                        
-                       
                         ?>
                         <tr>
                             <td><?php echo $sn; ?></td>
@@ -53,9 +53,7 @@ include('../database/config.php');
                         </tr>
                         <?php
                     $sn ++;    
-                    }
-                }
-                        
+                    }                        
                         ?>
                     </tbody>
                 </table>

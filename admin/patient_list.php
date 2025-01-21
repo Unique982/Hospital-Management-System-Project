@@ -2,10 +2,12 @@
 include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
-$select_query = "SELECT * FROM patient ORDER BY  patient_id DESC";
+
+$select_query = "SELECT p.patient_id, p.name,p.age,p.sex,p.blood_group,p.address,p.phone, user_tbl.user_name,user_tbl.user_email, user_tbl.id FROM patient as p
+INNER JOIN user_tbl ON p.user_id = user_tbl.id
+ ORDER BY  patient_id DESC";
 $result = mysqli_query($conn,$select_query);
 $count = mysqli_num_rows($result);
-
 
 ?>
 <div class="container-fluid">
@@ -31,6 +33,7 @@ $count = mysqli_num_rows($result);
                         <tr>
                             <th>ID</th>
                             <th>Name</th>
+                            <th>Email</th>
                             <th>Age</th>
                             <th>Phone</th>
                             <th>Sex</th>
@@ -48,13 +51,14 @@ $count = mysqli_num_rows($result);
                            
                            ?>
                             <td><?php echo $sn; ?></td>
-                            <td><?php echo $row['name'] ?></td>
+                            <td><?php echo $row['user_name'] ?></td>
+                            <td><?php echo $row['user_email']?></td>
                             <td><?php echo $row['age'] ?></td>
                             <td><?php echo $row['phone'] ?></td>
                             <td><?php echo $row['sex'] ?></td>
                             <td><?php echo $row['blood_group'] ?></td>
-                            <td><a href="patient_view.php?patient_id=<?php echo $row['patient_id'] ?>"><button type="button" class="btn btn-outline-warning btn-sm">View</button></a>
-                          <a href="patient_edit.php?patient_id=<?php echo $row['patient_id']  ?>" class="btn btn-outline-success btn-sm">Edit</a>     
+                            <td><a href="patient_view.php?id=<?php echo $row['patient_id'] ?>"><button type="button" class="btn btn-outline-warning btn-sm">View</button></a>
+                          <a href="patient_edit.php?id=<?php echo $row['patient_id']  ?>" class="btn btn-outline-success btn-sm">Edit</a>     
                           <form action="patient_delete.php" method="POST" id="deleteForm" style="display:inline-block; margin:2px;">
                               <input type="hidden" name="patient_id" value="<?php echo $row['patient_id'] ?>" class="delete_id">
                               <button type="submit" name="delete" class="btn btn-outline-danger btn-sm deletebtn" data-delete-url="patient_delete.php">Delete</button>

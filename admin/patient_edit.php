@@ -5,6 +5,7 @@ include("includes/navbar.php");
 include('../database/config.php');
 
 $errors = [
+    'username' =>'',
     'name' => '',
     'email' => '',
     'phone' => '',
@@ -16,7 +17,8 @@ $errors = [
 ];
 
 if (isset($_POST['update'])) {
-    $patient_id = mysqli_real_escape_string($conn, $_POST['patient_id']);
+    $id = mysqli_real_escape_string($conn, $_POST['id']);
+    $username = mysqli_real_escape_string($conn,$_POST['username']);
     $pt_name = mysqli_real_escape_string($conn, $_POST['pt_name']);
     $pt_email = mysqli_real_escape_string($conn, $_POST['pt_email']);
     $pt_phone = mysqli_real_escape_string($conn, $_POST['pt_phone']);
@@ -31,6 +33,14 @@ if (isset($_POST['update'])) {
     $addressPattern = '/^[a-zA-Z]+$/';
     $passwordPattern = "/^[a-zA-Z0-9\s]*$/";
     $agePattern = '/^\d{2}$/';
+
+// username 
+if (empty($username)) {
+    $errors['username'] = "User is required";
+} elseif (!preg_match($namePattern, $username)) {
+    $errors['username'] = "Invalid Name. Only letters and spaces are allowed";
+}
+
 
     // Name validation
     if (empty($pt_name)) {
@@ -81,18 +91,19 @@ if (isset($_POST['update'])) {
     } elseif (!in_array($pt_blood, $bloodValid)) {
         $errors['blood'] = "Invalid blood group selected";
     }
-    if (empty(array_filter($errors))) {
-
-        $update_query = "UPDATE `patient` SET `name`='$pt_name',`age`='$pt_age',`sex`='$pt_sex',`blood_group`='$pt_blood',`address`='$pt_address',`phone`='$pt_phone',`email`='$pt_email' WHERE patient_id = $patient_id";
+if (empty(array_filter($errors))) {
+    $user_tbl_update = "UPDATE user_tbl SET user_name='$username', user_email='$pt_email' WHERE id=$id ";
+    if (mysqli_query($conn, $user_tbl_update)) {
+        $update_query = "UPDATE `patient` SET `name`='$pt_name',`age`='$pt_age',`sex`='$pt_sex',`blood_group`='$pt_blood',`address`='$pt_address',`phone`='$pt_phone' WHERE user_id = $id";
         if (mysqli_query($conn, $update_query)) {
-
-            $_SESSION['alert'] =" Update Successfully ";
-             $_SESSION['alert_code'] ="info";
-             header('location:patient_list.php');
-             exit();
-        } else{
-            $_SESSION['alert'] ="Failed";
-            $_SESSION['alert_code'] ="error";
+            $_SESSION['alert'] = "update successfully";
+            $_SESSION['alert_code'] = "success";
+            header('location:patient_list.php');
+            exit();
+        } else {
+            $_SESSION['alert'] = "Update failed";
+            $_SESSION['alert_code'] = "warning";
+        }
     }
 }
 }
@@ -107,17 +118,23 @@ ob_end_flush();
                     Update Patient
                 </div>
                 <?php
-                $patient_id = $_GET['patient_id'];
-                $select_query = "SELECT * FROM patient WHERE patient_id='$patient_id'";
+                $id = $_GET['id'];
+                $select_query = "SELECT p.patient_id,p.user_id,p.patient_id,  p.name,p.age, p.sex, p.blood_group, p.address, p.phone, user_tbl.id,user_tbl.user_name,user_tbl.user_email FROM patient as p
+                INNER JOIN user_tbl ON p.user_id = user_tbl.id
+                 WHERE p.user_id=$id";
                 $result = mysqli_query($conn, $select_query) or die("Query Failed");
                 if (mysqli_num_rows($result) > 0) {
                     while ($row = mysqli_fetch_assoc($result)) {
-
-
                 ?>
                         <div class="card-body">
                             <form action="" method="POST" enctype="multipart/form-data">
-                                <input type="hidden" name="patient_id" value="<?php echo $row['patient_id'] ?>">
+                                <input type="hidden" name="id" value="<?php echo $row['patient_id'] ?>">
+                                <div class="form-group">
+                                    <label>Patient Username:</label>
+                                    <input type="text" name="username" value="<?php echo $row['user_name'] ?>" class="form-control" placeholder="Enter username">
+                               
+                                    <span style='color:red' ;><?php echo $errors['username'] ?></span>
+                                 </div>
                                 <div class="form-group">
                                     <label>Patient Name:</label>
                                     <input type="text" name="pt_name" value="<?php echo $row['name'] ?>" class="form-control" placeholder="Enter Patient Name">
@@ -126,7 +143,7 @@ ob_end_flush();
                                  </div>
                                 <div class="form-group">
                                     <label>Patient Email:</label>
-                                    <input type="email" name="pt_email" value="<?php echo $row['email'] ?>" class="form-control" placeholder="Enter Patient Email">
+                                    <input type="email" name="pt_email" value="<?php echo $row['user_email'] ?>" class="form-control" placeholder="Enter Patient Email">
                                     <span style='color:red' ;><?php echo $errors['email'] ?></span>
                                 </div>
                                 <div class="form-group">
@@ -176,10 +193,8 @@ ob_end_flush();
                                     <button type="submit" name="update" class="btn btn-success">Update Patient</button>
                                 </div>
                             </form>
-                    <?php  }
-                } else {
-                    echo "<div class='alert alert-text'>No data Found</div>";
-                }
+                            <?php 
+                    }}
                     ?>
 
                         </div>

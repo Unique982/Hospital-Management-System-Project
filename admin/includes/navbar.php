@@ -2,8 +2,9 @@
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
-$user_type = $_SESSION['user_data']['role'] ?? '';
-$user_name = $_SESSION['user_data']['user_name'] ?? '';
+$user_type = $_SESSION['user_data']['role'];
+$user_name = $_SESSION['user_data']['user_name'];
+$user_id = $_SESSION['id'];
 ?>
 <!-- Sidebar -->
 <ul class="navbar-nav bg-gradient-dark sidebar sidebar-dark accordion" id="accordionSidebar">
@@ -41,14 +42,14 @@ $user_name = $_SESSION['user_data']['user_name'] ?? '';
             </a>
             <div id="collapse1" class="collapse" aria-labelledby="heading1" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <h6 class="collapse-header">Empolyee Manage</h6>
-
+                    <h6 class="collapse-header">Pateint Manage</h6>
+                    <!-- 
                     <a class="collapse-item" href="./doctor_specialization.php">Doctor Specialization</a>
                     <a class="collapse-item" href="./manage_doctor.php">Manage Doctor</a>
                     <a class="collapse-item" href="./manage_nurse.php">Manage Nurse</a>
                     <a class="collapse-item" href="./manage_pharmacist.php">Manage pharmacist</a>
-                    <a class="collapse-item" href="./manage_accountant.php">Manage Accountant</a>
-                    <a class="collapse-item" href="./manage_laboratorists.php">Manage Laboratorist</a>
+                    <a class="collapse-item" href="./manage_accountant.php">Manage Accountant</a> -->
+                    <a class="collapse-item" href="./manage_laboratorists.php">Viwe Patient</a>
                 </div>
             </div>
         </li>
@@ -350,159 +351,93 @@ $user_name = $_SESSION['user_data']['user_name'] ?? '';
                         </form>
                     </div>
                 </li>
+                <?php
+                if ($user_type === 'admin' || $user_type === 'doctor' || $user_type === 'nurse' || $user_type === 'pharmacist' || $user_type === 'laboratorist' || $user_type === 'accountant') {
 
-                <!-- Nav Item - Alerts -->
-                <li class="nav-item dropdown no-arrow mx-1">
-                    <?php
-                    $select_query = "SELECT * FROM notice_board ";
-                    $result = mysqli_query($conn, $select_query);
-                    $count = mysqli_num_rows($result);
-                    if ($count) {
-
-                    ?>
-                        <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-bell fa-fw"></i>
-                            <!-- Counter - Alerts -->
-                            <span class="badge badge-danger badge-counter"></span>
-                        </a>
-                        <!-- Dropdown - Alerts -->
-                        <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                            aria-labelledby="alertsDropdown">
-                            <h6 class="dropdown-header bg-gradient-dark">
-                                Notice Alerts
-                            </h6>
-                            <?php while ($row = mysqli_fetch_assoc($result)) { ?>
-                                <a class="dropdown-item d-flex align-items-center" href="notice_board_view.php?notice_id=<?php echo $row['notice_id'] ?>">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-primary">
-                                            <i class="fas fa-file-alt text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-
-                                        <div class="small text-gray-500">
-                                            <td><?php echo date('F d, Y', strtotime($row['created_at'])); ?></td>
-                                        </div>
-                                        <span class="font-weight-bold"><?php echo $row['notice_title'] ?></span>
-                                    </div>
-                                </a>
-
+                ?>
+                    <!-- Nav Item - Alerts -->
+                    <li class="nav-item dropdown no-arrow mx-1">
                         <?php
+                        $select_query = "SELECT * FROM notice_board ";
+                        $result = mysqli_query($conn, $select_query);
+                        $count = mysqli_num_rows($result);
+                        if ($count) {
 
-                            }
-                        } ?>
+                        ?>
+                            <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-bell fa-fw"></i>
+                                <!-- Counter - Alerts -->
+                                <span class="badge badge-danger badge-counter"></span>
+                            </a>
+                            <!-- Dropdown - Alerts -->
+                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="alertsDropdown">
+                                <h6 class="dropdown-header bg-gradient-dark">
+                                    Notice Alerts
+                                </h6>
+                                <?php while ($row = mysqli_fetch_assoc($result)) { ?>
+                                    <a class="dropdown-item d-flex align-items-center" href="notice_board_view.php?notice_id=<?php echo $row['notice_id'] ?>">
+                                        <div class="mr-3">
+                                            <div class="icon-circle bg-primary">
+                                                <i class="fas fa-file-alt text-white"></i>
+                                            </div>
+                                        </div>
+                                        <div>
 
-                        <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
-                        </div>
+                                            <div class="small text-gray-500">
+                                                <td><?php echo date('F d, Y', strtotime($row['created_at'])); ?></td>
+                                            </div>
+                                            <span class="font-weight-bold"><?php echo $row['notice_title'] ?></span>
+                                        </div>
+                                    </a>
+                            <?php
 
-                </li>
+                                }
+                            } ?>
+                            <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+                            </div>
 
-                <!-- Nav Item - Messages -->
-                <li class="nav-item dropdown no-arrow mx-1">
-                    <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-envelope fa-fw"></i>
-                        <!-- Counter - Messages -->
-                        <span class="badge badge-danger badge-counter">7</span>
-                    </a>
-                    <!-- Dropdown - Messages -->
-                    <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                        aria-labelledby="messagesDropdown">
-                        <h6 class="dropdown-header bg-gradient-dark">
-                            Message Center
-                        </h6>
-                        <a class="dropdown-item d-flex align-items-center" href="#">
-                            <div class="dropdown-list-image mr-3">
-                                <img class="rounded-circle" src="img/undraw_profile_1.svg"
-                                    alt="...">
-                                <div class="status-indicator bg-success"></div>
-                            </div>
-                            <div class="font-weight-bold">
-                                <div class="text-truncate">Hi there! I am wondering if you can help me with a
-                                    problem I've been having.</div>
-                                <div class="small text-gray-500">Emily Fowler · 58m</div>
-                            </div>
-                        </a>
-                        <a class="dropdown-item d-flex align-items-center" href="#">
-                            <div class="dropdown-list-image mr-3">
-                                <img class="rounded-circle" src="img/undraw_profile_2.svg"
-                                    alt="...">
-                                <div class="status-indicator"></div>
-                            </div>
-                            <div>
-                                <div class="text-truncate">I have the photos that you ordered last month, how
-                                    would you like them sent to you?</div>
-                                <div class="small text-gray-500">Jae Chun · 1d</div>
-                            </div>
-                        </a>
-                        <a class="dropdown-item d-flex align-items-center" href="#">
-                            <div class="dropdown-list-image mr-3">
-                                <img class="rounded-circle" src="img/undraw_profile_3.svg"
-                                    alt="...">
-                                <div class="status-indicator bg-warning"></div>
-                            </div>
-                            <div>
-                                <div class="text-truncate">Last month's report looks great, I am very happy with
-                                    the progress so far, keep up the good work!</div>
-                                <div class="small text-gray-500">Morgan Alvarez · 2d</div>
-                            </div>
-                        </a>
-                        <a class="dropdown-item d-flex align-items-center" href="#">
-                            <div class="dropdown-list-image mr-3">
-                                <img class="rounded-circle" src="https://source.unsplash.com/Mv9hjnEUHR4/60x60"
-                                    alt="...">
-                                <div class="status-indicator bg-success"></div>
-                            </div>
-                            <div>
-                                <div class="text-truncate">Am I a good boy? The reason I ask is because someone
-                                    told me that people say this to all dogs, even if they aren't good...</div>
-                                <div class="small text-gray-500">Chicken the Dog · 2w</div>
-                            </div>
-                        </a>
-                        <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
-                    </div>
-                </li>
-
-                <div class="topbar-divider d-none d-sm-block"></div>
-
+                    </li><?php } ?>
                 <!-- Nav Item - User Information -->
                 <li class="nav-item dropdown no-arrow">
                     <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 
-                        <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?php echo $user_name ?></span>
+                        <span class="mr-2 d-none d-lg-inline text-gray-600 mute small">Hello&nbsp<?php echo $user_type ?></span>
                         <img class="img-profile rounded-circle"
                             src="../assets/images/WhatsApp Image 2024-07-09 at 17.55.10_f356836c.jpg">
                     </a>
                     <!-- Dropdown - User Information -->
                     <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                         aria-labelledby="userDropdown">
+                        <span class="dropdown-item text-center text-dark-600"><?php echo $user_name ?></span>
+                        <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="profile_add.php">
                             <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                             Profile
                         </a>
-                        <a class="dropdown-item" href="#">
+                        <a class="dropdown-item" href="password.php">
                             <i class="fas fa-key fa-sm fa-fw mr-2 text-gray-400"></i>
                             Password Change
                         </a>
-                        <a class="dropdown-item" href="./setting.php">
 
-                            <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                            Settings
-                        </a>
                         <a class="dropdown-item" href="activity_log_view.php">
                             <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                             Activity Log
                         </a>
-                        <?php
-                        if ($user_type === 'admin') {
-                        ?>
+                        <?php if ($user_type === 'admin') { ?>
                             <a class="dropdown-item" href="system_backup_file.php">
                                 <i class="fas fa-cloud-upload-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Backup
                             </a>
-                        <?php  } ?>
+                            <a class="dropdown-item" href="./setting.php">
+
+                                <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Settings
+                            </a>
+                        <?php } ?>
+
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="../logout.php" data-toggle="modal" data-target="#logoutModal">
                             <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -510,9 +445,7 @@ $user_name = $_SESSION['user_data']['user_name'] ?? '';
                         </a>
                     </div>
                 </li>
-
             </ul>
-
         </nav>
         <!-- End of Sidebar -->
         <!-- End of Topbar -->
@@ -520,7 +453,6 @@ $user_name = $_SESSION['user_data']['user_name'] ?? '';
         <a class="scroll-to-top rounded" href="#page-top">
             <i class="fas fa-angle-up"></i>
         </a>
-
         <!-- Logout Modal-->
         <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
@@ -532,7 +464,7 @@ $user_name = $_SESSION['user_data']['user_name'] ?? '';
                             <span aria-hidden="true">×</span>
                         </button>
                     </div>
-                    <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                    <div class="modal-body">Are you sure you want to logout?</div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
                         <a class="btn btn-primary" href="./logout.php">Logout</a>
