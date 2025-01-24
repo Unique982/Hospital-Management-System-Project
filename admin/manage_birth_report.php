@@ -2,11 +2,13 @@
 include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
-$select_query = "SELECT r.rep_id, p.name AS patient,d.user_name As doctor, r.report_type,r.date
+$select_query = "SELECT r.rep_id, p.name AS patient,CONCAT(d.first_name,'',d.last_name)  As doctor,
+r.report_type,r.date
 FROM report AS r
-INNER JOIN patient AS p ON r.patient_id =p.patient_id
-INNER JOIN user_tbl AS d ON r.doctor_id = d.id
+INNER JOIN patient AS p ON r.patient_id =p.id
+INNER JOIN doctors AS d ON r.doctor_id = d.id
 ";
+
 $result = mysqli_query($conn,$select_query);
 $count = mysqli_num_rows($result);
 

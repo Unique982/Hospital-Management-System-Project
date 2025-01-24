@@ -8,8 +8,7 @@ if(isset($_POST['delete_btn_set'])){
     $delete_query ="DELETE FROM patient  WHERE user_id = $del_id";
     $result = mysqli_query($conn, $delete_query);
     if($result){
-
-        header('location:pateint_list.php');
+        header('location:patient_list.php');
         exit();
     }
     else{

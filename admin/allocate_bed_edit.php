@@ -96,8 +96,8 @@ ob_end_flush();
                                         $select_query = "SELECT * FROM patient";
                                         $result2 = mysqli_query($conn, $select_query);
                                         while ($record = mysqli_fetch_assoc($result2)) {
-                                            $selected = ($record['patient_id'] == $row['pateint_id']) ? 'selected' : '';
-                                            echo "<option value='" . $record['patient_id'] . "'$selected>" . $record['name'] . "</option>";
+                                            $selected = ($record['id'] == $row['pateint_id']) ? 'selected' : '';
+                                            echo "<option value='" . $record['id'] . "'$selected>" . $record['name'] . "</option>";
                                         }
                                         ?>
                                     </select>
@@ -114,7 +114,7 @@ ob_end_flush();
                                     <span style='color:red' ;><?php echo $errors['discharge_time'] ?></span>
                                 </div>
                                 <div class="form-group">
-                                    <button type="submit" name="save" class="btn btn-outline-primary">Add New Bed</button>
+                                    <button type="submit" name="save" class="btn btn-outline-primary">Update</button>
                                 </div>
                             </form>
                     <?php }

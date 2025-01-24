@@ -114,6 +114,22 @@ $user_id = $_SESSION['id'];
             </div>
         </li>
     <?php  } ?>
+    <?php if($user_type==='doctor'){ ?>
+         <li class="nav-item">
+         <a class="nav-link collapsed" href="./manage_prescription.php" data-toggle="collapse" data-target="#collapse10"
+             aria-expanded="true" aria-controls="collapse10">
+             <i class="fa-solid fa-users"></i>
+             <span>Manage Prescription</span>
+         </a>
+         <div id="collapse10" class="collapse" aria-labelledby="heading10" data-parent="#accordionSidebar">
+             <div class="bg-white py-2 collapse-inner rounded">
+                 <h6 class="collapse-header">Manage Prescription</h6>
+                 <a class="collapse-item" href="./prescription_add.php">Prescription Add</a>
+                 <a class="collapse-item" href="./manage_prescription.php">Prescription List</a>
+             </div>
+         </div>
+     </li>
+    <?php } ?>
     <?php
     if ($user_type === 'admin' || $user_type === 'doctor' || $user_type === 'nurse') {
 
@@ -227,7 +243,7 @@ $user_id = $_SESSION['id'];
         </li>
     <?php }  ?>
     <?php
-    if ($user_type === 'admin' || $user_type === 'doctor' || $user_type === 'nurse') {
+    if ($user_type === 'admin' || $user_type === 'accountant') {
 
     ?>
         <li class="nav-item">
@@ -358,17 +374,17 @@ $user_id = $_SESSION['id'];
                     <!-- Nav Item - Alerts -->
                     <li class="nav-item dropdown no-arrow mx-1">
                         <?php
-                        $select_query = "SELECT * FROM notice_board ";
+                        $select_query = "SELECT * FROM notice_board ORDER BY created_at DESC";
                         $result = mysqli_query($conn, $select_query);
                         $count = mysqli_num_rows($result);
-                        if ($count) {
+                        if ($count > 0 ) {
 
                         ?>
                             <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-bell fa-fw"></i>
                                 <!-- Counter - Alerts -->
-                                <span class="badge badge-danger badge-counter"></span>
+                                <span class="badge badge-danger badge-counter"><?php echo $count; ?></span>
                             </a>
                             <!-- Dropdown - Alerts -->
                             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -376,7 +392,7 @@ $user_id = $_SESSION['id'];
                                 <h6 class="dropdown-header bg-gradient-dark">
                                     Notice Alerts
                                 </h6>
-                                <?php while ($row = mysqli_fetch_assoc($result)) { ?>
+                                <?php while($row = mysqli_fetch_assoc($result)){  ?>
                                     <a class="dropdown-item d-flex align-items-center" href="notice_board_view.php?notice_id=<?php echo $row['notice_id'] ?>">
                                         <div class="mr-3">
                                             <div class="icon-circle bg-primary">
@@ -391,14 +407,16 @@ $user_id = $_SESSION['id'];
                                             <span class="font-weight-bold"><?php echo $row['notice_title'] ?></span>
                                         </div>
                                     </a>
-                            <?php
-
-                                }
-                            } ?>
+                                    <?php } ?>
+                            
                             <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
-                            </div>
-
-                    </li><?php } ?>
+                            <?php
+}
+ ?>    
+                        </div>
+                            
+                    </li>
+                    <?php } ?>
                 <!-- Nav Item - User Information -->
                 <li class="nav-item dropdown no-arrow">
                     <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"

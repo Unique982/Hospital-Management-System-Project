@@ -87,7 +87,7 @@ ob_end_flush();
                 </div>
                 <?php
                 $id = $_GET['id'];
-                $select_query = "SELECT n.nurse_id,
+                $select_query = "SELECT n.id,
                 n.phone,n.address, n.gender,n.qualification,user_tbl.user_name as username, user_tbl.user_email,user_tbl.role, user_tbl.id 
   FROM nurse as n
 INNER JOIN `user_tbl` ON n.user_id = user_tbl.id
@@ -99,7 +99,7 @@ INNER JOIN `user_tbl` ON n.user_id = user_tbl.id
 
                         <div class="card-body">
                             <form action="" method="POST" enctype="multipart/form-data">
-                                <input type="hidden" name="id" value="<?php echo $row['nurse_id'] ?>">
+                                <input type="hidden" name="id" value="<?php echo $row['id'] ?>">
                                 <div class="form-group">
                                     <label for="">User Name</label>
                                     <input type="text" name="username" class="form-control" placeholder="Enter username" value="<?php echo $row['username'] ?>">

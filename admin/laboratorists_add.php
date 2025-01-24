@@ -151,7 +151,7 @@ ob_end_flush();
                    <select name="gender" id="gender" class="form-control">
                     <option selected>Select Gender</option>
                     <option value="male" <?php echo isset($gender) && $gender=='male' ? 'selected':'' ?>>Male</option>
-                    <option value="female <?php echo isset($gender) && $gender=='female' ? 'selected':'' ?>">Female</option>
+                    <option value="female" <?php echo isset($gender) && $gender=='female' ? 'selected':'' ?>>Female</option>
                     <option value="other" <?php echo isset($gender) && $gender='other' ? 'selected':'' ?>>Other</option>
                    </select>
                     <span style='color:red' ;><?php echo $errors['gender'] ?></span>
@@ -163,7 +163,7 @@ ob_end_flush();
                 </div>
                 <div class="form-group">
                     <label for="">Password</label>
-                    <input type="password" name="password" class="form-control" placeholder="Enter Password">
+                    <input type="password" name="password" class="form-control" placeholder="Enter Password" >
                     <span style='color:red' ;><?php echo $errors['password'] ?></span>
                 </div>
                       

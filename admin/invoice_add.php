@@ -60,7 +60,7 @@ if(isset($_POST['save'])){
    if(mysqli_query($conn,$insert_query)){
     $_SESSION['alert'] ="Invoice Successfully";
     $_SESSION['alert_code'] ="info";
-    header('location:invoice_lis.php');
+    header('location:invoice_list.php');
     exit();
    }
    else{
@@ -91,7 +91,7 @@ if(isset($_POST['save'])){
                     $result = mysqli_query($conn,$select_query_patient_table);
                     while($row = mysqli_fetch_assoc($result)){
                     
-                        echo "<option value='".$row['patient_id']."'>".$row['name']."</option>";
+                        echo "<option value='".$row['id']."'>".$row['name']."</option>";
                     
             }
                   ?>

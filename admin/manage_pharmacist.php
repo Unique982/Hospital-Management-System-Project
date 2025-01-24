@@ -5,7 +5,8 @@ include("includes/navbar.php");
 include('../database/config.php');
 $data_display = "SELECT pharmacist.id, pharmacist.phone, pharmacist.address,pharmacist.gender,
 pharmacist.qualification, user_tbl.user_name as username, user_tbl.user_email,user_tbl.role, user_tbl.id   FROM `pharmacist` 
-INNER JOIN `user_tbl` ON pharmacist.user_id = user_tbl.id";
+INNER JOIN `user_tbl` ON pharmacist.user_id = user_tbl.id
+ ORDER BY pharmacist.id DESC";
 $result1 = mysqli_query($conn, $data_display) or die("Query failed");
 $count_row = mysqli_num_rows($result1);
 ?>

@@ -3,7 +3,12 @@ ob_start();
 include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
-if (isset($_POST['add_bed'])) {
+$errors = [
+    'bedNumber' =>'',
+    'bed_type' =>'',
+    'description' =>''
+];
+if (isset($_POST['update'])) {
     $bed_id = mysqli_real_escape_string($conn, $_POST['bed_id']);
     $bed_number = mysqli_real_escape_string($conn, $_POST['bed_number']);
     $bed_type = mysqli_real_escape_string($conn, $_POST['bed_type']);
@@ -33,7 +38,7 @@ if (isset($_POST['add_bed'])) {
     // if no error
     if (empty(array_filter($errors))) {
 
-        $update_query = "UPDATE bed SET bed_num = '$bed_number', bed_type = '$bed_type', description = '$descriptio' WHERE bed_id = '$bed_id'";
+        $update_query = "UPDATE bed SET bed_num = '$bed_number', bed_type = '$bed_type', description = '$description' WHERE bed_id = '$bed_id'";
         if (mysqli_query($conn, $update_query)) {
             $_SESSION['alert'] = "Edit Successfully";
             $_SESSION['alert_code'] = "success";

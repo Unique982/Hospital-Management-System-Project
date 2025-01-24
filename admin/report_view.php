@@ -2,10 +2,11 @@
 include("includes/navbar.php");
 include('../database/config.php');
 $rep_id= $_GET['rep_id'];
-$sql = "SELECT r.rep_id,r.report_type,r.description,r.date,user_name as doctor_id, p.name as patient_id   
-FROM report As r
-INNER JOIN patient AS p ON  p.patient_id = r.patient_id
-  INNER JOIN user_tbl AS u ON u.id = r.doctor_id
+$sql = "SELECT r.rep_id, p.name AS patient,CONCAT(d.first_name,'',d.last_name)  As doctor_id,
+r.report_type,r.date,r.description
+FROM report AS r
+INNER JOIN patient AS p ON r.patient_id =p.id
+INNER JOIN doctors AS d ON r.doctor_id = d.id
 where r.rep_id =$rep_id";
 $result = mysqli_query($conn, $sql);
 if(mysqli_num_rows($result)>0){
@@ -48,7 +49,7 @@ if(mysqli_num_rows($result)>0){
                    </tr>
                    <tr>
                      <th>Patient:</th>
-                    <td><?php echo $record['patient_id'] ?></td>
+                    <td><?php echo $record['patient'] ?></td>
                    </tr>
 
                  

@@ -32,7 +32,7 @@ if(isset($_POST['add_patient'])){
     $phonePattern ='/^\d{10}$/';
     $addressPattern= '/^[a-zA-Z]+$/';
     $passwordPattern = "/^[a-zA-Z0-9\s]*$/";
-    $agePattern = '/^\d{2}$/';
+    $agePattern = '/^\d+$/';
 
 //user name 
 if (empty($username)) {

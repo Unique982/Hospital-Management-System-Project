@@ -3,7 +3,7 @@ include("includes/navbar.php");
 include('../database/config.php');
 
 // select Query
-$select_query = "SELECT * FROM blood_donors";
+$select_query = "SELECT * FROM blood_donors ORDER BY blood_donor_id DESC";
 $result = mysqli_query($conn, $select_query);
 $count = mysqli_num_rows($result);
 

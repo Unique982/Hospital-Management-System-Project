@@ -40,7 +40,7 @@ $count_row = mysqli_num_rows($result1);
                                     <td><?php echo $row['specialization'] ?></td>
                                     <td><?php echo $row['description'] ?></td>
 
-                                    <td><button type="button" class="btn btn-outline-warning btn-sm">View</button>
+                                    <td>
                                         <a href="specialization_edit.php?id=<?php echo $row['id'] ?>" class="btn btn-outline-success btn-sm">Edit</a>
                                         <form action="specialization_delete.php" method="POST" id="deleteForm" style="display:inline-block; margin:2px;">
                                             <input type="hidden" name="id" value="<?php echo $row['id'] ?>" class="delete_id">

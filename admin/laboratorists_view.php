@@ -6,7 +6,8 @@ $id= $_GET['id'];
 $sql = "SELECT l.phone,l.address,l.gender,
 l.qualification, user_tbl.user_name as username, 
 user_tbl.user_email,user_tbl.role, user_tbl.id   FROM laboratorists as l
-INNER JOIN `user_tbl` ON l.user_id = user_tbl.id ORDER BY l.id DESC";
+INNER JOIN `user_tbl` ON l.user_id = user_tbl.id 
+WHERE user_id = $id";
 $result = mysqli_query($conn, $sql);
 if(mysqli_num_rows($result)>0){
     $record = mysqli_fetch_array($result);

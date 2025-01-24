@@ -1,12 +1,15 @@
 <?php
+ob_start();
 include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
+
 
  $errors = [
      'doctor' => '',
      'patient' => '',
      'date' => '',
+     'time' =>''
  ];
 if(isset($_POST['add'])){
     $doctor = isset($_POST['doctor']) ? mysqli_real_escape_string($conn,trim($_POST['doctor'])):'';
@@ -34,17 +37,46 @@ elseif(!preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)){
  elseif($date < date('Y-m-d')){
  $errors['date'] = "Please select today or a future date";
     }
+    else{
+       if ($date == date('Y-m-d')) {
+        if(empty($time)){
+            $errors['time'] = "Time is required";
+        }
+        elseif(!preg_match('/^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/',$time)){
+            $errors['time'] = "Invalid time formate .Please use HH:MM";
+        }
+        else{
+            $current_time =date("H:i");
+            if($time < $current_time){
+                $errors['time'] ="sorry select next date";
+            }
+            elseif($current_time > '14:00'){
+                $errors['time'] = "Booking for today is closed after 2 PM. Please select the next day!"; 
 
- 
-
-
-
+            }
+        }
+           
+            
+        }
+    }
     if (empty(array_filter($errors))) {
+
+            $sql1 = "SELECT id FROM appointments WHERE patient_id = '$patient'";
+       $result1 = mysqli_query($conn, $sql1) or die("Query failed");
+       if(mysqli_num_rows($result1) >0){
+    $_SESSION['alert'] ="The patient already exists please select next patient";
+    $_SESSION['alert_code'] ="info";
+    header('location:appointment_list.php');
+    exit();
+       }
+        else{
     $insert_query = "INSERT INTO `appointments`(`patient_id`, `doctor_id`,`status`, `appointment_date`,`appointment_time`)
      VALUES('$patient','$doctor','confirmed','$date','$time')";
      if(mysqli_query($conn,$insert_query)){
         $_SESSION['alert'] = "Your Appointment successfully";
         $_SESSION['alert_code'] = "success";
+        header('location:appointment_list.php');
+        exit();
        
      }
      else{
@@ -54,6 +86,8 @@ elseif(!preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)){
 
 }
 }
+}
+ob_end_flush();
 
 ?>
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -70,13 +104,13 @@ elseif(!preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)){
             <div class="form-group">
                 <label for="">Doctor</label>
                 <select name="doctor" id="doctor" class="form-control" required>
-                <option selected disabled> Select One</option>
                 <?php
-                $select_doctor_table = "SELECT * FROM user_tbl WHERE role='doctor'";
-                $doctor_result = mysqli_query($conn,$select_doctor_table);
+                    $select_doctor_table = "SELECT d.id, CONCAT(d.first_name,'',d.last_name) as username FROM doctors as d
+                    INNER JOIN user_tbl ON d.user_id = user_tbl.id ";
+                    $doctor_result = mysqli_query($conn,$select_doctor_table);
                 while($doctor_table_data = mysqli_fetch_assoc($doctor_result)){
                   
-                    echo "<option value='".$doctor_table_data['id']."'>".$doctor_table_data['user_name']."</option>";
+                    echo "<option value='".$doctor_table_data['id']."'>".$doctor_table_data['username']."</option>";
                 }
                 ?>
                  </select>
@@ -92,7 +126,7 @@ elseif(!preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)){
                     $result = mysqli_query($conn,$select_query_patient_table);
                     while($row = mysqli_fetch_assoc($result)){
                     
-                        echo "<option value='".$row['patient_id']."'>".$row['name']."</option>";
+                        echo "<option value='".$row['id']."'>".$row['name']."</option>";
                     
             }
                   ?>
@@ -108,7 +142,7 @@ elseif(!preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)){
             <div class="form-group">
                 <label for="">Time</label>
                 <input type="time" name="time" class="form-control" required>
-                <span style='color:red' ;></span>
+                <span style='color:red' ;><?php echo $errors['time'] ?></span>
             </div>
         </div>
         <div class="modal-footer">
@@ -129,17 +163,15 @@ elseif(!preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)){
             </button>
         </h6>
         <!-- fetch Data  -->
-         <?php 
-         $appoinment_data = "SELECT appointments.id, patient.name AS patient_name,user_tbl.user_name AS
-          doctor_name, appointments.status,appointment_date, appointment_time
-         FROM appointments
-         INNER JOIN patient ON appointments.patient_id= patient.patient_id
-         INNER JOIN user_tbl ON appointments.doctor_id = user_tbl.id
-        ORDER BY appointments.id ASC
-         ";
+        <?php 
+            $appoinment_data = "SELECT ap.id,patient.id, patient.name AS patient_name,
+             CONCAT(doctors.first_name,'',doctors.last_name) as doctor_name, ap.doctor_id, ap.status,appointment_date, ap.appointment_time
+            FROM appointments as ap
+            INNER JOIN patient ON ap.patient_id= patient.id
+            INNER JOIN doctors ON ap.doctor_id = doctors.id
+            ORDER BY ap.id ASC";
          $app_result = mysqli_query($conn,$appoinment_data); 
          ?>
-
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -157,8 +189,8 @@ elseif(!preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)){
                 </thead>
                 <tbody>
                     <?php
-                    $sn =+1;
-                    if(mysqli_num_rows($app_result)>0){
+                    $sn =1;
+                    if(mysqli_num_rows($app_result)  >0){
                         while($app = mysqli_fetch_assoc($app_result)){
                     
                     ?>
@@ -168,7 +200,7 @@ elseif(!preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)){
                         <td><?php echo $app['doctor_name'] ?></td>
                         <td><?php echo $app['status'] ?></td>
                         <td><?php echo date("Y M d ", strtotime( $app['appointment_date'] )) ?></td>
-                        <td><?php echo date("Y M d ", strtotime( $app['appointment_time'] ))?></td>
+                        <td><?php echo date("h:i:A ", strtotime( $app['appointment_time'] ))?></td>
                         <td>
                         <form action="appointment_status.php" method="GET" style="display:inline-block; margin:2px;">
                                 <input type="hidden" name="id" value="<?php echo $app['id'] ?>">
@@ -186,9 +218,7 @@ elseif(!preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)){
                     <?php 
                      $sn++;
                         }}
-                        else{
-                            echo "Not Found";
-                        }
+                      
                 ?>
                 </tbody>
                 

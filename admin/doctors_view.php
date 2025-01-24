@@ -7,7 +7,7 @@ $sql = "SELECT doctors.id as doctors_id, doctors.first_name, doctors.last_name,
 doctors.phone,doctors.address, doctors.created_at, user_tbl.user_name as username, user_tbl.user_email,user_tbl.role, user_tbl.id 
 ,specialization.specialization  FROM `doctors` 
 INNER JOIN `user_tbl` ON doctors.user_id = user_tbl.id
-INNER JOIN `specialization` ON doctors.specialization = specialization.id";
+INNER JOIN `specialization` ON doctors.specialization = specialization.id WHERE user_id = $id";
 $result = mysqli_query($conn, $sql);
 if(mysqli_num_rows($result)>0){
     $record = mysqli_fetch_array($result);
@@ -28,7 +28,7 @@ if(mysqli_num_rows($result)>0){
        <!-- Php code -->
             <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                    <input type="hidden"  value="<?php echo $record['id'] ?>"> 
+                    <input type="hidden" value="<?php echo $record['doctors_id'] ?>"> 
                     <tr>
                         <th>User Name:</th>
                         <td><?php echo $record['username'];?></td>

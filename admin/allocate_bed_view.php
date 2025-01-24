@@ -6,7 +6,7 @@ $select_query = "SELECT ba.bed_allocate_id,
  b.bed_num AS bed_number,  p.name  AS patient_name, ba.allocated_at,ba.discharge
   FROM bed_allocate ba 
 INNER JOIN bed b on ba.bed_id = b.bed_id
-INNER JOIN patient p on ba.pateint_id = p.patient_id where bed_allocate_id =$bed_allocate_id";
+INNER JOIN patient p on ba.pateint_id = p.id where bed_allocate_id =$bed_allocate_id";
 $result = mysqli_query($conn, $select_query);
 if(mysqli_num_rows($result)>0){
     $record = mysqli_fetch_array($result);

@@ -97,11 +97,12 @@ ob_end_flush();
                             <select name="doctor" id="" class="form-control">
                                 <option selected>Select Doctor</option>
                                 <?php
-                                $select_doctor_table = "SELECT * FROM user_tbl WHERE role='doctor'";
+                                $select_doctor_table = "SELECT d.id, CONCAT(d.first_name,'',d.last_name) as username FROM doctors as d
+                    INNER JOIN user_tbl ON d.user_id = user_tbl.id ";
                                 $doctor_result = mysqli_query($conn, $select_doctor_table);
                                 while ($doctor_table_data = mysqli_fetch_assoc($doctor_result)) {
 
-                                    echo "<option value='" . $doctor_table_data['id'] . "'>" . $doctor_table_data['user_name'] . "</option>";
+                                    echo "<option value='" . $doctor_table_data['id'] . "'>" . $doctor_table_data['username'] . "</option>";
                                 }
                                 ?>
                             </select>
@@ -116,7 +117,7 @@ ob_end_flush();
                                 $result = mysqli_query($conn, $select_query_patient_table);
                                 while ($row = mysqli_fetch_assoc($result)) {
 
-                                    echo "<option value='" . $row['patient_id'] . "'>" . $row['name'] . "</option>";
+                                    echo "<option value='" . $row['id'] . "'>" . $row['name'] . "</option>";
                                 }
                                 ?>
                             </select>

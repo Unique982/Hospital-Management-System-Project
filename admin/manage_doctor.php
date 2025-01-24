@@ -3,10 +3,11 @@ include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
 
-$data_display = "SELECT doctors.id as doctors_id, doctors.first_name, doctors.last_name, specialization.specialization,
+$data_display = "SELECT doctors.id as id, doctors.first_name, doctors.last_name, specialization.specialization,
 doctors.phone,doctors.address, doctors.created_at, user_tbl.user_name as username, user_tbl.user_email,user_tbl.role, user_tbl.id   FROM `doctors` 
 INNER JOIN `user_tbl` ON doctors.user_id = user_tbl.id
-INNER JOIN `specialization` ON doctors.specialization = specialization.id";
+INNER JOIN `specialization` ON doctors.specialization = specialization.id
+ORDER BY doctors.id DESC";
 $result1 = mysqli_query($conn, $data_display) or die("Query failed");
 $count_row = mysqli_num_rows($result1);
 
@@ -51,7 +52,7 @@ $count_row = mysqli_num_rows($result1);
                                         <a href="doctors_edit.php?id=<?php echo $row['id']; ?>" class="btn btn-outline-success btn-sm">Edit</a>
                                         <form action="doctors_delete.php" method="POST" id="deleteForm" style="display:inline-block; margin:2px;">
                                             <input type="hidden" name="id" value="<?php echo $row['id'] ?>" class="delete_id">
-                                            <button type="submit" name="delete" class="btn btn-outline-danger btn-sm deletebtn" data-delete-url="employee_delete.php">Delete</button>
+                                            <button type="submit" name="delete" class="btn btn-outline-danger btn-sm deletebtn" data-delete-url="doctors_delete.php">Delete</button>
                                         </form>
 
                                     </td>

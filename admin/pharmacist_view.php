@@ -5,7 +5,8 @@ include('../database/config.php');
 $id= $_GET['id'];
 $sql = "SELECT pharmacist.phone, pharmacist.address,pharmacist.gender,
 pharmacist.qualification, user_tbl.user_name as username, user_tbl.user_email,user_tbl.role, user_tbl.id   FROM `pharmacist` 
-INNER JOIN `user_tbl` ON pharmacist.user_id = user_tbl.id";
+INNER JOIN `user_tbl` ON pharmacist.user_id = user_tbl.id
+WHERE user_id =$id";
 $result = mysqli_query($conn, $sql);
 if(mysqli_num_rows($result)>0){
     $record = mysqli_fetch_array($result);

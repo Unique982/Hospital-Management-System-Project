@@ -8,12 +8,13 @@ if(isset($_POST['delete_btn_set'])){
     $delete_doctor = "DELETE FROM doctors WHERE user_id = $del_id";
     $result = mysqli_query($conn, $delete_doctor);
     if($result){
-        header('location:manage_doctors.php');
+        header('location:manage_doctor.php');
         exit();
     }
     else{
         echo "<script>alert('Not Delete Data')</script>";
     }
+    
 }
 }
 

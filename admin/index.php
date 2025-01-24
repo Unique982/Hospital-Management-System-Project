@@ -11,7 +11,7 @@ $errors = [
 
 if (isset($_POST['login'])) {
     $user_name_or_email = mysqli_real_escape_string($conn, $_POST['user_name_or_email']);
-    $user_type = mysqli_real_escape_string($conn, $_POST['user_type']);
+    $user_type = isset($_POST['user_type']) ? mysqli_real_escape_string($conn, trim($_POST['user_type']))  :'';
     $password = mysqli_real_escape_string($conn, $_POST['password']);
 
     if (empty($user_name_or_email)) {

@@ -107,16 +107,19 @@ ob_end_flush();
                                 <div class="form-group">
                                     <label for="">Doctor</label>
                                     <select name="doctor" id="" class="form-control">
+                                        
                                         <?php
-                                        $select_doctor_table = "SELECT * FROM user_tbl WHERE role='doctor'";
-                                        $doctor_result = mysqli_query($conn, $select_doctor_table);
+                                        $select_doctor_table = "SELECT d.id, CONCAT(d.first_name,'',d.last_name) as username FROM doctors as d
+                                        INNER JOIN user_tbl ON d.user_id = user_tbl.id ";
+                                        $doctor_result = mysqli_query($conn,$select_doctor_table);
+
                                         while ($doctor_table_data = mysqli_fetch_assoc($doctor_result)) {
                                             if ($doctor_table_data['id'] == $data['rep_id']) {
                                                 $selected = 'selected';
                                             } else {
                                                 $selected = '';
                                             }
-                                            echo "<option value='" . $doctor_table_data['id'] . "'$selected>" . $doctor_table_data['user_name'] . "</option>";
+                                            echo "<option value='" . $doctor_table_data['id'] . "'$selected>" . $doctor_table_data['username'] . "</option>";
                                         }
                                         ?>
                                     </select>
@@ -129,12 +132,12 @@ ob_end_flush();
                                         $select_query_patient_table = "SELECT * FROM patient";
                                         $result = mysqli_query($conn, $select_query_patient_table);
                                         while ($row = mysqli_fetch_assoc($result)) {
-                                            if ($row['patient_id'] == $data['patient_id']) {
+                                            if ($row['id'] == $data['patient_id']) {
                                                 $selected = 'selected';
                                             } else {
                                                 $selected = '';
                                             }
-                                            echo "<option value='" . $row['patient_id'] . "'$selected>" . $row['name'] . "</option>";
+                                            echo "<option value='" . $row['id'] . "'$selected>" . $row['name'] . "</option>";
                                         }
                                         ?>
                                     </select>

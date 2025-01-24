@@ -119,7 +119,7 @@ ob_end_flush();
                 </div>
                 <?php
                 $id = $_GET['id'];
-                $select_query = "SELECT p.patient_id,p.user_id,p.patient_id,  p.name,p.age, p.sex, p.blood_group, p.address, p.phone, user_tbl.id,user_tbl.user_name,user_tbl.user_email FROM patient as p
+                $select_query = "SELECT p.id,p.user_id,  p.name,p.age, p.sex, p.blood_group, p.address, p.phone, user_tbl.id,user_tbl.user_name,user_tbl.user_email FROM patient as p
                 INNER JOIN user_tbl ON p.user_id = user_tbl.id
                  WHERE p.user_id=$id";
                 $result = mysqli_query($conn, $select_query) or die("Query Failed");
@@ -128,7 +128,7 @@ ob_end_flush();
                 ?>
                         <div class="card-body">
                             <form action="" method="POST" enctype="multipart/form-data">
-                                <input type="hidden" name="id" value="<?php echo $row['patient_id'] ?>">
+                                <input type="hidden" name="id" value="<?php echo $row['id'] ?>">
                                 <div class="form-group">
                                     <label>Patient Username:</label>
                                     <input type="text" name="username" value="<?php echo $row['user_name'] ?>" class="form-control" placeholder="Enter username">

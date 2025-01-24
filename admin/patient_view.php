@@ -6,8 +6,9 @@ include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
 $id= $_GET['id'];
-$sql = "SELECT p.patient_id, p.name,p.age,p.sex,p.blood_group,p.address,p.phone, user_tbl.user_name,user_tbl.user_email, user_tbl.id FROM patient as p
-INNER JOIN user_tbl ON p.user_id = user_tbl.id";
+$sql = "SELECT p.id, p.name,p.age,p.sex,p.blood_group,p.address,p.phone, user_tbl.user_name,user_tbl.user_email, user_tbl.id FROM patient as p
+INNER JOIN user_tbl ON p.user_id = user_tbl.id
+WHERE user_id = $id ";
 $result = mysqli_query($conn, $sql);
 if(mysqli_num_rows($result)>0){
     $record = mysqli_fetch_array($result);
@@ -30,7 +31,7 @@ if(mysqli_num_rows($result)>0){
        <!-- Php code -->
             <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                    <input type="hidden" value="<?php echo $record['patient_id'] ?>"> 
+                    <input type="hidden" value="<?php echo $record['id'] ?>"> 
                    <tr>
                      <th>Username:</th>
                     <td><?php echo $record['user_name'] ?></td>

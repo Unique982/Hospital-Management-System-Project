@@ -3,11 +3,11 @@ include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
 $id= $_GET['id'];
-$sql = "SELECT nurse.nurse_id,nurse.phone, nurse.address,nurse.gender,
+$sql = "SELECT nurse.id,nurse.phone, nurse.address,nurse.gender,
 nurse.qualification,  user_tbl.user_name as username, user_tbl.user_email,user_tbl.role, user_tbl.id
   FROM `nurse` 
 INNER JOIN `user_tbl` ON nurse.user_id = user_tbl.id
-";
+WHERE user_id=$id";
 
 $result = mysqli_query($conn, $sql);
 if(mysqli_num_rows($result)>0){
@@ -29,7 +29,7 @@ if(mysqli_num_rows($result)>0){
        <!-- Php code -->
             <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                    <input type="hidden" name='nurse_id'  value="<?php echo $record['nurse_id'] ?>"> 
+                    <input type="hidden" name='id'  value="<?php echo $record['id'] ?>"> 
                     <tr>
                         <th>User Name:</th>
                         <td><?php echo $record['username'];?></td>

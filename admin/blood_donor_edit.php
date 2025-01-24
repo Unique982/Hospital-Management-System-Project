@@ -194,7 +194,7 @@ ob_end_flush();
                                     <input type="checkbox" name="bl_available" class="form-checkbox" value="1" <?php echo ($row['is_available'] == 1) ? 'checked' : ''; ?>>
                                 </div>
                                 <div class="form-group">
-                                    <button type="submit" name="update" class="btn btn-outline-primary">Register For Donation</button>
+                                    <button type="submit" name="update" class="btn btn-outline-primary">Update</button>
 
                                 </div>
 

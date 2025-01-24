@@ -93,8 +93,8 @@ ob_end_flush();
                                     $select_query = "SELECT * FROM patient";
                                     $result2 = mysqli_query($conn, $select_query);
                                     while ($record = mysqli_fetch_assoc($result2)) {
-                                        $selected = ($record['patient_id'] == $row['patient_id']) ? 'selected' : '';
-                                        echo "<option value='" . $record['patient_id'] . "'$selected>" . $record['name'] . "</option>";
+                                        $selected = ($record['id'] == $row['patient_id']) ? 'selected' : '';
+                                        echo "<option value='" . $record['id'] . "'$selected>" . $record['name'] . "</option>";
                                     }
 
                                     ?>

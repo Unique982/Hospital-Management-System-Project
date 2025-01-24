@@ -39,13 +39,14 @@ if (isset($_POST['save'])) {
     if (empty(array_filter($errors))) {
         $duplicate_date = "SELECT bed_id,pateint_id FROM bed_allocate WHERE bed_id='$bed_number' OR pateint_id='$patient'";
         $result = mysqli_query($conn, $duplicate_date) or die("Query failed");
-
-
-        if (mysqli_num_rows($result) > 0) {
-
-            $_SESSION['alert'] = "Bednumber  Already bocked by patient";
+        if (mysqli_num_rows($result) >0) {
+            $row= mysqli_fetch_assoc($result);
+            if($row['bed_id']==$bed_number && $row['pateint_id']){
+            $_SESSION['alert'] = "Bed  Already patient";
             $_SESSION['alert_code'] = "info";
-        } else {
+            header('location:allocate_bed_list.php');
+            exit();
+        } }else {
             $insert_query = "INSERT INTO `bed_allocate`(`bed_id`, `pateint_id`, `allocated_at`, `discharge`)
              VALUES ('$bed_number','$patient','$allocate_time','$discharge_time')";
             if (mysqli_query($conn, $insert_query)) {
@@ -97,7 +98,7 @@ ob_end_flush();
                                 $result = mysqli_query($conn, $select_query_patient_table);
                                 while ($row = mysqli_fetch_assoc($result)) {
 
-                                    echo "<option value='" . $row['patient_id'] . "'>" . $row['name'] . "</option>";
+                                    echo "<option value='" . $row['id'] . "'>" . $row['name'] . "</option>";
                                 }
                                 ?>
                             </select>

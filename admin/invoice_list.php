@@ -4,7 +4,7 @@ include("includes/navbar.php");
 include('../database/config.php');
 $select_query = "SELECT i.invoice_id, i.invoice_num, p.name AS patient_id, i.title, i.payment_method, i.amount, i.payment_status, i.invoice_date 
 FROM invoice  i
-INNER JOIN patient p on i.patient_id = p.patient_id
+INNER JOIN patient p on i.patient_id = p.id
 ORDER BY i.invoice_id DESC ";
 $result = mysqli_query($conn, $select_query);
 $count = mysqli_num_rows($result);
