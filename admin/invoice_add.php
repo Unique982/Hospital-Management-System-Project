@@ -14,7 +14,6 @@ include('../database/config.php');
 
 
 if(isset($_POST['save'])){
-    
     $patient = mysqli_real_escape_string($conn,$_POST['patient']);
     $in_title = mysqli_real_escape_string($conn,$_POST['in_title']);
     $amount = mysqli_real_escape_string($conn,$_POST['amount']);

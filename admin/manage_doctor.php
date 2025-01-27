@@ -17,10 +17,14 @@ $count_row = mysqli_num_rows($result1);
         <div class="card  mb-4">
             <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary"> Doctor List
-                    <a href="doctors_add.php"> <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#exampleModal">
+                <?php 
+                        if($user_type=='admin'){
+                            ?>    
+                <a href="doctors_add.php"> <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#exampleModal">
                             Add Doctor
                         </button>
                     </a>
+                    <?php } ?>
                 </h6>
             </div>
             <div class="card-body">
@@ -28,6 +32,9 @@ $count_row = mysqli_num_rows($result1);
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
+                            <?php 
+                        if($user_type=='admin'){
+                            ?>
                             <tr>
                                 <th>ID</th>
                                 <th>Name</th>
@@ -36,13 +43,27 @@ $count_row = mysqli_num_rows($result1);
                                 <th>Position</th>
                                 <th>Action</th>
                             </tr>
+                        
+                            <?php 
+                       }elseif($user_type=='patient'){
+                            ?>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>specialization</th>
+                            </tr>
+                            <?php  } ?>
+                            
                         </thead>
                         <tbody>
                             <tr>
                                 <?php
+                                
                                 $sn = +1;
-                                if($count > 0){
-                                while ($row = mysqli_fetch_assoc($result1)) { ?>
+                                if($count_row > 0){
+                                while ($row = mysqli_fetch_assoc($result1)) { 
+                                 if($user_type=='admin'){
+                                    ?>
                                     <td><?php echo $sn; ?></td>
                                     <td><?php echo $row['username']; ?></td>
                                     <td><?php echo $row['user_email']; ?></td>
@@ -56,15 +77,34 @@ $count_row = mysqli_num_rows($result1);
                                         </form>
 
                                     </td>
+                                   
                             </tr>
                         <?php
+                                 
                                     $sn++;
+                                 }
+                                 elseif($user_type=='patient'){  ?>
+                                 <tr>
+                             
+                             <td><?php echo $sn; ?></td>
+                                    <td><?php echo $row['username']; ?></td>
+                                    <td><?php echo $row['specialization']; ?></td>
+                                 
+                                </tr>
+                                <?php
+
+                                 }
+                                 }
                                 }
-                            }
+                            
                             else {
                                 echo "<tr><td colspan='7' class='text-center'>No record</td></tr>";
                             }
                                 ?>
+                               
+                             
+                             
+                             
                         </tbody>
                     
                     </table>

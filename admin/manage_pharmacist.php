@@ -33,7 +33,7 @@ $count_row = mysqli_num_rows($result1);
                             <th>Phone</th>
                             <th>Address</th>
                             <th>Position</th>
-                            
+                    
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -41,7 +41,7 @@ $count_row = mysqli_num_rows($result1);
                         <tr>
                             <?php
                             $sn = +1;
-                            if ($count > 0) {
+                            if ($count_row > 0) {
                                 while ($row = mysqli_fetch_assoc($result1)) { ?>
                                     <td><?php echo $sn; ?></td>
                                     <td><?php echo $row['username']; ?></td>

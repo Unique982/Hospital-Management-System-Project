@@ -77,7 +77,14 @@ swal({
 
 
 </script>
-
+<script src="https://cdn.ckeditor.com/ckeditor5/11.0.1/classic/ckeditor.js"></script>
+<script>
+        ClassicEditor
+            .create( document.querySelector( '#editor' ) )
+            .catch( error => {
+                console.error( error );
+            } );
+    </script>
     <!-- Page level custom scripts -->
     <script src="../assets/js/demo/datatables-demo.js"></script>
     <!-- <script>

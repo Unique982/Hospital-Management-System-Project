@@ -3,7 +3,8 @@ ob_start();
 include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
-
+$user_type = $_SESSION['user_data']['role'];
+$user_id = $_SESSION['id'];
 
  $errors = [
      'doctor' => '',
@@ -55,8 +56,6 @@ elseif(!preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)){
 
             }
         }
-           
-            
         }
     }
     if (empty(array_filter($errors))) {
@@ -163,13 +162,31 @@ ob_end_flush();
             </button>
         </h6>
         <!-- fetch Data  -->
-        <?php 
+        <?php if($user_type=='admin'){ 
             $appoinment_data = "SELECT ap.id,patient.id, patient.name AS patient_name,
              CONCAT(doctors.first_name,'',doctors.last_name) as doctor_name, ap.doctor_id, ap.status,appointment_date, ap.appointment_time
             FROM appointments as ap
             INNER JOIN patient ON ap.patient_id= patient.id
             INNER JOIN doctors ON ap.doctor_id = doctors.id
             ORDER BY ap.id ASC";
+        }elseif($user_type=='doctor') {
+        $appoinment_data = "SELECT ap.id,patient.id, patient.name AS patient_name,
+        CONCAT(doctors.first_name,'',doctors.last_name) as doctor_name, ap.doctor_id, ap.status,appointment_date, ap.appointment_time
+       FROM appointments as ap
+       INNER JOIN patient ON ap.patient_id= patient.id
+       INNER JOIN doctors ON ap.doctor_id = doctors.id
+       WHERE doctors.user_id =$user_id
+       ORDER BY ap.id ASC";
+        }
+        elseif($user_type=='patient') {
+            $appoinment_data = "SELECT ap.id,patient.id, patient.name AS patient_name,
+            CONCAT(doctors.first_name,'',doctors.last_name) as doctor_name, ap.doctor_id, ap.status,appointment_date, ap.appointment_time
+           FROM appointments as ap
+           INNER JOIN patient ON ap.patient_id= patient.id
+           INNER JOIN doctors ON ap.doctor_id = doctors.id
+           WHERE patient.user_id=$user_id
+           ORDER BY ap.id ASC";
+            }
          $app_result = mysqli_query($conn,$appoinment_data); 
          ?>
     </div>
@@ -184,7 +201,9 @@ ob_end_flush();
                         <th>Status</th>
                         <th>Appointment Date</th>
                         <th>Appointment Time</th>
+                        <?php  if($user_type=='admin' || $user_type=='doctor'){ ?>
                         <th>Action</th>
+                        <?php  } ?>
                     </tr>
                 </thead>
                 <tbody>
@@ -201,6 +220,7 @@ ob_end_flush();
                         <td><?php echo $app['status'] ?></td>
                         <td><?php echo date("Y M d ", strtotime( $app['appointment_date'] )) ?></td>
                         <td><?php echo date("h:i:A ", strtotime( $app['appointment_time'] ))?></td>
+                        <?php  if($user_type=='admin' || $user_type=='doctor'){ ?>
                         <td>
                         <form action="appointment_status.php" method="GET" style="display:inline-block; margin:2px;">
                                 <input type="hidden" name="id" value="<?php echo $app['id'] ?>">
@@ -213,6 +233,7 @@ ob_end_flush();
                                 <input type="hidden" name="id" value="<?php echo $app['id'] ?>" class="delete_id">
                                 <button type="submit" name="delete" class="btn btn-outline-danger btn-sm deletebtn" data-delete-url="appointment_delete.php">Delete</button>
                             </form> 
+                            <?php }  ?>
                         </td>
                     </tr>
                     <?php 

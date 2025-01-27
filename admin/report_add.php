@@ -113,11 +113,13 @@ ob_end_flush();
                             <select name="patient" id="" class="form-control">
                                 <option selected>Select Patient</option>
                                 <?php
-                                $select_query_patient_table = "SELECT * FROM patient";
+                                $select_query_patient_table = "SELECT p.id,user_tb.user_name, FROM patient
+                                as p
+                                INNER JOIN user_tbl ON p.user_tbl=user_tbl.id";
                                 $result = mysqli_query($conn, $select_query_patient_table);
                                 while ($row = mysqli_fetch_assoc($result)) {
 
-                                    echo "<option value='" . $row['id'] . "'>" . $row['name'] . "</option>";
+                                    echo "<option value='" . $row['id'] . "'>" . $row['user_name'] . "</option>";
                                 }
                                 ?>
                             </select>

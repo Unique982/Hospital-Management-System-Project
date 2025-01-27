@@ -15,7 +15,8 @@ $errors = [
     
 ];
 
-if(isset($_POST['add_bed'])){
+if(isset($_POST['update'])){
+    $id = mysqli_real_escape_string($conn,$_POST['id']);
   $doctor = mysqli_real_escape_string($conn,$_POST['doctor']);
   $patient= mysqli_real_escape_string($conn,$_POST['patient']);
   $cash_history = mysqli_real_escape_string($conn,$_POST['cash_history']);
@@ -57,25 +58,20 @@ elseif(!preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)){
  }
 
   if(empty(array_filter($errors))){
-    $insert_query = "INSERT INTO `prescription`(`doctor_id`, `patient_id`, `case_history`, `medication`, `medication_form_pharamcist`, `description`, `date`)
-     VALUES('$doctor','$patient','$cash_history','$medication','$medication_form_pharamacist','$description','$date')";   
- if(mysqli_query($conn, $insert_query)){
-    $_SESSION['alert'] ="Added Successfully";
+    $update_query = "UPDATE `prescription` SET doctor_id='$doctor',`patient_id`='$patient',`case_history`='$cash_history',`medication`='$medication'
+    ,`medication_form_pharamcist`='$medication_form_pharamacist',`description`='$description',`date`='$date' WHERE id = $id";   
+ if(mysqli_query($conn, $update_query)){
+    $_SESSION['alert'] ="Update Successfully";
         $_SESSION['alert_code'] ="success";
         header('location:manage_prescription.php');
         exit();
-
  }
  else{
     $_SESSION['alert'] ="Failed";
     $_SESSION['alert_code'] ="error";
  }
- 
  }
   }
-
-
-
 ob_end_flush();// output buffering data after header() redirection
 ?>
 <div class="container-fluid">
@@ -86,21 +82,29 @@ ob_end_flush();// output buffering data after header() redirection
                 <div class="card-header">
                  Add  Prescription
                 </div>
+                <?php
+                $id = $_GET['id'];
+                $select_query = "SELECT * FROM prescription WHERE id = $id";
+                $result = mysqli_query($conn, $select_query) or die("Query Failed");
+                if (mysqli_num_rows($result) > 0) {
+                    $row = mysqli_fetch_array($result);
+                ?>
                 <div class="card-body">
                     <form action="" method="POST" enctype="multipart/form-data">
+                        <input type="hidden" name="id" value="<?php echo $row['id'] ?>">
                         <div class="form-group">
                             <label for="">Doctor Name:</label>
                             <select name="doctor" id="" class="form-control">
                                 <option selected>Select Doctor</option>
                                 <?php
-                                $select_doctor_table = "SELECT d.id, CONCAT(d.first_name,'',d.last_name) as username FROM doctors as d
-                    INNER JOIN user_tbl ON d.user_id = user_tbl.id ";
-                                $doctor_result = mysqli_query($conn, $select_doctor_table);
-                                while ($doctor_table_data = mysqli_fetch_assoc($doctor_result)) {
+                                    $select_doctor = "SELECT * FROM doctors";
+                                    $result2 = mysqli_query($conn, $select_doctor);
+                                    while ($record = mysqli_fetch_assoc($result2)) {
+                                        $selected = ($record['id'] == $row['doctor_id']) ? 'selected' : '';
+                                        echo "<option value='" . $record['id'] . "'$selected>" . $record['name'] . "</option>";
+                                    }
 
-                                    echo "<option value='" . $doctor_table_data['id'] . "'>" . $doctor_table_data['username'] . "</option>";
-                                }
-                                ?>
+                                    ?>
                             </select>
                             <span style='color:red' ;><?php echo $errors['doctor'] ?></span>
                             </div>
@@ -113,7 +117,7 @@ ob_end_flush();// output buffering data after header() redirection
                                 $result = mysqli_query($conn, $select_query_patient_table);
                                 while ($row = mysqli_fetch_assoc($result)) {
 
-                                    echo "<option value='" . $row['id'] . "'>" . $row['name'] . "</option>";
+                                    echo "<option value='" . $row['id'] . "'$seleted>" . $row['name'] . "</option>";
                                 }
                                 ?>
                             </select>
@@ -121,39 +125,39 @@ ob_end_flush();// output buffering data after header() redirection
                             </div>
                         <div class="form-group">
                             <label for="">Case History</label>
-                            <textarea name="cash_history" class="form-control" id=""><?php echo isset($cash_history) ? $cash_history:'';?></textarea>
+                            <textarea name="cash_history" class="form-control" id="editor"><?php echo $record['case_history'];?></textarea>
                             <span style='color:red' ;><?php echo $errors['cash_history'] ?></span>
                         </div>
                         <div class="form-group">
                             <label for="">Medication</label>
-                            <textarea name="medication" class="form-control" id=""><?php echo isset($medication) ? $medication:'';?></textarea>
+                            <textarea name="medication" class="form-control" id="editor"><?php echo $row['medication'];?></textarea>
                             <span style='color:red' ;><?php echo $errors['medication'] ?></span>
                         </div>
                         <div class="form-group">
                             <label for="">Medication Form  Pharamacist</label>
-                            <textarea name="medication_form_pharamacist" class="form-control" id=""><?php echo isset($medication_form_pharamacist) ? $medication_form_pharamacist:'';?></textarea>
+                            <textarea name="medication_form_pharamacist" class="form-control" id="editor"><?php echo  $row['medication_form_pharamacist']?></textarea>
                             <span style='color:red' ;><?php echo $errors['medication_form_pharamacist'] ?></span>
                         </div>
                         <div class="form-group">
                             <label for="">Description</label>
-                            <textarea name="description" class="form-control" id=""><?php echo isset($description) ? $description:'';?></textarea>
+                            <textarea name="description" class="form-control" id="editor"><?php echo $row['description']?></textarea>
                             <span style='color:red' ;><?php echo $errors['description'] ?></span>
                         </div>
                         <div class="form-group">
                             <label for="">Date</label>
-                           <input type="date" name="date" class="form-control" value="<?php echo isset($date) ? $date:'';?>">
-                          
+                           <input type="date" name="date" class="form-control" value="<?php echo $row['date']?>">
                             <span style='color:red' ;><?php echo $errors['date'] ?></span>
                         </div>
                         <div class="form-group">
-                            <button type="submit" name="add_bed" class="btn btn-outline-primary">Add New Bed</button>
+                            <button type="submit" name="update" class="btn btn-outline-primary">Update</button>
                         </div>
                     </form>
                 </div>
+                <?php }  ?>
             </div>
         </div>
     </div>
-    
+
     <?php
     include('includes/scripts.php');
     include('includes/footer.php');

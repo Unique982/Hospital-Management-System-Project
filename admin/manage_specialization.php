@@ -32,7 +32,7 @@ $count_row = mysqli_num_rows($result1);
                         <tbody>
                             <?php
                             $sn = +1;
-                            if($count > 0){
+                            if($count_row > 0){
                             while ($row = mysqli_fetch_assoc($result1)) {
                             ?>
                                 <tr>

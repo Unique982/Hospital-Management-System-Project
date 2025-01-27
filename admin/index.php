@@ -64,6 +64,7 @@ if (isset($_POST['login'])) {
                         case 'nurse':
                         case 'pharmacist':
                         case 'laboratorist':
+                        case 'accountant':
                         case 'patient':
                             $_SESSION['alert'] = "Login successful";
                             $_SESSION['alert_code'] = "success";
