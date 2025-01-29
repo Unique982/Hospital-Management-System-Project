@@ -3,6 +3,8 @@ ob_start();
  include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
+$user_type = $_SESSION['user_data']['role'];
+$user_id = $_SESSION['id'];
 $errors = [
     'doctor' => '',
     'patient' => '',
@@ -10,19 +12,19 @@ $errors = [
     'time' =>''
 ];
 if(isset($_POST['update'])){
-    $id = mysqli_real_escape_string($conn,$_POST['id']);
+    $app_id = mysqli_real_escape_string($conn,$_POST['app_id']);
    $doctor = mysqli_real_escape_string($conn,$_POST['doctor']);
    $patient = mysqli_real_escape_string($conn,$_POST['patient']);
    $date = mysqli_real_escape_string($conn,$_POST['date']);
    $time = mysqli_real_escape_string($conn,$_POST['time']);
      // bed number validation 
-if(empty($doctor) || $doctor==='Select One'){
+if(empty($doctor)){
     $errors['doctor'] = 'Doctor is required';
 
 }
 
 // patient 
-if(empty($patient) || $patient === 'Select One'){
+if(empty($patient)){
     $errors['patient'] = 'Patient number is required';
 }
 // Date validation tar
@@ -55,11 +57,9 @@ elseif(!preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)){
         }
            
     }}   
-     
-    
     if (empty(array_filter($errors))) {
    // update query 
-   $update_query = "UPDATE appointments SET patient_id = '$patient' , doctor_id = '$doctor', appointment_date = '$date', appointment_time='$time' WHERE id=$id";
+   $update_query = "UPDATE appointments SET patient_id = '$patient' , doctor_id = '$doctor', appointment_date = '$date', appointment_time='$time' WHERE app_id=$app_id";
   if(mysqli_query($conn,$update_query)){
 // success msg
    $_SESSION['alert'] ="Successfully updated appointment";
@@ -88,25 +88,32 @@ ob_end_flush();
                 </div>
                 <?php 
                 $id = $_GET['id'];
-                $select_query = "SELECT * FROM appointments WHERE id='$id'";
+                $select_query = "SELECT ap.app_id,patient.id as patient_id, patient.name AS patient_name,
+             CONCAT(doctors.first_name,'',doctors.last_name) as doctor_name, ap.doctor_id, ap.status,appointment_date, ap.appointment_time
+            FROM appointments as ap
+            INNER JOIN patient ON ap.patient_id= patient.id
+            INNER JOIN doctors ON ap.doctor_id = doctors.id WHERE ap.app_id=$id";
                 $result = mysqli_query($conn, $select_query) or die("Query Failed");
                 if(mysqli_num_rows($result)>0){
                     while($row = mysqli_fetch_assoc($result)){
-                
+                $doctor_id = $row['doctor_id'];
+                $patient_id = $row['patient_id'];
                 
                 ?>
                 <div class="card-body">
                     <form action="" method="POST" enctype="multipart/form-data">
-                        <input type="hidden" name="id" value="<?php echo $row['id'] ?>">
+                        <input type="hidden" name="app_id" value="<?php echo $row['app_id'] ?>">
                         <div class="form-group">
                             <label for="">Doctore Name</label>
+                        
                            <select name="doctor" id="" class="form-control">
+                           
                            <?php
-                $select_doctor_table = "SELECT * FROM user_tbl WHERE role='doctor'";
+                $select_doctor_table = "SELECT * FROM doctors";
                 $doctor_result = mysqli_query($conn,$select_doctor_table);
                 while($doctor_table_data = mysqli_fetch_assoc($doctor_result)){
-                   $selected = ($doctor_table_data['id'] == $doctor) ? 'selected':'';
-                   echo "<option value='".$doctor_table_data['id']."'$selected>".$doctor_table_data['user_name']."</option>";
+                   $selected = ($doctor_id == $doctor_table_data['id']) ? 'selected':'';
+                   echo "<option value='".$doctor_table_data['id']."'$selected>".$doctor_table_data['first_name']. "" . $doctor_table_data['last_name']."</option>";
                 }
                 ?>
                            </select>
@@ -116,11 +123,12 @@ ob_end_flush();
                         <div class="form-group">
                 <label for="">Patient</label>
                 <select name="patient" id="patient" class="form-control" required>
+                 
                     <?php 
                     $select_query_patient_table = "SELECT * FROM patient";
                     $result = mysqli_query($conn,$select_query_patient_table);
                     while($row1 = mysqli_fetch_assoc($result)){
-                        $selected = ($row1['id'] == $patient) ? 'selected':'';
+                        $selected = ($patient_id ==$row1['id'] ) ? 'selected':'';
                         echo "<option value='".$row1['id']."'$selected>".$row1['name']."</option>";
                      }
                      ?>

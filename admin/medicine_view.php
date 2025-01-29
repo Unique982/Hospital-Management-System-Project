@@ -5,7 +5,8 @@ $id= $_GET['id'];
 $sql = "SELECT m.id, m.medicine_name, c.medicine_name AS category, m.price,m.description,
 m.manufacuturin_company,m.manufacuturin_date,m.stock
  FROM medicine AS m
- INNER JOIN medicine_cat AS c ON m.category  = c.id";
+ INNER JOIN medicine_cat AS c ON m.category  = c.id
+ WHERE m.id = $id";
 $result = mysqli_query($conn, $sql);
 if(mysqli_num_rows($result)>0){
     $record = mysqli_fetch_array($result);

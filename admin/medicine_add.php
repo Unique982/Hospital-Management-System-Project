@@ -1,6 +1,7 @@
 <?php
-require_once("includes/header.php");
-require_once("includes/navbar.php");
+ob_start();
+include("includes/header.php");
+include("includes/navbar.php");
 include('../database/config.php');
 
 $errors = [
@@ -96,13 +97,15 @@ elseif(!preg_match('/^\d+$/',$stock)){
 
     $_SESSION['alert'] = "Medicine added sucessfully";
     $_SESSION['alert_code'] = "success";
+    header('location:medicine_list.php');
+    exit();
   } else {
     $_SESSION['alert'] = "Insert failed";
     $_SESSION['alert_code'] = "warning";
   }
 }
 }
-
+ob_end_flush();
 ?>
 <div class="container-fluid">
 
@@ -116,7 +119,7 @@ elseif(!preg_match('/^\d+$/',$stock)){
           <form action="" method="POST" enctype="multipart/form-data">
             <div class="form-group">
               <label for=""> Medicine Name</label>
-              <input type="text" name="med_name" class="form-control" placeholder="Enter Medicine Name">
+              <input type="text" name="med_name" class="form-control" placeholder="Enter Medicine Name" value="<?php echo isset($med_name) ? $med_name:'';?>">
          <span style='color:red;'><?php echo $errors['Med_name'] ?></span>
             </div>
             <div class="form-group">
@@ -134,27 +137,27 @@ elseif(!preg_match('/^\d+$/',$stock)){
             </div>
             <div class="form-group">
               <label for="">Description</label>
-              <textarea name="med_des" id="med_des" class="form-control" placeholder="Enter Description"></textarea>
+              <textarea name="med_des" id="med_des" class="form-control" placeholder="Enter Description"><?php echo isset($med_des) ? $med_des:'';?></textarea>
               <span style='color:red;'><?php echo $errors['Med_description'] ?></span>
             </div>
             <div class="form-group">
               <label for="">Price</label>
-              <input type="number" name="med_price" class="form-control" placeholder="Enter Price">
+              <input type="number" name="med_price" class="form-control" placeholder="Enter Price" value="<?php echo isset($med_price) ? $med_price:'';?>">
               <span style='color:red;'><?php echo $errors['Med_price'] ?></span>
             </div>
             <div class="form-group">
               <label for="">Manufacturing Company</label>
-              <input type="text" name="mf_company" class="form-control" placeholder="Enter Manufacturing Company">
+              <input type="text" name="mf_company" class="form-control" placeholder="Enter Manufacturing Company" value="<?php echo isset($mf_company) ? $mf_company:'';?>">
               <span style='color:red;'><?php echo $errors['Mf_company'] ?></span>
             </div>
             <div class="form-group">
               <label for="">Manufacturing Dates</label>
-              <input type="date" name="mf_date" class="form-control" placeholder="Enter MedicineName">
+              <input type="date" name="mf_date" class="form-control" placeholder="Enter MedicineName"  value="<?php echo isset($mf_date) ? $mf_date:'';?>">
               <span style='color:red;'><?php echo $errors['Mf_date'] ?></span>
             </div>
             <div class="form-group">
               <label for="">Stock</label>
-              <input type="number" name="stock" class="form-control" placeholder="Enter Stock">
+              <input type="number" name="stock" class="form-control" placeholder="Enter Stock" value="<?php echo isset($stock) ? $stock:'';?>">
               <span style='color:red;'><?php echo $errors['Stock'] ?></span>
             </div>
             <div class="form-group">

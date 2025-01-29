@@ -2,12 +2,27 @@
 include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
-$select_query = "SELECT r.rep_id, p.name AS patient,CONCAT(d.first_name,'',d.last_name)  As doctor,
+$user_type = $_SESSION['user_data']['role'];
+$user_id = $_SESSION['id'];
+$select_query ="";
+if($user_type=='admin' || $user_type=='doctor'){
+$select_query = "SELECT r.rep_id,r.patient_id, p.name AS patient,CONCAT(d.first_name,'',d.last_name)  As doctor,
 r.report_type,r.date
 FROM report AS r
 INNER JOIN patient AS p ON r.patient_id =p.id
 INNER JOIN doctors AS d ON r.doctor_id = d.id
 ";
+
+}if($user_type=='patient'){
+    $select_query = "SELECT r.rep_id,r.patient_id,p.user_id, p.name AS patient,CONCAT(d.first_name,'',d.last_name)  As doctor,
+r.report_type,r.date
+FROM report AS r
+INNER JOIN patient AS p ON r.patient_id =p.id
+INNER JOIN doctors AS d ON r.doctor_id = d.id
+WHERE p.user_id= $user_id";
+}
+$result = mysqli_query($conn,$select_query);
+$count = mysqli_num_rows($result);
 
 $result = mysqli_query($conn,$select_query);
 $count = mysqli_num_rows($result);
@@ -32,10 +47,12 @@ $count = mysqli_num_rows($result);
               <i class="fa-solid fa-bars"></i> Death
                 </button>
                 </a>
+                <?php if($user_type=='admin' || $user_type=='doctor' || $user_type=='nurse'){ ?>
                 <a href="report_add.php"> <button type="button"  class="btn btn-primary btn-sm">
                Add Report
                 </button>
                 </a>
+                <?php } ?>
             </h6>
         </div>
         <div class="card-body">
@@ -53,15 +70,16 @@ $count = mysqli_num_rows($result);
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
+                      
                             <?php 
-                            $sn = +1;
-                            if($count >0){
+                            $sn = 1;
+                            if($count > 0){
                             while($record = mysqli_fetch_assoc($result)){
                                 if($record['report_type']=='birth'){
 
                            
                            ?>
+                           <tr>
                            <td><?php echo $sn; ?></td>
                            <td><?php echo $record['patient'] ?></td>
                            <td><?php echo $record['doctor']  ?></td>
@@ -69,12 +87,13 @@ $count = mysqli_num_rows($result);
                            <td><?php echo $record['date']?> </td>
                            
                            <td><a href="report_view.php?rep_id=<?php echo $record['rep_id'] ?>"><button type="button" class="btn btn-outline-warning btn-sm">View</button></a>
-                          <a href="report_edit.php?rep_id=<?php echo $record['rep_id'] ?>" class="btn btn-outline-success btn-sm">Edit</a>     
+                           <?php if($user_type=='doctor' || $user_type=='admin' || $user_type=='nurse'){ ?>    
+                           <a href="report_edit.php?rep_id=<?php echo $record['rep_id'] ?>" class="btn btn-outline-success btn-sm">Edit</a>     
                           <form action="report_delete.php" method="POST" id="deleteForm" style="display:inline-block; margin:2px;">
                               <input type="hidden" name="id" value="<?php echo $record['rep_id'] ?>" class="delete_id">
                               <button type="submit" name="delete" class="btn btn-outline-danger btn-sm deletebtn" data-delete-url="report_delete.php">Delete</button>
                               </form> 
-
+<?php  } ?>
                             </td>
                         </tr>
                         <?php 
@@ -83,7 +102,7 @@ $count = mysqli_num_rows($result);
                             }
                         }
                         else{
-                            echo "<tr><td colspan='5' class='text-center'>Not Found Data</td></td>";
+                            echo "<tr><td colspan='6' class='text-center'>Not Found Data</td></td>";
                         
                     }
                         ?>

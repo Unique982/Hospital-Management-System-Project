@@ -3,7 +3,8 @@ ob_start();// output buffering
 include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
-
+$user_type = $_SESSION['user_data']['role'];
+$user_id = $_SESSION['id'];
 $errors = [
     'doctor' =>'',
     'patient' =>'',
@@ -16,7 +17,7 @@ $errors = [
 ];
 
 if(isset($_POST['update'])){
-    $id = mysqli_real_escape_string($conn,$_POST['id']);
+    $id = intval($_POST['id']);
   $doctor = mysqli_real_escape_string($conn,$_POST['doctor']);
   $patient= mysqli_real_escape_string($conn,$_POST['patient']);
   $cash_history = mysqli_real_escape_string($conn,$_POST['cash_history']);
@@ -84,24 +85,29 @@ ob_end_flush();// output buffering data after header() redirection
                 </div>
                 <?php
                 $id = $_GET['id'];
-                $select_query = "SELECT * FROM prescription WHERE id = $id";
+                $select_query = "SELECT p. *, 
+    pt.name AS patient, CONCAT(d.first_name,' ',d.last_name)  As doctor
+    FROM prescription AS p
+    INNER JOIN doctors AS d ON p.doctor_id = d.id
+    INNER JOIN patient AS pt ON p.patient_id =pt.id
+WHERE p.id= $id";
                 $result = mysqli_query($conn, $select_query) or die("Query Failed");
                 if (mysqli_num_rows($result) > 0) {
-                    $row = mysqli_fetch_array($result);
+                    $row = mysqli_fetch_assoc($result);
                 ?>
                 <div class="card-body">
                     <form action="" method="POST" enctype="multipart/form-data">
-                        <input type="hidden" name="id" value="<?php echo $row['id'] ?>">
+                    <input type="hidden" name="id" value="<?php echo $row['id']; ?>"> 
                         <div class="form-group">
                             <label for="">Doctor Name:</label>
                             <select name="doctor" id="" class="form-control">
                                 <option selected>Select Doctor</option>
                                 <?php
                                     $select_doctor = "SELECT * FROM doctors";
-                                    $result2 = mysqli_query($conn, $select_doctor);
-                                    while ($record = mysqli_fetch_assoc($result2)) {
-                                        $selected = ($record['id'] == $row['doctor_id']) ? 'selected' : '';
-                                        echo "<option value='" . $record['id'] . "'$selected>" . $record['name'] . "</option>";
+                                    $doctor_result = mysqli_query($conn, $select_doctor);
+                                    while ($doctor = mysqli_fetch_assoc($doctor_result)) {
+                                        $selected = ($doctor['id'] == $row['doctor_id']) ? 'selected' : '';
+                                        echo "<option value='" . $doctor['id'] . "'$selected>" . $doctor['first_name']. $doctor['last_name'] . "</option>";
                                     }
 
                                     ?>
@@ -114,10 +120,10 @@ ob_end_flush();// output buffering data after header() redirection
                                 <option selected>Select Patient</option>
                                 <?php
                                 $select_query_patient_table = "SELECT * FROM patient";
-                                $result = mysqli_query($conn, $select_query_patient_table);
-                                while ($row = mysqli_fetch_assoc($result)) {
-
-                                    echo "<option value='" . $row['id'] . "'$seleted>" . $row['name'] . "</option>";
+                                $patient_result = mysqli_query($conn, $select_query_patient_table);
+                                while ($patient = mysqli_fetch_assoc($patient_result)) {
+                                  $selected= ($patient['id'] == $row['patient_id']) ? 'selected' :'';
+                                    echo "<option value='{$patient['id']}'$selected>{$patient['name']}  </option>";
                                 }
                                 ?>
                             </select>
@@ -125,27 +131,27 @@ ob_end_flush();// output buffering data after header() redirection
                             </div>
                         <div class="form-group">
                             <label for="">Case History</label>
-                            <textarea name="cash_history" class="form-control" id="editor"><?php echo $record['case_history'];?></textarea>
+                            <textarea name="cash_history" class="form-control"><?php echo $row['case_history'];?></textarea>
                             <span style='color:red' ;><?php echo $errors['cash_history'] ?></span>
                         </div>
                         <div class="form-group">
                             <label for="">Medication</label>
-                            <textarea name="medication" class="form-control" id="editor"><?php echo $row['medication'];?></textarea>
+                            <textarea name="medication" class="form-control"><?php echo $row['medication'];?></textarea>
                             <span style='color:red' ;><?php echo $errors['medication'] ?></span>
                         </div>
                         <div class="form-group">
                             <label for="">Medication Form  Pharamacist</label>
-                            <textarea name="medication_form_pharamacist" class="form-control" id="editor"><?php echo  $row['medication_form_pharamacist']?></textarea>
+                            <textarea name="medication_form_pharamacist" class="form-control" ><?php echo  $row['medication_form_pharamcist']?></textarea>
                             <span style='color:red' ;><?php echo $errors['medication_form_pharamacist'] ?></span>
                         </div>
                         <div class="form-group">
                             <label for="">Description</label>
-                            <textarea name="description" class="form-control" id="editor"><?php echo $row['description']?></textarea>
+                            <textarea name="description" class="form-control" ><?php echo $row['description']?></textarea>
                             <span style='color:red' ;><?php echo $errors['description'] ?></span>
                         </div>
                         <div class="form-group">
                             <label for="">Date</label>
-                           <input type="date" name="date" class="form-control" value="<?php echo $row['date']?>">
+                           <input type="date" name="date" class="form-control" value="<?php echo $row['date'];?>">
                             <span style='color:red' ;><?php echo $errors['date'] ?></span>
                         </div>
                         <div class="form-group">
@@ -157,6 +163,79 @@ ob_end_flush();// output buffering data after header() redirection
             </div>
         </div>
     </div>
+    
+     <!-- Diagnosis Report  -->
+      
+
+     <div class="card mb-4">
+        <div class="card-header">
+            Diagnosis Report
+        </div>
+        <div class="table-responsive ">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Report Type</th>
+                            <th>Document Type</th>
+                            <th>Download</th>
+                            <th>Description</th>
+                            <th>Date</th>
+                            <th>Laboratorist</th>
+                            <th>Option</th>
+                          
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+    </div>
+    <?php if($user_type=='doctor' ||  $user_type=='laboratorist'){ ?>
+    <div class="card mb-4">
+        <div class="card-header">
+            Add Diagnosis Report
+        </div>
+        <div class="card-body">
+            <form action="" method="POST" enctype="multipart/form-data">
+
+                <div class="form-group">
+                    <label for="">Report Type</label>
+                    <span class="badge bg-primary text-white mt-2 mb-2 py-2" >report_type can be x-ray, blood-test etc</span>
+                   <input type="text" name="report_type" id=""  placeholder="Report Type" class="form-control">
+                    <span style='color:red' ;><?php echo $errors['description'] ?></span>
+                </div>
+                <div class="form-group">
+                    <label for="">Document Type</label>
+                   <select name="doccument_type" id="" class="form-control">
+                    <option selected>Select Document Type</option>
+                    <option value="jpg">Jpg</option>
+                    <option value="pdf">pgd</option>
+                   </select>
+                    <span style='color:red' ;><?php echo $errors['date'] ?></span>
+                </div>
+                <div class="form-group">
+                    <label for="">Upload Document</label>
+                   <input type="file" name="upload_doc" id=""  class="form-control"  placeholder="Report Type">
+                    <span style='color:red' ;><?php echo $errors['description'] ?></span>
+                </div>
+                <div class="form-group">
+                    <label for="">Description</label>
+                  <textarea name="des" id="" class="form-control"></textarea>
+                    <span style='color:red' ;><?php echo $errors['description'] ?></span>
+                </div>
+                <div class="form-group">
+                    <button type="submit" name="add_bed" class="btn btn-outline-primary">Add Diagnosis Report</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<?php }  ?>
+</div>
+</div>
+</div>
+</div>
+
+
 
     <?php
     include('includes/scripts.php');

@@ -1,9 +1,9 @@
 <?php 
 include('../database/config.php');
 if(isset($_GET['checkin'])){
-    $id = $_GET['id'];
+    $app_id = $_GET['app_id'];
 
-    $update_query = "UPDATE `appointments` SET `status` = 'completed' WHERE `id` = $id";
+    $update_query = "UPDATE `appointments` SET `status` = 'completed' WHERE `app_id` = $app_id";
     $result = mysqli_query($conn,$update_query);
     if($result){
         header('location:appointment_list.php');

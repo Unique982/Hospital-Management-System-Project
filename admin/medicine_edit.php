@@ -1,6 +1,7 @@
 <?php
-require_once("includes/header.php");
-require_once("includes/navbar.php");
+ob_start();
+include("includes/header.php");
+include("includes/navbar.php");
 include('../database/config.php');
 if (isset($_POST['update'])) {
     $id = mysqli_real_escape_string($conn,$_POST['id']);
@@ -17,13 +18,14 @@ if (isset($_POST['update'])) {
 
     $_SESSION['alert'] = "Update  sucessfully";
     $_SESSION['alert_code'] = "success";
+    header('location:medicine_list.php');
   } else {
     $_SESSION['alert'] = "Update failed";
     $_SESSION['alert_code'] = "warning";
   }
 }
 
-
+ob_end_flush();
 ?>
 <div class="container-fluid">
 

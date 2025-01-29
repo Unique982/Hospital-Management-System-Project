@@ -1,4 +1,5 @@
 <?php
+ob_start();
 include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
@@ -11,6 +12,8 @@ if (isset($_POST['update'])) {
      if(mysqli_query($conn, $update_query)){
         $_SESSION['alert'] ="update successfully";
         $_SESSION['alert_code'] ="success";
+        header('location:medicine_list_catgeory.php');
+        exit();
     
      }
      else{
@@ -18,6 +21,7 @@ if (isset($_POST['update'])) {
         $_SESSION['alert_code'] ="warning";
      }
 }
+ob_end_flush();
 ?>
 <div class="container-fluid">
 

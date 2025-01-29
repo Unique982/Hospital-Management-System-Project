@@ -1,6 +1,8 @@
 <?php include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
+$user_type = $_SESSION['user_data']['role'];
+$user_id = $_SESSION['id'];
 $rep_id= $_GET['rep_id'];
 $sql = "SELECT r.rep_id, p.name AS patient,CONCAT(d.first_name,'',d.last_name)  As doctor_id,
 r.report_type,r.date,r.description
@@ -20,10 +22,12 @@ if(mysqli_num_rows($result)>0){
     <div class="card  mb-4">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">Report Information
-              <a href="patient_add.php">  <button type="button"  class="btn btn-primary mr-2" data-toggle="modal" data-target="#exampleModal">
+              <?php if($user_type=='admin' || $user_type=='doctor' || $user_type=='nurse') { ?>
+            <a href="report_add.php">  <button type="button"  class="btn btn-primary mr-2" data-toggle="modal" data-target="#exampleModal">
                     Add Report
                 </button>
                 </a>
+                <?php  } ?>
             </h6>
         </div>
         <div class="card-body">

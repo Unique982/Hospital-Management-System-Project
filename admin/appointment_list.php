@@ -60,7 +60,7 @@ elseif(!preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)){
     }
     if (empty(array_filter($errors))) {
 
-            $sql1 = "SELECT id FROM appointments WHERE patient_id = '$patient'";
+            $sql1 = "SELECT app_id FROM appointments WHERE patient_id = '$patient'";
        $result1 = mysqli_query($conn, $sql1) or die("Query failed");
        if(mysqli_num_rows($result1) >0){
     $_SESSION['alert'] ="The patient already exists please select next patient";
@@ -163,29 +163,29 @@ ob_end_flush();
         </h6>
         <!-- fetch Data  -->
         <?php if($user_type=='admin'){ 
-            $appoinment_data = "SELECT ap.id,patient.id, patient.name AS patient_name,
+            $appoinment_data = "SELECT ap.app_id,patient.id, patient.name AS patient_name,
              CONCAT(doctors.first_name,'',doctors.last_name) as doctor_name, ap.doctor_id, ap.status,appointment_date, ap.appointment_time
             FROM appointments as ap
             INNER JOIN patient ON ap.patient_id= patient.id
             INNER JOIN doctors ON ap.doctor_id = doctors.id
-            ORDER BY ap.id ASC";
+            ORDER BY ap.app_id ASC";
         }elseif($user_type=='doctor') {
-        $appoinment_data = "SELECT ap.id,patient.id, patient.name AS patient_name,
+        $appoinment_data = "SELECT ap.app_id,patient.id, patient.name AS patient_name,
         CONCAT(doctors.first_name,'',doctors.last_name) as doctor_name, ap.doctor_id, ap.status,appointment_date, ap.appointment_time
        FROM appointments as ap
        INNER JOIN patient ON ap.patient_id= patient.id
        INNER JOIN doctors ON ap.doctor_id = doctors.id
        WHERE doctors.user_id =$user_id
-       ORDER BY ap.id ASC";
+       ORDER BY ap.app_id ASC";
         }
         elseif($user_type=='patient') {
-            $appoinment_data = "SELECT ap.id,patient.id, patient.name AS patient_name,
+            $appoinment_data = "SELECT ap.app_id,patient.id, patient.name AS patient_name,
             CONCAT(doctors.first_name,'',doctors.last_name) as doctor_name, ap.doctor_id, ap.status,appointment_date, ap.appointment_time
            FROM appointments as ap
            INNER JOIN patient ON ap.patient_id= patient.id
            INNER JOIN doctors ON ap.doctor_id = doctors.id
            WHERE patient.user_id=$user_id
-           ORDER BY ap.id ASC";
+           ORDER BY ap.app_id ASC";
             }
          $app_result = mysqli_query($conn,$appoinment_data); 
          ?>
@@ -223,22 +223,24 @@ ob_end_flush();
                         <?php  if($user_type=='admin' || $user_type=='doctor'){ ?>
                         <td>
                         <form action="appointment_status.php" method="GET" style="display:inline-block; margin:2px;">
-                                <input type="hidden" name="id" value="<?php echo $app['id'] ?>">
+                                <input type="hidden" name="app_id" value="<?php echo $app['app_id'] ?>">
                                 <button type="submit" name="checkin" class="btn btn-outline-danger btn-sm ">Check In</button>
                             </form> 
                             <!-- <a href=""><button type="button" class="btn btn-outline-warning btn-sm">Checkin</button></a> -->
-                            <a href="appointment_edit.php?id=<?php echo $app['id'];?>" class="btn btn-outline-success btn-sm">Edit</a>
+                            <a href="appointment_edit.php?id=<?php echo $app['app_id'];?>" class="btn btn-outline-success btn-sm">Edit</a>
                             
                             <form action="appointment_delete.php" method="POST" id="deleteForm" style="display:inline-block; margin:2px;">
-                                <input type="hidden" name="id" value="<?php echo $app['id'] ?>" class="delete_id">
+                                <input type="hidden" name="app_id" value="<?php echo $app['app_id'] ?>" class="delete_id">
                                 <button type="submit" name="delete" class="btn btn-outline-danger btn-sm deletebtn" data-delete-url="appointment_delete.php">Delete</button>
                             </form> 
-                            <?php }  ?>
+                          
                         </td>
+                        <?php }  ?>
                     </tr>
                     <?php 
                      $sn++;
                         }}
+                        
                       
                 ?>
                 </tbody>

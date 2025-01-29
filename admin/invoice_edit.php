@@ -51,10 +51,32 @@ if (isset($_POST['update'])) {
     }
 
     if (empty(array_filter($errors))) {
-
+        // check  get old status 
+        $payment_status_query = "SELECT payment_status FROM invoice WHERE invoice_id = $invoice_id";
+        $payment_status_result = mysqli_query($conn,$payment_status_query);
+        $payment_row= mysqli_fetch_assoc($payment_status_result);
+        // assigning old value
+        $old_payment_status = $payment_row['payment_status'];
+// udate query
         $update_query = "UPDATE `invoice` SET `patient_id`='$patient',`title`='$in_title',
-            `payment_method`='$payment_method',`amount`='$amount',`payment_status`='$payment_status' WHERE invoice_id='$invoice_id'";
-        if (mysqli_query($conn, $update_query)) {
+            `payment_method`='$payment_method',`amount`='$amount',`payment_status`='$payment_status' WHERE invoice_id=$invoice_id";
+        if( mysqli_query($conn,$update_query)){
+
+            if($old_payment_status==='unpaid' && $payment_status ==='paid'){
+                // insert query payment table
+                $transaction_id = rand(1000000000,9999999999);
+              $insert_payment_table = "INSERT INTO `payment`(`payment_type`, `transaction_id`, `invoice_id`, `patient_id`, `payment_method`, `amount`, `time`)
+              VALUES ('$in_title','$transaction_id','$invoice_id','$patient','$payment_method','$amount',Now())";
+              mysqli_query($conn,$insert_payment_table);
+          }
+        
+       
+        if($old_payment_status==='paid' && $payment_status==='unpaid'){
+            // delete payment table data
+            $delete_query = "DELETE FROM payment WHERE invoice_id= $invoice_id";
+            mysqli_query($conn,$delete_query);
+            
+        }
             $_SESSION['alert'] = "Update Successfully";
             $_SESSION['alert_code'] = "info";
             header('location:invoice_list.php');
@@ -63,8 +85,9 @@ if (isset($_POST['update'])) {
             $_SESSION['alert'] = "Update Failed";
             $_SESSION['alert_code'] = "warning";
         }
-    }
-}
+        }}
+    
+
 ob_end_flush();
 
 ?>

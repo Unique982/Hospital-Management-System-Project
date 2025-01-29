@@ -59,7 +59,7 @@ $user_name = $_SESSION['user_data']['user_name'];
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-white" href="./manage_admit.php">
+            <a class="nav-link text-white" href="./allocate_bed_list.php">
                 <i class="fas fa-user-md"></i>
                 <span> Admit History</span>
             </a>
@@ -160,14 +160,15 @@ $user_name = $_SESSION['user_data']['user_name'];
             <div id="collapse3" class="collapse" aria-labelledby="heading3" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Manage Blood</h6>
-                    <a class="collapse-item" href="./blood_donor_add.php">Blood Add</a>
-                    <a class="collapse-item" href="./blood_donor_list.php">Blood List</a>
+                    <a class="collapse-item" href="./blood_donor_add.php">Blood Donor Add</a>
+                    <a class="collapse-item" href="./blood_donor_list.php">Blood Donor List</a>
+                    <a class="collapse-item" href="./view_blood_bank.php">View Blood Bank</a>
                 </div>
             </div>
         </li>
     <?php } ?>
     <?php
-    if ($user_type === 'admin' || $user_type === 'doctor' || $user_type === 'nurse') {
+    if ($user_type === 'admin' || $user_type === 'nurse') {
 
     ?>
         <li class="nav-item">
@@ -183,6 +184,28 @@ $user_name = $_SESSION['user_data']['user_name'];
                     <a class="collapse-item" href="./bed_list.php">Bed List</a>
                     <a class="collapse-item" href="./allocate_bed_add.php">Bed allotment</a>
                     <a class="collapse-item" href="./allocate_bed_list.php">Bed Allotment List</a>
+                    
+                </div>
+            </div>
+        </li>
+    <?php } ?>
+    <?php
+    if ($user_type === 'doctor') {
+
+    ?>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse4"
+                aria-expanded="true" aria-controls="6">
+                <i class="fas fa-calendar-check"></i>
+                <span>Manage Bed</span>
+            </a>
+            <div id="collapse4" class="collapse" aria-labelledby="heading4" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Manage Bed</h6>
+                 
+                    <a class="collapse-item" href="./allocate_bed_add.php">Bed allotment</a>
+                    <a class="collapse-item" href="./allocate_bed_list.php">Bed Allotment List</a>
+                    
                 </div>
             </div>
         </li>
@@ -212,7 +235,7 @@ $user_name = $_SESSION['user_data']['user_name'];
 
     ?>
         <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse6"
+            <a class="nav-link collapsed" href="manage_report.php" data-toggle="collapse" data-target="#collapse6"
                 aria-expanded="true" aria-controls="collapse6">
                 <i class="fas fa-file-alt"></i>
                 <span>Manage Report</span>
@@ -231,7 +254,7 @@ $user_name = $_SESSION['user_data']['user_name'];
     <?php
     if ($user_type === 'laboratorist') { ?>
     <li class="nav-item">
-            <a class="nav-link text-white" href="add_diagnosis.php">
+            <a class="nav-link text-white" href="manage_prescription.php">
             <i class="fa-solid fa-stethoscope" style="color: #FFF;"></i>
                 <span>Add Diagnosis Report</span>
             </a>
@@ -283,6 +306,11 @@ $user_name = $_SESSION['user_data']['user_name'];
                 </div>
             </div>
         </li>
+        <li class="nav-item">
+            <a class="nav-link text-white" href="./manage_prescription.php">
+                <i class="fas fa-user-md"></i>
+                <span>Provide Mediciation</span>
+            </a>
     <?php }  ?>
     <?php
     if ($user_type === 'admin') {

@@ -5,19 +5,19 @@ include('../database/config.php');
 $user_type = $_SESSION['user_data']['role'];
 $user_id = $_SESSION['id'];
 if($user_type=='admin' || $user_type=='accountant'){
-$select_query = "SELECT i.invoice_id,  p.invoice_id, pt.name,  p.transaction_id,
+   
+$select_query = "SELECT i.invoice_id,i.invoice_num,  p.invoice_id, p.patient_id,pt.name  as petient_name,p.transaction_id,
 p.payment_method,p.amount,p.time,p.payment_type,i.payment_status FROM payment  as p
  LEFT JOIN invoice as i ON p.invoice_id = i.invoice_id
  LEFT JOIN patient as pt on p.patient_id = pt.id
  ORDER BY p.payment_id  DESC
  ";}
 elseif($user_type=='patient'){
-    $select_query = "SELECT i.invoice_id,  p.invoice_id, pt.name,  p.transaction_id,
+    $select_query = "SELECT i.invoice_id,i.invoice_num,  p.invoice_id,p.patient_id, pt.name as petient_name,  p.transaction_id,
 p.payment_method,p.amount,p.time,p.payment_type,i.payment_status, pt.user_id FROM payment  as p
  LEFT JOIN invoice as i ON p.invoice_id = i.invoice_id
- LEFT JOIN patient as pt on p.patient_id = pt.id 
-
- WHERE p.patient_id=$user_id
+ LEFT JOIN patient as pt ON p.patient_id = pt.id 
+ WHERE pt.user_id=$user_id
  ORDER BY p.payment_id  DESC
  ";
 }
@@ -51,16 +51,18 @@ $count = mysqli_num_rows($result);
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
+                     
                             <?php 
                             $sn = +1;
                             if($count >0 ){
                             while($row = mysqli_fetch_assoc($result)){
+                            
                            ?>
+                              <tr>
                             <td><?php echo $sn; ?></td>
-                            <td><?php echo $row['invoice_id'] ?></td>
+                            <td><?php echo $row['invoice_num'] ?></td>
                             <td><?php echo $row['transaction_id'] ?></td>
-                            <td><?php echo $row['name'] ?></td>
+                            <td><?php echo $row['petient_name'] ?></td>
                             <td><?php echo $row['payment_type'] ?></td>
                             <td><?php echo $row['payment_method'] ?></td>
                             <td><?php echo $row['amount'] ?></td>
