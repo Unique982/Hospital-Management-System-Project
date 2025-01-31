@@ -32,6 +32,7 @@ $result = mysqli_query($conn, $select_query);
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <!-- Custom styles for this template-->
     <link href="../assets/css/sb-admin-2.min.css" rel="stylesheet">
+    <script src="https://khalti.com/static/khalti-checkout.js"></script>
 
 </head>
 

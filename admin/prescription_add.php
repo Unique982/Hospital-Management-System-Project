@@ -181,7 +181,7 @@ ob_end_flush(); // output buffering data after header() redirection
             Add Diagnosis Report
         </div>
         <div class="card-body">
-            <form action="" method="POST" enctype="multipart/form-data">
+            <form action="diagnosis_report_add.php" method="POST" enctype="multipart/form-data">
 
                 <div class="form-group">
                     <label for="">Report Type</label>
@@ -191,10 +191,12 @@ ob_end_flush(); // output buffering data after header() redirection
                 </div>
                 <div class="form-group">
                     <label for="">Document Type</label>
-                   <select name="doccument_type" id="" class="form-control">
+                   <select name="document_type" id="" class="form-control">
                     <option selected>Select Document Type</option>
-                    <option value="jpg">Jpg</option>
-                    <option value="pdf">pgd</option>
+                    <option value="pdf">PDF</option>
+                    <option value="image">Image</option>
+                    <option value="excel">Excel</option>
+                    <option value="other">Other</option>
                    </select>
                     <span style='color:red' ;><?php echo $errors['date'] ?></span>
                 </div>
@@ -203,13 +205,14 @@ ob_end_flush(); // output buffering data after header() redirection
                    <input type="file" name="upload_doc" id=""  class="form-control"  placeholder="Report Type">
                     <span style='color:red' ;><?php echo $errors['description'] ?></span>
                 </div>
+                <input type="hidden" name="prescription_id" value="<?php echo $row['id'] ?>">
                 <div class="form-group">
                     <label for="">Description</label>
                   <textarea name="des" id="" class="form-control"></textarea>
                     <span style='color:red' ;><?php echo $errors['description'] ?></span>
                 </div>
                 <div class="form-group">
-                    <button type="submit" name="add_bed" class="btn btn-outline-primary">Add Diagnosis Report</button>
+                    <button type="submit" name="add_diagnosis" class="btn btn-outline-primary">Add Diagnosis Report</button>
                 </div>
             </form>
         </div>

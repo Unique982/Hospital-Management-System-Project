@@ -136,21 +136,21 @@ if (isset($_POST['login'])) {
 <style>
     body {
         font-family: 'Times New Roman';
-        background-image: url("../assets/images/Tiny doctors and patients near hospital flat vector illustration.jpg");
-        background-repeat: no-repeat;
-        background-size: cover;
+        background-image: url("https://acsonnet.com/wp-content/uploads/2021/07/Hospital-Management-Software.jpg");
+       background-size: cover;
         background-position: center;
+       background-repeat: no-repeat;
 
     }
 </style>
 
 <body>
-    <div class="container mt-5 ">
-        <div class="row justify-content-center">
+    <div class="container d-flex justify-content-center align-items-center vh-100">
+        <div class="row justify-content-center w-100">
             <div class="col-xs-12 col-sm-8 col-md-6 col-lg-6">
                 <div class="card shadow">
                     <div class="card-header text-center text-primary p-2">
-                        <h1> Login Page</h1>
+                        <h4> Login Page</h4>
                     </div>
                     <div class="card-body">
                         <form action="" method="post">

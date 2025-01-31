@@ -1,6 +1,15 @@
 <?php
 include('../database/config.php');
 session_start();
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require 'PHPMailer/src/Exception.php';
+require 'PHPMailer/src/PHPMailer.php';
+require 'PHPMailer/src/SMTP.php';
+
+
+
 $errors = [
   'username' =>'',
   'name' => '',
@@ -22,7 +31,8 @@ if (isset($_POST['add_patient'])) {
   $pt_age = mysqli_real_escape_string($conn,trim($_POST['pt_age']));
   $pt_sex =isset($_POST['pt_sex']) ? mysqli_real_escape_string($conn, trim($_POST['pt_sex'])):'';
   $pt_blood =isset($_POST['pt_blood']) ? mysqli_real_escape_string($conn, trim($_POST['pt_blood'])):'';
-  $pt_password = mysqli_real_escape_string($conn, password_hash($_POST['pt_password'], PASSWORD_BCRYPT));
+  $plan_password= $_POST['pt_password'];
+  $pt_password = mysqli_real_escape_string($conn, password_hash($plan_password,PASSWORD_BCRYPT));
 
   // Regular expressions
   $namePattern = "/^[a-zA-Z\s]+$/";
@@ -102,7 +112,7 @@ $errors['phone'] = "Please enter a valid phone number";
     // check user_tbal is record exists
    $check = "SELECT user_email FROM user_tbl WHERE user_email ='$pt_email'";
    $check_result = mysqli_query($conn,$check);
-   if(mysqli_num_rows($check_result)< 0){
+   if(mysqli_num_rows($check_result) < 0){
      $_SESSION['alert'] = 'User already exists';
      $_SESSION ['alert_code'] = 'info';
      header('location:index.php');
@@ -117,20 +127,67 @@ $errors['phone'] = "Please enter a valid phone number";
      $insert_pateint = "INSERT INTO patient (`user_id`, `name`, `age`, `sex`, `blood_group`, `address`, `phone`)
      VALUES('$user_id','$pt_name','$pt_age','$pt_sex','$pt_blood','$pt_address','$pt_phone')";
      if(mysqli_query($conn,$insert_pateint)){
-       $_SESSION['alert'] = "Register Successfully";
-       $_SESSION['alert_code'] = "success";
-       header('location:index.php');
-       exit();
-             }
-     else{
-       $_SESSION['alert'] = 'falied';
-       $_SESSION['alert_code'] = 'error';
+            
+//Create an instance; passing `true` enables exceptions
+$mail = new PHPMailer(true);
+$token = bin2hex(random_bytes(16));
+$website_link = "http://192.168.18.8/Project%20List/Hospital%20Management%20System%20Project/admin/index.php?token=".$token;
+try {
+    //Server settings
+   
+    $mail->isSMTP();           
+                                     //Send using SMTP
+    $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
+    $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
+    $mail->Username   = 'khemrajneupane111@gmail.com';                     //SMTP username
+    $mail->Password   = 'dlps wtrg ctyt jgwt';                               //SMTP password
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;            //ENCRYPTION_SMTPS 465 - Enable implicit TLS encryption
+    $mail->Port       = 587;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
-     }
-   }
- }
+    //Recipients
+    $mail->setFrom('khemrajneupane111@gmail.com', 'Unique Neupane');
+    $mail->addAddress($pt_email, $username);     //Add a recipient
+  
+
+    //Content
+    $mail->isHTML(true);                                  //Set email format to HTML
+    $mail->Subject = 'Register of Hospital Management System';
+    $mail->Body    = '<p>Welcome,'.$username.'</p>
+    <p>Thank you for registering at our hospital. Your information has been successfully added to our system.<p>
+    <span>UserName :</span><p>'.$username.'</p> <br>
+     <span>Email : </span><p>'.$pt_email.'</p><br>
+      <span>Password :</span><p>'.$plan_password.'<b>
+      <br> 
+      <p> click the link below to log in to your account:</p>
+      <a href='.$website_link.'>Login in Your Account
+    
+    ';
+    if( $mail->send())
+{
+    $_SESSION['alert'] ="Send Email Successfully";
+    $_SESSION['alert_code'] ="success";
+    header('location:index.php');
+    exit();
+}
+else{
+    $_SESSION['alert'] ="Email could not be sent. Mailer Error: {$mail->ErrorInfo}";
+    $_SESSION['alert_code'] ="error";
+    header('location:index.php');
+    exit();
+}
+} catch (Exception $e) {
+    $_SESSION['alert'] ="Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+    $_SESSION['alert_code'] ="error";
+    header('location:index.php');
+    exit();
 }
 }
+}
+}
+}
+}
+
+
 ?>
 
 
@@ -157,12 +214,12 @@ $errors['phone'] = "Please enter a valid phone number";
 </style>
 
 <body>
-  <div class="container mt-5 ">
-    <div class="row justify-content-center">
+  <div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="row justify-content-center w-100">
       <div class="col-md-8">
         <div class="card shadow">
           <div class="card-header text-center text-primary p-2">
-            <h1> Register Form</h1>
+            <h3> Register Form</h3>
           </div>
           <div class="card-body">
             <form action="" method="POST" enctype="multipart/form-data" autocapitalize="off" >             <div class="row">

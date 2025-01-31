@@ -2,8 +2,8 @@
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
-$user_type = $_SESSION['user_data']['role'];
-$user_name = $_SESSION['user_data']['user_name'];
+$user_type = $_SESSION['user_data']['role'] ?? null;
+$user_name = $_SESSION['user_data']['user_name'] ?? null;
  
 ?>
 <!-- Sidebar -->

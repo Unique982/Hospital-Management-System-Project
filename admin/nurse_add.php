@@ -3,6 +3,15 @@ ob_start();
 include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require 'PHPMailer/src/Exception.php';
+require 'PHPMailer/src/PHPMailer.php';
+require 'PHPMailer/src/SMTP.php';
+
+
 $errors =[
     'username' =>'',
     'email' =>'',
@@ -21,7 +30,8 @@ if(isset($_POST['add'])){
       $address = mysqli_real_escape_string($conn, $_POST['address']);
       $gender = mysqli_real_escape_string($conn,$_POST['gender']);
       $qualification = mysqli_real_escape_string($conn,$_POST['qualification']);
-      $password = mysqli_real_escape_string($conn, password_hash( $_POST['password'],PASSWORD_BCRYPT));
+      $plan_password = $_POST['password'];
+      $password = mysqli_real_escape_string($conn, password_hash( $plan_password,PASSWORD_BCRYPT));
      
        if(empty($username)){
         $errors['username'] ='Username is required';
@@ -88,7 +98,7 @@ if(mysqli_num_rows($check_result) > 0){
        // check data same xa ki nai doctors tabls
        $sql = "SELECT user_id,  phone FROM nurse WHERE user_id = '$user_id' OR phone= '$phone'";
        $result = mysqli_query($conn, $sql) or die("Query failed");
-       if(mysqli_num_rows($result) <0){
+       if(mysqli_num_rows($result) > 0){
     $_SESSION['alert'] ="Nurse already exists";
     $_SESSION['alert_code'] ="info";
     header('location:manage_nurse.php');
@@ -99,20 +109,64 @@ if(mysqli_num_rows($check_result) > 0){
 VALUES('$user_id','$phone','$address','$gender','$qualification')";
          if(mysqli_query($conn,$insert_query)){
             
-    $_SESSION['alert'] ="Add Nurse Successfully ";
+          
+//Create an instance; passing `true` enables exceptions
+$mail = new PHPMailer(true);
+$token = bin2hex(random_bytes(16));
+$website_link = "http://192.168.18.8/Project%20List/Hospital%20Management%20System%20Project/admin/index.php?token=".$token;
+try {
+    //Server settings
+   
+    $mail->isSMTP();           
+                                     //Send using SMTP
+    $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
+    $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
+    $mail->Username   = 'khemrajneupane111@gmail.com';                     //SMTP username
+    $mail->Password   = 'dlps wtrg ctyt jgwt';                               //SMTP password
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;            //ENCRYPTION_SMTPS 465 - Enable implicit TLS encryption
+    $mail->Port       = 587;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+
+    //Recipients
+    $mail->setFrom('khemrajneupane111@gmail.com', 'Unique Neupane');
+    $mail->addAddress($email, $username);     //Add a recipient
+  
+
+    //Content
+    $mail->isHTML(true);                                  //Set email format to HTML
+    $mail->Subject = 'Register of Hospital Management System';
+    $mail->Body    = '<h3>Hello, You are new staff add successfully
+    <span>UserName :</span><b>'.$username.'</b> <br>
+     <span>Email : </span><b>'.$email.'</b><br>
+      <span>Password :</span><b>'.$plan_password.'<b><br>
+      <br>
+      <p> click the link below to log in to your account:</p>
+      <a href='.$website_link.'>Login in Your Account
+    
+    
+    ';
+    if( $mail->send())
+{
+    $_SESSION['alert'] ="Send Email Successfully";
     $_SESSION['alert_code'] ="success";
     header('location:manage_nurse.php');
     exit();
-  
-         }
-         else{
-           
-    $_SESSION['alert'] ="Failed";
+}
+else{
+    $_SESSION['alert'] ="Email could not be sent. Mailer Error: {$mail->ErrorInfo}";
     $_SESSION['alert_code'] ="error";
-         }
-        }
-    }
- }
+    header('location:manage_nurse.php');
+    exit();
+}
+} catch (Exception $e) {
+    $_SESSION['alert'] ="Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+    $_SESSION['alert_code'] ="error";
+    header('location:manage_nurse.php');
+    exit();
+}
+}
+}
+}
+}
 }
 
 ob_end_flush();
@@ -155,7 +209,7 @@ ob_end_flush();
                     <option selected>Select Gender</option>
                     <option value="male" <?php echo isset($gender) && $gender=='male' ? 'selected':'' ?>>Male</option>
                     <option value="female" <?php echo isset($gender) && $gender=='female' ? 'selected':'' ?>>Female</option>
-                    <option value="other" <?php echo isset($gender) && $gender='other' ? 'selected':'' ?>>Other</option>
+                    <option value="other" <?php echo isset($gender) && $gender=='other' ? 'selected':'' ?>>Other</option>
                    </select>
                     <span style='color:red' ;><?php echo $errors['gender'] ?></span>
                 </div>

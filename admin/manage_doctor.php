@@ -59,7 +59,7 @@ $count_row = mysqli_num_rows($result1);
                             <tr>
                                 <?php
                                 
-                                $sn = +1;
+                                $sn = 1;
                                 if($count_row > 0){
                                 while ($row = mysqli_fetch_assoc($result1)) { 
                                  if($user_type=='admin'){
@@ -81,7 +81,7 @@ $count_row = mysqli_num_rows($result1);
                             </tr>
                         <?php
                                  
-                                    $sn++;
+                                    
                                  }
                                  elseif($user_type=='patient'){  ?>
                                  <tr>
@@ -92,11 +92,10 @@ $count_row = mysqli_num_rows($result1);
                                  
                                 </tr>
                                 <?php
-
+$sn++;
                                  }
                                  }
                                 }
-                            
                             else {
                                 echo "<tr><td colspan='7' class='text-center'>No record</td></tr>";
                             }

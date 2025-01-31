@@ -165,7 +165,6 @@ WHERE p.id= $id";
     </div>
     
      <!-- Diagnosis Report  -->
-      
 
      <div class="card mb-4">
         <div class="card-header">
@@ -189,54 +188,62 @@ WHERE p.id= $id";
                 </table>
             </div>
     </div>
-    <?php if($user_type=='doctor' ||  $user_type=='laboratorist'){ ?>
     <div class="card mb-4">
         <div class="card-header">
             Add Diagnosis Report
         </div>
+        <?php 
+      $select= "SELECT * FROM `diagnosis_report` WHERE 
+        prescription_id = $id";
+         $result = mysqli_query($conn, $select) or die("Query Failed");
+         if (mysqli_num_rows($result) > 0) {
+             $row = mysqli_fetch_assoc($result);
+         ?>
         <div class="card-body">
-            <form action="" method="POST" enctype="multipart/form-data">
-
+            <form action="diagnosis_report_add.php" method="POST" enctype="multipart/form-data">
+              
                 <div class="form-group">
                     <label for="">Report Type</label>
                     <span class="badge bg-primary text-white mt-2 mb-2 py-2" >report_type can be x-ray, blood-test etc</span>
-                   <input type="text" name="report_type" id=""  placeholder="Report Type" class="form-control">
+                   <input type="text" name="report_type" id=""  placeholder="Report Type" class="form-control" value="<?php echo $row['report_type'] ?>">
                     <span style='color:red' ;><?php echo $errors['description'] ?></span>
                 </div>
                 <div class="form-group">
                     <label for="">Document Type</label>
-                   <select name="doccument_type" id="" class="form-control">
+                   <select name="document_type" id="" class="form-control">
                     <option selected>Select Document Type</option>
-                    <option value="jpg">Jpg</option>
-                    <option value="pdf">pgd</option>
+                    <option value="pdf" <?php echo ($row['document_type'] == 'pdf') ? 'selected' : ''; ?>>PDF</option>
+                    <option value="image" <?php echo($row['document_type']=='image') ? 'selected' : ''; ?>>Image</option>
+                    <option value="excel"<?php echo($row['document_type']=='excel') ? 'selected' : ''; ?>>Excel</option>
+                    <option value="other" <?php echo($row['document_type']=='other') ? 'selected' : ''; ?>>Other</option>
                    </select>
                     <span style='color:red' ;><?php echo $errors['date'] ?></span>
                 </div>
                 <div class="form-group">
                     <label for="">Upload Document</label>
-                   <input type="file" name="upload_doc" id=""  class="form-control"  placeholder="Report Type">
+                   <input type="file" name="upload_doc" id=""  class="form-control"  placeholder="Report Type" value="<?php echo $row['file_name'] ?>">
                     <span style='color:red' ;><?php echo $errors['description'] ?></span>
+                </div>
+                <div class="form-group">
+                <input type="hidden" name="prescription_id" value="<?php echo $row['id'] ?>">
                 </div>
                 <div class="form-group">
                     <label for="">Description</label>
-                  <textarea name="des" id="" class="form-control"></textarea>
+                  <textarea name="des" id="" class="form-control" value="<?php echo $row['description'] ?>"></textarea>
                     <span style='color:red' ;><?php echo $errors['description'] ?></span>
                 </div>
                 <div class="form-group">
-                    <button type="submit" name="add_bed" class="btn btn-outline-primary">Add Diagnosis Report</button>
+                    <button type="submit" name="add_diagnosis" class="btn btn-outline-primary">Add Diagnosis Report</button>
                 </div>
             </form>
         </div>
+        <?php } ?>
     </div>
 </div>
-<?php }  ?>
 </div>
 </div>
 </div>
 </div>
-
-
-
     <?php
     include('includes/scripts.php');
     include('includes/footer.php');

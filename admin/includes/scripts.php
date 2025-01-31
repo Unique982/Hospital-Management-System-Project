@@ -96,4 +96,20 @@ swal({
     }
 </script> -->
 
+<script src="khalti-client.js" type="text/javascript"></script>
+<link rel="stylesheet" href="https://rawgit.com/google/code-prettify/master/styles/sons-of-obsidian.css" />
+<script type="text/javascript">
+    $(function(){
+        // just show the live js here.
+        $.ajax({url: "khalti-client.js", success: function(resp){
+            $("#js-code-here").text(resp.trim());
+            addEventListener('load', function(event) { PR.prettyPrint(); }, false);
+        }, dataType: 'html'});
+        $.get({url: "example.js", success: function(resp){
+            $("#js-example-here").text(resp.trim());
+            addEventListener('load', function(event) { PR.prettyPrint(); }, false);
+        }, dataType: 'html'});
+    });
+</script>
+
 
