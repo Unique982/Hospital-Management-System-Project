@@ -9,31 +9,35 @@ $errors = [
 
 if (isset($_POST['submit_otp'])) {
    $otp_code =trim($_POST['otp_code']);
- 
+ $email = $_SESSION['user_email'];
 
    if (empty($otp_code)) {
     $errors['otp_code'] = "Please enter otp number";
-  }else {
+  }
     
-    $select_query = "SELECT otp_code FROM user_tbl";
+    $select_query = "SELECT otp_code,otp_exp  FROM user_tbl WHERE user_email ='$email' AND otp_code = '$otp_code'";
     $result = mysqli_query($conn,$select_query);
     if(mysqli_num_rows($result) > 0){
       $otp_data = mysqli_fetch_assoc($result);
       $stored_code = $otp_data['otp_code'];
+      $otp_exp = $otp_data['otp_exp'];
 
-      if($otp_code==$stored_code){
+      if(strtotime($otp_exp) > time()){
         $_SESSION['alert'] = "OTP verified! You can reset password";
         $_SESSION['alert_code'] = "success";
         header("location:new_password.php");
         exit();
-      }
-   }  else{
-        $_SESSION['alert'] = "invalid or expired OTP!";
+      } else{
+        $_SESSION['alert'] =  "Otp code has expired. Please request a new code";
         $_SESSION['alert_code'] = "error";
-        header("location:index.php");
+        header("location:forgot_password.php");
         exit();
+     }
+    } else{
+      $errors['otp_code'] = "Invalid OTP! Please enter correct OTP!";
+      
+
     }
-}
 }
 
 
@@ -95,9 +99,10 @@ if (isset($_POST['submit_otp'])) {
   </div>
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <?php
+    include('includes/scripts.php');
+
+    ?>
 </body>
 
 </html>

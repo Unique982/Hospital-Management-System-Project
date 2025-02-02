@@ -80,44 +80,13 @@ if (isset($_POST['login'])) {
                 $_SESSION['alert'] = "Invalid username or email";
                 $_SESSION['alert_code'] = "warning";
             }
-            // } else if ($user_type === 'patient') {
-            //     $sql1 = "SELECT name, email, password FROM patient 
-            //              WHERE (name = '$user_name_or_email' OR email = '$user_name_or_email')";
-            //     $result2 = mysqli_query($conn, $sql1);
-
-            // if(mysqli_num_rows($result2) > 0){
-            //     $patient_data = mysqli_fetch_assoc($result2);
-            //     if(password_verify($password, $patient_data['password'])){
-            //         $_SESSION['patient_data'] = $patient_data;
-            //         $user_name = $patient_data['name'];
-            //         $_SESSION['user_data'] = $patient_data;
-            //         $user_type = 'patient';// user Type 
-            //         $status = 'active';
-            //         $ip_address = $local_ip = getHostByName(getHostName());
-            //         $time = date('Y-m-d H:i:s');
-            //         $insert_query1 = "INSERT INTO activity_log(user_name, user_type, status, ip_address, time) 
-            //                           VALUES('$user_name', '$user_type', '$status', '$ip_address', '$time')";
-            //         if(mysqli_query($conn, $insert_query1)){
-            //             header("location:../patient/dashboard.php");
-            //             exit();
-            //         } else {
-            //             $_SESSION['alert'] = "Activity Log insertion failed: " . mysqli_error($conn);
-            //             $_SESSION['alert_code'] = "warning";
-            //         }
-            //       else {
-            //             $_SESSION['alert'] = "Invalid Password";
-            //             $_SESSION['alert_code'] = "warning";
-            //         }
-            //     } else {
-            //         $_SESSION['alert'] = "Invalid Username or email";
-            //         $_SESSION['alert_code'] = "warning";
-            //     }
-            // } else {
+        } else{
             $_SESSION['alert'] = "Please Select a Valid UserType";
             $_SESSION['alert_code'] = "warning";
         }
     }
 }
+
 ?>
 
 

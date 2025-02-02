@@ -1,6 +1,7 @@
 <?php
-include('../database/config.php');
 session_start();
+include('../database/config.php');
+
 
 $errors = [
   'new_password' => '',
@@ -28,7 +29,7 @@ if(isset($_POST['reset_password'])){
  if(mysqli_query($conn,$update_query)){
   $_SESSION['alert'] = "Password Reset Successfully";
   $_SESSION['alert_code'] = "success";
-  header('location:index.php');
+  header('Location: dashboard.php');
   exit();
  } else{
   $_SESSION['alert'] = "Failed";
