@@ -37,13 +37,13 @@ if(empty($cash_history)){
     $errors['cash_history'] = "case history is required";
 }
 if(!preg_match('/^[a-zA-Z\s]+$/',$cash_history)){
-    $errors['cash_history'] ="only use letter,number and space allowed";
+    $errors['cash_history'] ="only use letter space allowed";
 }
 if(empty($medication)){
     $errors['medication'] = "medication is required";
 }
 if(!preg_match('/^[a-zA-Z0-9]+$/',$medication)){
-    $errors['medication'] = "only use letter number and space allowed";
+    $errors['medication'] = "only use letter space allowed";
 }
 if(empty($medication_form_pharamacist)){
     $errors['medication_form_pharamacist'] = "medication form pharamacist is required";
@@ -94,6 +94,7 @@ WHERE p.id= $id";
                 $result = mysqli_query($conn, $select_query) or die("Query Failed");
                 if (mysqli_num_rows($result) > 0) {
                     $row = mysqli_fetch_assoc($result);
+                    $patient_id =$row['patient_id'];
                 ?>
                 <div class="card-body">
                     <form action="" method="POST" enctype="multipart/form-data">
@@ -164,12 +165,18 @@ WHERE p.id= $id";
         </div>
     </div>
     
+    <?php if($user_type==='laboratorist'){ ?>
      <!-- Diagnosis Report  -->
+     <?php
+         $id = $_GET['id']; 
+      $select= "SELECT * FROM `diagnosis_report` WHERE 
+        prescription_id = $id";
+         $result = mysqli_query($conn, $select) or die("Query Failed");
+            $row = mysqli_fetch_assoc($result);
+            
+         ?>
 
-     <div class="card mb-4">
-        <div class="card-header">
-            Diagnosis Report
-        </div>
+    
         <div class="table-responsive ">
                 <table class="table table-bordered">
                     <thead>
@@ -187,63 +194,81 @@ WHERE p.id= $id";
                     </thead>
                 </table>
             </div>
-    </div>
+
     <div class="card mb-4">
         <div class="card-header">
             Add Diagnosis Report
         </div>
-        <?php 
-      $select= "SELECT * FROM `diagnosis_report` WHERE 
-        prescription_id = $id";
-         $result = mysqli_query($conn, $select) or die("Query Failed");
-         if (mysqli_num_rows($result) > 0) {
-             $row = mysqli_fetch_assoc($result);
-         ?>
+       
         <div class="card-body">
-            <form action="diagnosis_report_add.php" method="POST" enctype="multipart/form-data">
-              
+            <form action="diagnosis_report_add.php?id=<?php echo $id ?>" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="prescription_id" value="<?php echo $id; ?>">
+            <input type="hidden" name="patient_id" value="<?php echo $patient_id ?>">
                 <div class="form-group">
                     <label for="">Report Type</label>
                     <span class="badge bg-primary text-white mt-2 mb-2 py-2" >report_type can be x-ray, blood-test etc</span>
-                   <input type="text" name="report_type" id=""  placeholder="Report Type" class="form-control" value="<?php echo $row['report_type'] ?>">
-                    <span style='color:red' ;><?php echo $errors['description'] ?></span>
+                   <input type="text" name="report_type" id=""  placeholder="Report Type" class="form-control" value=<?php echo isset($row['report_type']) ? $row['report_type']:''; ?>>
+                   
+                   <span style='color:red';><?php  if(isset($_SESSION['error']['report_type'])){ echo$_SESSION['error']['report_type']; } ?></span>
                 </div>
                 <div class="form-group">
                     <label for="">Document Type</label>
                    <select name="document_type" id="" class="form-control">
                     <option selected>Select Document Type</option>
-                    <option value="pdf" <?php echo ($row['document_type'] == 'pdf') ? 'selected' : ''; ?>>PDF</option>
-                    <option value="image" <?php echo($row['document_type']=='image') ? 'selected' : ''; ?>>Image</option>
-                    <option value="excel"<?php echo($row['document_type']=='excel') ? 'selected' : ''; ?>>Excel</option>
-                    <option value="other" <?php echo($row['document_type']=='other') ? 'selected' : ''; ?>>Other</option>
+                    <option value="pdf"<?php  echo isset($row['document_type']) && $row['document_type'] =='pdf' ?  'selected' : '' ;?>>PDF</option>
+                    <option value="image"<?php  echo isset($row['document_type'])&& $row['document_type'] =='image' ? 'selected' :'' ;?> >Image</option>
+                    <option value="excel" <?php  echo isset($row['document_type']) && $row['document_type']=='excel' ? 'selected' :'' ;?>>Excel</option>
+                    <option value="other" <?php  echo isset($row['document_type']) && $row['document_type'] =='other' ? 'selected' :'' ;?>>Other</option>
                    </select>
-                    <span style='color:red' ;><?php echo $errors['date'] ?></span>
+                   <span style='color:red';><?php  if(isset( $_SESSION['error']['document_type'] )){ echo $_SESSION['error']['document_type'] ; } ?></span>
                 </div>
                 <div class="form-group">
                     <label for="">Upload Document</label>
-                   <input type="file" name="upload_doc" id=""  class="form-control"  placeholder="Report Type" value="<?php echo $row['file_name'] ?>">
-                    <span style='color:red' ;><?php echo $errors['description'] ?></span>
+                   <input type="file" name="upload_doc" id=""  class="form-control"  placeholder="Report Type" value="<?php echo isset($row['file_name']) ? $row['file_name']:'' ?>">
+                  
+                   <?php if(!empty($row['file_name'])) {
+                  // file extcheck 
+                  $file_ext = pathinfo($row['file_name'], PATHINFO_EXTENSION);
+                  $images_ext = ["jpg", "png", "jpeg"];
+                  $exl =["xls","xlsx"];
+                  $pdf_ext = ['pdf'];
+                   ?>
+                   <div class="mt-2">
+                    <?php if(in_array($file_ext,$images_ext)){?>
+                        <img src="<?php echo $row['file_name']; ?>" alt="Upload Doc" class="img-fluid mt-2" style="max-width: 500px;">
+                   <?php  } elseif(in_array($file_ext,$pdf_ext)) { ?>
+                    <embed src="<?php echo $row['file_name']; ?>" type="application/pdf" width="800px" height="500px" >
+                    
+
+                 <?php } elseif(in_array($file_ext,$exl)){ ?>
+                    <a href="<?php echo $row['file_name']; ?>" class="btn btbn-primary"> <i class="fa fa-download" aria-hidden="true">Download</i></a>
+                <?php } else { ?>
+                <a href="<?php echo ($row['file_name']=='other')? 'selected' : $row['file_name']; ?>" class="btn btbn-primary"> <i class="fa fa-download" aria-hidden="true"></i>Download</a>
+
+                <?php 
+                } ?>
                 </div>
-                <div class="form-group">
-                <input type="hidden" name="prescription_id" value="<?php echo $row['id'] ?>">
+                   <?php }  ?>   
+                   <span style='color:red';><?php  if(isset( $_SESSION['error']['upload_doc'] )){ echo $_SESSION['error']['upload_doc'] ; } ?></span>
                 </div>
                 <div class="form-group">
                     <label for="">Description</label>
-                  <textarea name="des" id="" class="form-control" value="<?php echo $row['description'] ?>"></textarea>
-                    <span style='color:red' ;><?php echo $errors['description'] ?></span>
+                  <textarea name="des" id="" class="form-control"><?php echo isset($row['description']) ?  $row['description'] :'' ?></textarea>
+                  <span style='color:red';><?php  if(isset($_SESSION['error']['des'] )){ echo$_SESSION['error']['des'] ; } ?></span>
                 </div>
                 <div class="form-group">
-                    <button type="submit" name="add_diagnosis" class="btn btn-outline-primary">Add Diagnosis Report</button>
+                    <button type="submit" name="add_diagnosis" class="btn btn-outline-primary">
+                   <?php echo ($row)? "Update": "Add Diagnosis Report"; ?>
+                    </button>
                 </div>
             </form>
-        </div>
-        <?php } ?>
-    </div>
+       
+        <?php } 
+            ?>
+           
 </div>
 </div>
-</div>
-</div>
-</div>
+
     <?php
     include('includes/scripts.php');
     include('includes/footer.php');

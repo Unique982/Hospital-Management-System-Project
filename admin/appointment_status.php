@@ -13,5 +13,18 @@ if(isset($_GET['checkin'])){
     }
 
 }
+if(isset($_GET['Cancel'])){
+    $app_id = $_GET['app_id'];
+
+    $update_query = "UPDATE `appointments` SET `status` = 'cancel' WHERE `app_id` = $app_id";
+    $result = mysqli_query($conn,$update_query);
+    if($result){
+        header('location:appointment_list.php');
+    }
+    else{
+        echo "Failed to update";
+    }
+
+}
 
 ?>

@@ -145,7 +145,7 @@ try {
     ';
     if( $mail->send())
 {
-    $_SESSION['alert'] ="Send Email Successfully";
+    $_SESSION['alert'] ="Successfully";
     $_SESSION['alert_code'] ="success";
     header('location:manage_laboratorists.php');
     exit();

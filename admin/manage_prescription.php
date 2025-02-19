@@ -7,7 +7,7 @@ include('../database/config.php');
 $user_type = $_SESSION['user_data']['role'];
 $user_id = $_SESSION['id'];
 
-if ($user_type == 'admin' || $user_type='pharmacist') {
+if ($user_type == 'admin' || $user_type=='pharmacist' || $user_type==='laboratorist') {
     $select_query = "SELECT p.id, p.case_history,p.medication,p.medication_form_pharamcist,p.description,
      p.date,CONCAT(d.first_name,'',d.last_name)  As doctor, pt.name AS patient FROM prescription as p
      LEFT JOIN doctors as d ON p.doctor_id = d.id
@@ -67,16 +67,23 @@ ob_end_flush();
                                     <td><?php echo $sn; ?></td>
                                     <td><?php echo $record['patient'] ?></td>
                                     <td><?php echo $record['doctor']  ?></td>
-
                                     <td><?php echo $record['date'] ?> </td>
-                                   
-                                        <td><a href="prescription_view.php?id=<?php echo $record['id'] ?>"><button type="button" class="btn btn-outline-warning btn-sm">View</button></a>
-                                        <a href="prescription_edit.php?id=<?php echo $record['id'] ?>"><button type="button" class="btn btn-outline-warning btn-sm">Add Diagnosis Report</button></a>  
-                                        <a href="prescription_edit.php?id=<?php echo $record['id'] ?>" class="btn btn-outline-success btn-sm">Edit</a>
+         
+                                        <td>
+                                        <?php if($user_type=='patient'|| $user_type=='pharmacist'){ ?>
+                                            <a href="prescription_view.php?id=<?php echo $record['id'] ?>"><button type="button" class="btn btn-outline-warning btn-sm">View</button></a>
+                                       <?php  } ?> 
+                                       <?php if($user_type=='laboratorist'){ ?>
+                                       <a href="prescription_edit.php?id=<?php echo $record['id'] ?>"><button type="button" class="btn btn-outline-warning btn-sm">Add Diagnosis Report</button></a>  
+                                        
+                                       <?php }  ?>
+                                       <?php if($user_type=='doctor'){ ?>
+                                       <a href="prescription_edit.php?id=<?php echo $record['id'] ?>" class="btn btn-outline-success btn-sm">Edit</a>
                                         <form action="prescription_delete.php" method="POST" id="deleteForm" style="display:inline-block; margin:2px;">
                                                 <input type="hidden" name="id" value="<?php echo $record['id'] ?>" class="delete_id">
                                                 <button type="submit" name="delete" class="btn btn-outline-danger btn-sm deletebtn" data-delete-url="prescription_delete.php">Delete</button>
                                             </form>
+                                            <?php }  ?>
                                         </td>
                         </tr>
                 <?php

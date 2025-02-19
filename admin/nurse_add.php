@@ -3,6 +3,10 @@ ob_start();
 include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
+require '../vendor/autoload.php';
+
+use Egulias\EmailValidator\EmailValidator;
+use Egulias\EmailValidator\Validation\DNSCheckValidation;
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -43,15 +47,23 @@ if(isset($_POST['add'])){
        if(empty($email)){
         $errors['email'] ='Email is required';
        }
-       elseif(!preg_match('/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/',$email)){
+       elseif(!preg_match('/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i',$email)){
         $errors['email'] ='Invalid Email';
        }
+      else{
+        $validation = new EmailValidator();
+        $isValid = $validation->isValid($email,new DNSCheckValidation());
+        if(!$isValid){
+           
+        $errors['email'] = "Your Email domain does not exist or cannot recive emails.";
+      }
+    }
        // phone number
        if(empty($phone)){
         $errors['phone'] ='Phone number is required';
        }
-       elseif(!preg_match('/^\d{10}$/',$phone)){
-        $errors['phone'] ='Please enter a valid phone number';
+       elseif(!preg_match('/^(97|98)[0-9]{8}$/',$phone)){
+        $errors['phone'] ='Invalid phone number format.It must start 97 or 98';
        }
        
        //address 
@@ -146,7 +158,7 @@ try {
     ';
     if( $mail->send())
 {
-    $_SESSION['alert'] ="Send Email Successfully";
+    $_SESSION['alert'] ="Add Successfully";
     $_SESSION['alert_code'] ="success";
     header('location:manage_nurse.php');
     exit();
@@ -168,7 +180,6 @@ else{
 }
 }
 }
-
 ob_end_flush();
 ?>
 <div class="container-fluid">
@@ -177,7 +188,7 @@ ob_end_flush();
         <div class="col-12">
             <div class="card mb-4">
                 <div class="card-header">
-                   Add New Doctor
+                   Add New Nurse
                 </div>
                 <div class="card-body">
                 <form action="" method="POST" class="needs-validation" novalidate>

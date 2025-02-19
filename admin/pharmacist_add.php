@@ -30,7 +30,8 @@ if(isset($_POST['add'])){
       $address = mysqli_real_escape_string($conn, $_POST['address']);
       $gender = mysqli_real_escape_string($conn,$_POST['gender']);
       $qualification = mysqli_real_escape_string($conn,$_POST['qualification']);
-      $password = mysqli_real_escape_string($conn, password_hash( $_POST['password'],PASSWORD_BCRYPT));
+      $plan_password = $_POST['password'];
+      $password = mysqli_real_escape_string($conn, password_hash( $plan_password,PASSWORD_BCRYPT));
      
        if(empty($username)){
         $errors['username'] ='Username is required';

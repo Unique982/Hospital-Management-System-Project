@@ -242,11 +242,6 @@ include("includes/navbar.php");
         </div>
     </div>
 
-
-
-
-
-
     <?php
     include('includes/scripts.php');
         include("includes/footer.php");

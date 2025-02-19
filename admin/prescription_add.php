@@ -102,7 +102,7 @@ ob_end_flush(); // output buffering data after header() redirection
                         </div>
                         <div class="form-group">
                             <label for=""> Patient Name</label>
-                            <select name="patient" id="" class="form-control">
+                            <select name="patient" id="patient" class="form-control">
                                 <option selected>Select Patient</option>
                                 <?php
                                 $select_query_patient_table = "SELECT * FROM patient";
@@ -152,76 +152,8 @@ ob_end_flush(); // output buffering data after header() redirection
     </div>
 
 
-    <!-- Diagnosis Report  -->
+</div>
 
-    <div class="card mb-4">
-        <div class="card-header">
-            Diagnosis Report
-        </div>
-        <div class="table-responsive ">
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Report Type</th>
-                            <th>Document Type</th>
-                            <th>Download</th>
-                            <th>Description</th>
-                            <th>Date</th>
-                            <th>Laboratorist</th>
-                            <th>Option</th>
-                          
-                        </tr>
-                    </thead>
-                </table>
-            </div>
-    </div>
-    <div class="card mb-4">
-        <div class="card-header">
-            Add Diagnosis Report
-        </div>
-        <div class="card-body">
-            <form action="diagnosis_report_add.php" method="POST" enctype="multipart/form-data">
-
-                <div class="form-group">
-                    <label for="">Report Type</label>
-                    <span class="badge bg-primary text-white mt-2 mb-2 py-2" >report_type can be x-ray, blood-test etc</span>
-                   <input type="text" name="report_type" id=""  placeholder="Report Type" class="form-control">
-                    <span style='color:red' ;><?php echo $errors['description'] ?></span>
-                </div>
-                <div class="form-group">
-                    <label for="">Document Type</label>
-                   <select name="document_type" id="" class="form-control">
-                    <option selected>Select Document Type</option>
-                    <option value="pdf">PDF</option>
-                    <option value="image">Image</option>
-                    <option value="excel">Excel</option>
-                    <option value="other">Other</option>
-                   </select>
-                    <span style='color:red' ;><?php echo $errors['date'] ?></span>
-                </div>
-                <div class="form-group">
-                    <label for="">Upload Document</label>
-                   <input type="file" name="upload_doc" id=""  class="form-control"  placeholder="Report Type">
-                    <span style='color:red' ;><?php echo $errors['description'] ?></span>
-                </div>
-                <input type="hidden" name="prescription_id" value="<?php echo $row['id'] ?>">
-                <div class="form-group">
-                    <label for="">Description</label>
-                  <textarea name="des" id="" class="form-control"></textarea>
-                    <span style='color:red' ;><?php echo $errors['description'] ?></span>
-                </div>
-                <div class="form-group">
-                    <button type="submit" name="add_diagnosis" class="btn btn-outline-primary">Add Diagnosis Report</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-</div>
-</div>
-</div>
-</div>
 <?php
 include('includes/scripts.php');
 include('includes/footer.php');
