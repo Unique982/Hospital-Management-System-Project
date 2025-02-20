@@ -1,7 +1,7 @@
 <?php
 include('./database/config.php');
 ?>
-<footer class="bg-light text-dark py-5">
+<footer class="bg-white text-dark py-5">
     <div class="container">
         <div class="row">
             <?php
@@ -55,13 +55,17 @@ include('./database/config.php');
                     <a href="https://www.youtube.com/@uniqueonlineupdate"><i class="fa-brands fa-youtube"></i></a>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="footer-bottom bg-light">
+    
+    <div class="footer-bottom">
         <div class="container">
+            <div class="row">
             <p class="text-center"><?php echo $row1['footer']; ?> </p>
+            </div>
+         
         </div>
     </div>
+                </div>
+                </div>
 <?php }  ?>
 </footer>
 <!-- Bootstrap JavaScript Libraries -->

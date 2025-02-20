@@ -26,18 +26,22 @@
       crossorigin="anonymous" />
     <link href="./assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="./assets/css/style.css" rel="stylesheet">
+    
     <link rel="stylesheet" href="./assets/css/owl.carousel.min.css">
     <link rel="stylesheet" href="./assets/css/owl.theme.default.min.css">
 
-    <link rel="apple-touch-icon" sizes="180x180" href="./assets/favicon/apple-touch-icon.png">
+    <link rel="apple-touch-icon.png" type="image/png" sizes="512*512" href="./assets/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="512*512" href="./assets/favicon/android-chrome-512x512.png"
     <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon//favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="./assets/favicon/favicon-96x96.png">
     <link rel="manifest" href="./assets/favicon/site.webmanifest">
+    
 </head>
 
 <body data-bs-spy="scroll" data-bs-target=".navbar">
-  <header>
-    <nav class="navbar navbar-expand-lg bg-light sticky-top">
+  <header class="sticky-top">
+    <nav class="navbar navbar-expand-lg bg-light">
       <div class="container-fluid">
         <a class="navbar-brand" href="index.php"><?php echo $row['website_name'] ?></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

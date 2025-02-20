@@ -167,6 +167,71 @@ p{
 .blog-post .card-body{
 padding: 10px;
 }
+/* single blog section */
+.single-detalis .card-body p{
+    color: #fff;;
+    text-align: justify;
+}
+.single-detalis img{
+    width: 100%;
+    height: 500px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+.single-detalis .card-body h5{
+    color: #000;
+    font-size: 20px;
+    text-align: justify;
+    margin: 2px;
+    font-weight: bold;
+}
+.single-detalis .card-body p{
+   color: #000;
+   margin: 10px;
+   font-size: 16px;
+   text-align: justify;
+
+}
+.single-detalis .card-body strong{
+    font-size: 18px;
+    font-weight: bold;
+}
+.recent-head {
+    font-weight: 600;
+    font-size: 25px;
+    margin-bottom: 20px;
+    border-bottom:5px solid #000;
+ 
+}
+.recent-info{
+    display: flex;
+    margin-top: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #000;
+}
+.recent-info:last-child{
+    border-bottom: none;
+}
+.recent-info img{
+    width: 400px;
+    height: 80px;
+    object-fit: cover;
+}
+.recent-info h1{
+    font-size: 15px;
+    font-weight: bold;
+    color: #000;
+    margin-left: 20px;
+}
+
+.recent-info a{
+    font-size: 15px;
+    margin-left: 7px;
+}
+.recent-info a:hover{
+    color:blue;
+}
+/* footer  */
 footer .footer-head{
     font-size: 28px;
     color: rgba(12, 12, 12, 0.997);
@@ -221,7 +286,5 @@ footer p{
     font-size: 20px;
     color: #f9f9f9;
 }
-
-
 
 
