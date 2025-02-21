@@ -110,6 +110,15 @@ swal({
             addEventListener('load', function(event) { PR.prettyPrint(); }, false);
         }, dataType: 'html'});
     });
+
+    
+</script>
+
+<script src="../assets/js/bootstrap-tagsinput.min.js"></script>
+<script>
+    $('$blog_tag').tagsinput({
+  allowDuplicates: false
+});
 </script>
 
 

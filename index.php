@@ -188,7 +188,7 @@ include('./database/config.php');
             </div>
           </div>
         </div>
-        <div class="col-lg-4 col-md-6 col-sm-12">
+        <div class="col-sm-12 col-lg-4 col-md-6">
           <div class="card  text-center p-3">
             <div class="card-body">
               <img src="https://img.freepik.com/free-photo/smiling-doctor-with-strethoscope-isolated-grey_651396-974.jpg?t=st=1740021514~exp=1740025114~hmac=ddda15b4f7562cbe4c230e930885fe7e3ecb97f6daeeafb3bede4b52bb9c9b21&w=996" alt="">

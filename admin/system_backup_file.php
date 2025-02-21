@@ -50,13 +50,7 @@ include('../database/config.php');
                             </a>
                             </td>
                         </tr>
-                        <tr>
-                            <td>5</td>
-                            <td>All System Backup file</td>
-                            <td><a href=""><i class="fas fa-database"></i>
-                            </a>
-                            </td>
-                        </tr>
+                       
                     </tbody>
                 </table>
             </div>

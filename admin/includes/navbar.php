@@ -389,6 +389,8 @@ $user_name = $_SESSION['user_data']['user_name'] ?? null;
                     <a class="collapse-item" href="about_page.php">About Us</a>
                     <a class="collapse-item" href="contact_page.php">Contact Us</a>
                     <a class="collapse-item" href="notice_board_list.php">Manage Notice</a>
+                    <a class="collapse-item" href="blog_manage.php">Manage Blog</a>
+                    <a class="collapse-item" href="notice_board_list.php">Manage Services</a>
 
 
                 </div>
@@ -455,14 +457,16 @@ $user_name = $_SESSION['user_data']['user_name'] ?? null;
                                                 <i class="fas fa-file-alt text-white"></i>
                                             </div>
                                         </div>
+                                       
 
                                         <div class="small text-gray-500">
                                             <td><?php echo date('F d, Y', strtotime($row['created_at'])); ?></td>
                                         </div>
-                                        <span class="font-weight-bold"><?php echo $row['notice_title'] ?></span>
-                            </div>
-                            </a>
-                        <?php } ?>
+                                        <span class="font-weight-bold"><?php echo substr($row['notice_title'],0,20 )?>..</span>
+                                        </a>
+                            <?php } ?>
+                       
+                 
 
                         <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
     </div>
@@ -501,7 +505,7 @@ $user_name = $_SESSION['user_data']['user_name'] ?? null;
         </a>
         <?php if ($user_type === 'admin') { ?>
             <a class="dropdown-item" href="system_backup_file.php">
-                <i class="fas fa-cloud-upload-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+            <i class="fa-solid fa-server fa-sm fa-fw mr-2 text-gray-400"></i>
                 Backup
             </a>
             <a class="dropdown-item" href="./setting.php">

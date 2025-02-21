@@ -30,7 +30,7 @@ if (isset($_POST['add'])) {
    elseif(!preg_match('/^[a-zA-Z\s\x{0900}-\x{097F}]+$/u',$notice)){
    $errors['notice'] = 'Notice must contain  english or nepali language';
   }
-  elseif(strlen($notice) > 1000){
+  elseif(strlen($notice) > 5000){
     $errors['notice'] = 'Notice must be at least 1000 characters';
   }
   if (empty(array_filter($errors))) {

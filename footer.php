@@ -18,7 +18,8 @@ include('./database/config.php');
             <?php } ?>
             <div class="col-sm-12 col-lg-3 col-md-6">
                 <?php
-                $select_setting = "SELECT * FROM setting";
+                $select_setting = "SELECT * FROM contact_page";
+                
                 $result1 = mysqli_query($conn, $select_setting);
                 if (mysqli_num_rows($result1) > 0) {
                     $row1 = mysqli_fetch_assoc($result1);
@@ -26,11 +27,10 @@ include('./database/config.php');
                 ?>
                     <h1 class="footer-head">Contact Us</h1>
                     <ul class="contact_info">
-                        <li><strong>Phone: </strong><a href="tel:<?php echo $row1['website_phone']; ?>"> <?php echo $row1['website_phone']; ?></a></li>
-                        <li> <strong>Email:</strong><a href="mailto:<?php echo $row1['website_email']; ?>"> <?php echo $row1['website_email']; ?></a></li>
-                        <li> <strong>Website:</strong><a href="https://www.khemrajneupane.com.np">Unique Neupane</a></li>
-                        <li><strong>Address:</strong><a href="map:<?php echo $row1['website_address']; ?>"> <?php echo $row1['website_address']; ?></a></li>
-
+                        <li><strong>Phone: </strong><a href="tel:<?php echo $row1['phone_num']; ?>"> <?php echo $row1['phone_num']; ?></a></li>
+                        <li> <strong>Email:</strong><a href="mailto:<?php echo $row1['email']; ?>"> <?php echo $row1['email']; ?></a></li>
+                        <li><strong>Address:</strong><a href="map:<?php echo $row1['address']; ?>"> <?php echo $row1['address']; ?></a></li>
+                        <li><strong>tel: </strong><a href="tel:<?php echo $row1['tel_number']; ?>"> <?php echo $row1['tel_number']; ?></a></li>
                     </ul>
             </div>
 
