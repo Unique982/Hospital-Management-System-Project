@@ -1,7 +1,10 @@
 <?php
+ob_start();
 include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
+
+
 $id= $_GET['id'];
 $sql = "SELECT doctors.id as doctors_id, doctors.first_name, doctors.last_name,
 doctors.phone,doctors.address, doctors.created_at, user_tbl.user_name as username, user_tbl.user_email,user_tbl.role, user_tbl.id 
@@ -11,6 +14,8 @@ INNER JOIN `specialization` ON doctors.specialization = specialization.id WHERE 
 $result = mysqli_query($conn, $sql);
 if(mysqli_num_rows($result)>0){
     $record = mysqli_fetch_array($result);
+    
+   ob_end_flush(); 
 ?>
 
 <div class="container-fluid">

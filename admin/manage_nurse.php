@@ -1,4 +1,5 @@
 <?php
+ob_start();
 include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
@@ -9,6 +10,7 @@ ORDER BY nurse.id DESC";
 $result1 = mysqli_query($conn, $data_display) or die("Query failed");
 $count_row = mysqli_num_rows($result1);
 
+ob_end_flush();
 ?>
     <div class="container-fluid">
    
@@ -51,24 +53,7 @@ $count_row = mysqli_num_rows($result1);
                                     <td><?php echo ucfirst($row['gender']); ?></td>
                                     <td><?php echo ucfirst($row['role']); ?></td>
                                     <td>
-    <!-- Dropdown for mobile responsiveness -->
-    <div class="dropdown d-inline-block">
-        <button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Actions
-        </button>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a href="nurse_view.php?id=<?php echo $row['id']; ?>" class="dropdown-item">
-                <button type="button" class="btn btn-outline-warning btn-sm w-100">View</button>
-            </a>
-            <a href="nurse_edit.php?id=<?php echo $row['id']; ?>" class="dropdown-item">
-                <button type="button" class="btn btn-outline-success btn-sm w-100">Edit</button>
-            </a>
-            <form action="nurse_delete.php" method="POST" style="display:inline-block; width: 100%;">
-                <input type="hidden" name="id" value="<?php echo $row['id'] ?>" class="delete_id">
-                <button type="submit" name="delete" class="btn btn-outline-danger btn-sm w-100 deletebtn" data-delete-url="nurse_delete.php">Delete</button>
-            </form>
-        </div>
-    </div>
+  
 
     <!-- For larger screens, the original buttons will remain -->
     <div class="d-none d-md-inline">

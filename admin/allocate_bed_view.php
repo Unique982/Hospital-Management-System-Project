@@ -1,6 +1,7 @@
 <?php include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
+
 $user_type = $_SESSION['user_data']['role'];
 $user_id = $_SESSION['id'];
 $bed_allocate_id= $_GET['bed_allocate_id'];

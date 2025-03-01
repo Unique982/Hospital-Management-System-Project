@@ -1,6 +1,12 @@
-<?php include("includes/header.php");
+<?php
+ob_start();
+ include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
+
+if(!isset($_SESSION['id'])){
+    header('location:index.php');
+}
 
 if(isset($_POST['update'])){
     $id = mysqli_real_escape_string($conn,$_POST['id']);
@@ -20,6 +26,7 @@ if(isset($_POST['update'])){
     
     }
     }
+    ob_end_flush();
 ?>
 <div class="container-fluid">
     <div class="row">

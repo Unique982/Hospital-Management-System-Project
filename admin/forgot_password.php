@@ -28,7 +28,6 @@ if (isset($_POST['reset_password'])) {
     $result = mysqli_query($conn, $select_query);
     $_SESSION['user_email'] =$email;
     if (mysqli_num_rows($result) > 0) {
-
       $update_query = "UPDATE user_tbl SET otp_code = '$otp_code', otp_exp = '$otp_exp' WHERE user_email = '$email'";
       if (mysqli_query($conn, $update_query)) {
         //Create an instance; passing `true` enables exceptions
@@ -56,7 +55,7 @@ if (isset($_POST['reset_password'])) {
           $mail->isHTML(true);                                  //Set email format to HTML
           $mail->Subject = 'Password Reset Request: Hospital Management System';
           $mail->Body    = '<p>Dear,' . $username . '</p>
-    <p>We have recevied a request to rest your password foer your account at our hospital management system.<p>
+    <p>We have recevied a request to rest your password for your account at our hospital management system.<p>
     <p></p>
     <span>Otp code :</span><p>' . $otp_code . '</p> <br>
   
@@ -84,11 +83,10 @@ if (isset($_POST['reset_password'])) {
         }
       }
     } else {
-      $errors['email'] = "Invalid email address! Please enter a registere valid email.";
+      $errors['email'] = "Invalid email address! Please enter a registered email.";
     }
   }
 }
-
 
 ?>
 <!doctype html>
@@ -112,7 +110,6 @@ if (isset($_POST['reset_password'])) {
 
     }
 </style>
-
 <body>
   <div class="container d-flex justify-content-center align-items-center vh-100 ">
     <div class="row justify-content-center w-100">
@@ -131,7 +128,6 @@ if (isset($_POST['reset_password'])) {
               <div class="form-group">
                 <button type="submit" name="reset_password" class="btn btn-success w-100">Reset Password</button>
               </div>
-
             </form>
           </div>
         </div>
@@ -139,8 +135,7 @@ if (isset($_POST['reset_password'])) {
     </div>
   </div>
   </div>
-  <!-- Optional JavaScript -->
-  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+
   <?php
     include('includes/scripts.php');
 

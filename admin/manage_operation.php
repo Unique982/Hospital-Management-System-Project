@@ -1,7 +1,14 @@
 <?php
+ob_start();
 include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
+
+if(!isset($_SESSION['user_id'])){
+    header('location:index.php');
+    exit();
+}
+
 $user_type = $_SESSION['user_data']['role'];
 $user_id = $_SESSION['id'];
 if ($user_type == 'admin' || $user_type == 'doctor' || $user_type=='nurse') {
@@ -24,7 +31,7 @@ $result = mysqli_query($conn, $select_query);
 $count = mysqli_num_rows($result);
 
 
-
+ob_end_flush();
 
 ?>
 <div class="container-fluid">

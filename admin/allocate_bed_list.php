@@ -2,6 +2,9 @@
 include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
+
+
+
 $user_type = $_SESSION['user_data']['role'];
 $user_id = $_SESSION['id'];
 if ($user_type == 'admin' || $user_type == "nurse" || $user_type=='doctor') {

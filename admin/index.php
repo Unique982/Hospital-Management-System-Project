@@ -122,10 +122,11 @@ if (isset($_POST['login'])) {
     <div class="container d-flex justify-content-center align-items-center vh-100">
         <div class="row justify-content-center w-100">
             <div class="col-xs-12 col-sm-8 col-md-6 col-lg-6">
-                <div class="card shadow">
-                    <div class="card-header text-center text-primary p-2">
-                        <h4> Login Page</h4>
-                    </div>
+                <div class="card border-0">
+                    <!-- <div class="card-header text-center text-primary p-2"> -->
+                      
+                        <h4 class=" text-center p-2 bg-success text-white" style="font-size: 30px; font-weight:blod;"> Login Page</h4>
+                    <!-- </div> -->
                     <div class="card-body">
                         <form action="" method="post">
                             <div class="form-group">

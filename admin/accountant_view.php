@@ -2,6 +2,9 @@
 include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
+
+
+
 $id= $_GET['id'];
 $sql = "SELECT a.phone,a.address,a.gender,
 a.qualification, user_tbl.user_name as username, 

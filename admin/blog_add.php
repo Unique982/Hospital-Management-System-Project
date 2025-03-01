@@ -3,6 +3,7 @@ ob_start();
 include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
+
 $errors = [
     'blog_title' => '',
     'blog_desc' => '',
@@ -105,10 +106,10 @@ ob_end_flush();
         <div class="col-12">
             <div class="card mb-4">
                 <div class="card-header">
-                    Add Blood Donor
+                    Add Blog Post
                 </div>
                 <div class="card-body">
-                    <form action="" method="POST" enctype="multipart/form-data">
+                    <form action="" method="POST" enctype="multipart/form-data" >
                         <div class="form-group">
                             <label for="">Title</label>
                             <input type="text" name="blog_title" class="form-control" placeholder="Enter Title" value="<?php echo isset($blog_title) ? $blog_title : ''; ?>">
@@ -116,7 +117,7 @@ ob_end_flush();
                         </div>
                         <div class="form-group">
                             <label for="">Description</label>
-                            <textarea name="blog_desc" id="blog_desc" rows="5" cols="5" class="form-control"><?php echo isset($blog_desc) ? $blog_desc : ''; ?></textarea>
+                            <textarea name="blog_desc" id="blog_desc" spellcheck="false" rows="5" cols="5" class="form-control"><?php echo isset($blog_desc) ? $blog_desc : ''; ?></textarea>
                             <span style='color:red' ;><?php echo $errors['blog_desc'] ?></span>
                         </div>
                         <div class="form-group">

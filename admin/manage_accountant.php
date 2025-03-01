@@ -1,14 +1,18 @@
 <?php
-
+ob_start();
 include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
+
+
+
 $data_display = "SELECT a.id, a.phone, a.address, a.gender,
 a.qualification, user_tbl.user_name as username, user_tbl.user_email,user_tbl.role, 
 user_tbl.id   FROM accountant as a 
 INNER JOIN `user_tbl` ON a.user_id = user_tbl.id ORDER BY a.id DESC";
 $result1 = mysqli_query($conn, $data_display) or die("Query failed");
 $count_row = mysqli_num_rows($result1);
+ob_end_flush();
 ?>
 <div class="container-fluid">
     <!-- DataTales Example -->

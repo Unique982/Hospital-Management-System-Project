@@ -214,7 +214,7 @@ else{
 </style>
 
 <body>
-  <div class="container d-flex justify-content-center align-items-center vh-100">
+  <div class="container d-flex justify-content-center align-items-center">
     <div class="row justify-content-center w-100">
       <div class="col-md-8">
         <div class="card shadow">

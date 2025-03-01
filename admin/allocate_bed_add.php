@@ -4,6 +4,11 @@ include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
 
+if(!isset($_SESSION['user_id'])){
+    header('location:index.php');
+    exit();
+}
+
 $errors = [
     'number' => '',
     'patient' => '',

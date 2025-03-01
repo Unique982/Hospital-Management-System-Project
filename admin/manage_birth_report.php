@@ -1,7 +1,11 @@
-<?php 
+<?php
+ob_start(); 
 include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
+
+
+
 $user_type = $_SESSION['user_data']['role'];
 $user_id = $_SESSION['id'];
 $select_query ="";
@@ -27,6 +31,7 @@ $count = mysqli_num_rows($result);
 $result = mysqli_query($conn,$select_query);
 $count = mysqli_num_rows($result);
 
+ob_end_flush();
 
 
 ?>

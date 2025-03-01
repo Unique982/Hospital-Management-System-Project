@@ -1,6 +1,13 @@
 <?php 
-$host = "localhost:3307";
+ob_start();
+session_start();
+// if user not login this page not asscess 
+if(!isset($_SESSION['user_id'])){
+  header('location:index.php');
+  exit();
+}
 
+$host = "localhost:3307";
 $user = "root";
 $password ='';
 $db= "hospital_management_system";
@@ -71,10 +78,7 @@ $return .="\n\n";
         exit();
       }
     }
-
-
-
-
+    ob_end_flush();
 
 
 ?>

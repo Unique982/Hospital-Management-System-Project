@@ -1,6 +1,8 @@
 <?php include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
+
+
 $bed_id= $_GET['bed_id'];
 $sql = "SELECT * FROM bed where bed_id =$bed_id";
 $result = mysqli_query($conn, $sql);

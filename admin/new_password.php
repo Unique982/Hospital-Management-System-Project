@@ -24,23 +24,28 @@ if(isset($_POST['reset_password'])){
   }
  
   if (empty(array_filter($errors))) {
+    $select_query = "SELECT user_email FROM user_tbl";
+    $result = mysqli_query($conn, $select_query);
+    if (mysqli_num_rows($result)) {
+      $user_data = mysqli_fetch_assoc($result);
+      $email = $user_data['user_email']; 
     $hashed_password = password_hash($new_password,PASSWORD_BCRYPT);
- $update_query = "UPDATE user_tbl SET password='$hashed_password'";
+ $update_query = "UPDATE user_tbl SET password='$hashed_password' WHERE user_email = '$email'";
  if(mysqli_query($conn,$update_query)){
   $_SESSION['alert'] = "Password Reset Successfully";
   $_SESSION['alert_code'] = "success";
   header('Location: dashboard.php');
   exit();
- } else{
+ } }else{
   $_SESSION['alert'] = "Failed";
   $_SESSION['alert_code'] = "error";
   header('location:index.php');
   exit();
  }
- 
+}
 }
 
-}
+
 
 ?>
 <!doctype html>

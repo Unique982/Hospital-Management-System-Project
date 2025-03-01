@@ -1,4 +1,6 @@
-<?php include("includes/header.php");
+<?php 
+ob_start();
+include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
 
@@ -22,6 +24,8 @@ if(isset($_POST['update'])){
     
     }
     }
+
+    ob_end_flush();
 ?>
 <div class="container-fluid">
     <div class="row">

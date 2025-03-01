@@ -4,9 +4,6 @@ session_start();
 $errors = [
   'otp_code' => '',
 ];
-
-
-
 if (isset($_POST['submit_otp'])) {
    $otp_code =trim($_POST['otp_code']);
  $email = $_SESSION['user_email'];
@@ -14,7 +11,6 @@ if (isset($_POST['submit_otp'])) {
    if (empty($otp_code)) {
     $errors['otp_code'] = "Please enter otp number";
   }
-    
     $select_query = "SELECT otp_code,otp_exp  FROM user_tbl WHERE user_email ='$email' AND otp_code = '$otp_code'";
     $result = mysqli_query($conn,$select_query);
     if(mysqli_num_rows($result) > 0){

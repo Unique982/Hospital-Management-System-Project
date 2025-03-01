@@ -1,7 +1,10 @@
 <?php
+ob_start();
 include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
+
+
 $id= $_GET['id'];
 $sql = "SELECT l.phone,l.address,l.gender,
 l.qualification, user_tbl.user_name as username, 
@@ -11,6 +14,8 @@ WHERE user_id = $id";
 $result = mysqli_query($conn, $sql);
 if(mysqli_num_rows($result)>0){
     $record = mysqli_fetch_array($result);
+
+    ob_end_flush();
 ?>
 
 <div class="container-fluid">

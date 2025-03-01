@@ -1,5 +1,9 @@
 <?php 
+ob_start();
+session_start();
 include('../database/config.php');
+
+
 if(isset($_GET['checkin'])){
     $app_id = $_GET['app_id'];
 
@@ -26,5 +30,6 @@ if(isset($_GET['Cancel'])){
     }
 
 }
+ob_end_flush();
 
 ?>

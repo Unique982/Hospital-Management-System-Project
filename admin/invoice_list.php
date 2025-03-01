@@ -1,8 +1,10 @@
 <?php
-session_start();
+ob_start();
 include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
+
+
 $user_type = $_SESSION['user_data']['role'];
 $user_id = $_SESSION['id'];
 if ($user_type == 'admin' || $user_type =='accountant') {
@@ -21,6 +23,7 @@ WHERE pt.user_id=$user_id ORDER BY i.invoice_id DESC";
 
 $result = mysqli_query($conn, $select_query);
 $count = mysqli_num_rows($result);
+ob_end_flush();
 
 ?>
 <div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

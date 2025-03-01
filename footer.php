@@ -33,6 +33,7 @@ include('./database/config.php');
                         <li><strong>tel: </strong><a href="tel:<?php echo $row1['tel_number']; ?>"> <?php echo $row1['tel_number']; ?></a></li>
                     </ul>
             </div>
+            <?php }  ?>
 
             <div class="col-sm-12 col-lg-3 col-md-6">
                 <h1 class="footer-head">Quick Links</h1>
@@ -58,15 +59,23 @@ include('./database/config.php');
     
     <div class="footer-bottom">
         <div class="container">
+            <?php
+            $select_footer = "select * from setting";
+            $result = mysqli_query($conn,$select_footer);
+            if(mysqli_num_rows($result)){
+                $row = mysqli_fetch_assoc($result);
+            
+            
+            ?>
             <div class="row">
-            <p class="text-center"><?php echo $row1['footer']; ?> </p>
+            <p class="text-center"><?php echo $row['footer']; ?> </p>
             </div>
-         
+         <?php  } ?>
         </div>
     </div>
                 </div>
                 </div>
-<?php }  ?>
+
 </footer>
 <!-- Bootstrap JavaScript Libraries -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>

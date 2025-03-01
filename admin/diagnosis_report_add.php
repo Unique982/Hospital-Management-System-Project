@@ -4,6 +4,7 @@ include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
 
+
 $user_id = $_SESSION['id'];
 
 $_SESSION['error'] = [

@@ -1,6 +1,7 @@
 <?php
 include('header.php');
 include('./database/config.php');
+session_start()
 
 ?>
 <main>
@@ -15,7 +16,7 @@ include('./database/config.php');
               <br> Rem eligendi
               voluptate in temporibus quia, natus dolorum.
             </p>
-            <a href="#" class="btn btn-success">Book Appointment</a>
+            <a href="./admin/index.php" class="btn btn-success">Book Appointment</a>
 
           </div>
         </div>
@@ -258,71 +259,38 @@ include('./database/config.php');
 
   <section class="blog" id="blog">
     <div class="container">
-      <div class="row justify-content-center  text-center">
+     
+      <div class="row py-3 justify-content-center  text-center">
         <div class="col-sm-12 col-lg-4 col-md-6">
           <h6 class="text-uppercase text-muted">Our Blog</h6>
-          <h1 class='text-muted py-3'>Lastest Blog Post</h1>
+          <!-- <h1 class='text-muted py-3'>Lastest Blog Post</h1> -->
         </div>
       </div>
 
       <div class="row g-4 mb-4">
+      <?php
+       $select_blog = "SELECT * FROM blog  ORDER BY id DESC";
+       $result1 = mysqli_query($conn,$select_blog) or die("error");
+       if(mysqli_num_rows($result1)){
+        while($row1 = mysqli_fetch_assoc($result1)){
+       
+      ?>
         <div class="col-sm-12 col-lg-4 col-md-6">
           <div class="card">
             <div class="card-body">
               <div class="blog-post">
-                <img src="./assets/images/team-doctors-standing-row_107420-84772.jpg" alt="" class="img-fluid">
-                <small class="text-muted">12-Feb, 2025</small>
-                <a href="single.php">
-                  <h3>Lorem ipsum dolor sit amet consectetur.</h3>
+               <a href="single.php?id=<?php echo $row1['id'] ?>"><img src="./admin/Blog_img/banner/<?php echo $row1['image_1'] ?>" alt="" class="img-fluid"></a> 
+                <small class="text-muted"> <?php echo date('M-d-Y',strtotime($row1['create_date'])) ?> </small>
+                <a href="single.php?id=<?php echo $row1['id'] ?>">
+                  <h3><?php echo substr($row1['blog_title'],0,30 )?>...</h3>
                 </a>
-                <p class="text-dark ">Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                  Repellendus, dolor eligendi <br>pariatur neque iste nihil quos ducimus
-                  dicta tempore consectetur repudiandae,<br> distinctio non explicabo
-                  dolorum delectus laboriosam impedit nobis beatae!</p>
-                <a href="single.php" class="btn btn btn-danger btn-sm">Read More</a>
+                <p class="text-dark "><?php echo substr($row1['blog_des'],0,300) ?>...</p>
+                <a href="single.php?id=<?php echo $row1['id'] ?>" class="btn btn btn-danger btn-sm">Read More</a>
               </div>
             </div>
           </div>
         </div>
-
-        <div class=" col-sm-12 col-lg-4 col-md-6">
-          <div class="card">
-            <div class="card-body">
-              <div class="blog-post">
-                <img src="./assets/images/team-young-specialist-doctors-standing-corridor-hospital_1303-21199.avif" alt="" class="img-fluid">
-                <small class="text-muted p-3">12-Feb, 2025</small>
-                <a href="">
-                  <h3>Lorem ipsum dolor sit amet consectetur.</h3>
-                </a>
-                <p class="text-dark">Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                  Repellendus, dolor eligendi <br>pariatur neque iste nihil quos ducimus
-                  dicta tempore consectetur repudiandae,<br> distinctio non explicabo
-                  dolorum delectus laboriosam impedit nobis beatae!</p>
-                <a href="#" class="btn btn btn-danger btn-sm">Read More</a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-12 col-lg-4 col-md-6">
-          <div class="card">
-            <div class="card-body">
-              <div class="blog-post">
-                <img src="./assets/images/freepik__the-style-is-candid-image-photography-with-natural__70005.png" alt="" class="img-fluid">
-                <small class="text-muted">12-Feb, 2025</small>
-                <a href="single.php">
-                  <h3>Lorem ipsum dolor sit amet consectetur.</h3>
-                </a>
-                <p class="text-dark">Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                  Repellendus, dolor eligendi <br>pariatur neque iste nihil quos ducimus
-                  dicta tempore consectetur repudiandae,<br> distinctio non explicabo
-                  dolorum delectus laboriosam impedit nobis beatae!</p>
-                <a href="single.php" class="btn btn btn-danger btn-sm">Read More</a>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-
+        <?php }}  ?>
       </div>
     </div>
   </section>
@@ -343,27 +311,31 @@ include('./database/config.php');
               <div class="col-md-8">
               <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14130.927001396652!2d85.33981834999997!3d27.694684600000016!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb199a06c2eaf9%3A0xc5670a9173e161de!2sNew%20Baneshwor%2C%20Kathmandu%2044600!5e0!3m2!1sen!2snp!4v1740023921844!5m2!1sen!2snp" width="100%" height="500" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
-          
+            
             <div class="col-md-4">
               <div class="card-body">
                 <h3 class="text-center text-muted">Contact Form</h3>
-              <form action="">
+              <form action="./admin/Contact Query/contact_add.php" method="POST" enctype="multipart/form-data">
                 <div class="form-group mb-2">
                   <label for="">Name:</label>
-                  <input type="text" class="form-control" placeholder="Enter Your Name">
+                  <input type="text" name="name" class="form-control" placeholder="Enter Your Name">
+                  
                 </div>
                 <div class="form-group mb-2">
                   <label for="">Email:</label>
-                  <input type="email" class="form-control" placeholder="Enter Your Email">
+                  <input type="email" name="email" class="form-control" placeholder="Enter Your Email">
+                  
                 </div>
                 <div class="form-group mb-2">
                   <label for="">Phone:</label>
-                  <input type="number" class="form-control" placeholder="Enter Your Phone">
+                  <input type="number" name="number" class="form-control" placeholder="Enter Your Phone">
+                 
                 </div>
                 <div class="form-group mb-2">
                   <label for="">Message:</label>
-               <textarea name="message" id="message" rows="5" cols="5" class="form-control"></textarea>
-                </div>
+               <textarea name="message" name="message" id="message" rows="5" cols="5" class="form-control"></textarea>
+               
+              </div>
                 <div class="form-group mb-2">
                 <button type="submit" name="contact_us" class="btn btn-primary btn-sm w-100">Submit</button>
                 </div>

@@ -370,8 +370,8 @@ $user_name = $_SESSION['user_data']['user_name'] ?? null;
             <div id="collapse8" class="collapse" aria-labelledby="heading8" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Contact Query</h6>
-                    <a class="collapse-item" href="unread.php">Unread Query</a>
-                    <a class="collapse-item" href="read.php">Read Query</a>
+                    <a class="collapse-item" href="unread_contact.php">Unread Query</a>
+                    <a class="collapse-item" href="read_contact.php">Read Query</a>
                 </div>
             </div>
         </li>

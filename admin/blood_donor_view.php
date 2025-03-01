@@ -1,11 +1,17 @@
-<?php include("includes/header.php");
+<?php 
+ob_start();
+include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
+
 $blood_donor_id= $_GET['blood_donor_id'];
 $sql = "SELECT * FROM blood_donors where blood_donor_id =$blood_donor_id";
 $result = mysqli_query($conn, $sql);
 if(mysqli_num_rows($result)>0){
     $record = mysqli_fetch_array($result);
+
+
+    ob_end_flush();
 ?>
 
 <div class="container-fluid">

@@ -1,18 +1,22 @@
 <?php
+ob_start();
 include('./includes/header.php');
 include("includes/navbar.php");
 include('../database/config.php');
+
+
 $select_query = "SELECT * from blog  ORDER BY  id DESC";
 $result = mysqli_query($conn, $select_query);
 $count_row = mysqli_num_rows($result);
+ob_end_flush();
 
 ?>
 
 <div class="container-fluid">
     <div class="card mb-4 border-0">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary bg.light">Manage Blog
-                <a href="blog_add.php"> <button class="btn btn-primary btn-sm">Add Blog</button></a>
+            Manage Blog
+            <a href="blog_add.php"> <button class="btn btn-primary btn-sm">Add Blog</button></a>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -37,7 +41,7 @@ $count_row = mysqli_num_rows($result);
                                 <tr>
 
                                     <td><?php echo $sn; ?></td>
-                                    <td><?php echo $row['blog_title'] ?></td>
+                                    <td><?php echo substr($row['blog_title'], 0, 20) ?>...</td>
                                     <td><?php echo substr($row['blog_des'], 0, 20) ?>..</td>
                                     <td><?php echo $row['category'] ?></td>
                                     <td><?php echo date('Y,M,D', strtotime($row['create_date'])) ?></td>
@@ -52,8 +56,8 @@ $count_row = mysqli_num_rows($result);
                                 </tr>
                     </tbody>
 
-            <?php }
-                            $sn++;
+            <?php $sn++;
+                            }
                         }
 
             ?>
