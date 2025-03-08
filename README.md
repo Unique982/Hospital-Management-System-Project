@@ -15,7 +15,7 @@ Hospital Managment System
 ![image](https://github.com/user-attachments/assets/d38f058e-c5bf-41c8-ae92-812c719b845b)
 
 ![image](https://github.com/user-attachments/assets/5981ad69-520e-4294-a9ca-b34560504a11)
-![image](https://github.com/user-attachments/assets/e0e77cda-0c51-4b12-9db6-578653f3403b)
+
 ![image](https://github.com/user-attachments/assets/db124a19-f830-4a69-8cc7-8d62911a0256)
 ![image](https://github.com/user-attachments/assets/571febaf-9a51-48c8-b2fc-140653d388b2)
 ![image](https://github.com/user-attachments/assets/858b45a8-9042-4a19-8a98-00288dfa309a)
