@@ -2,7 +2,8 @@ Hospital Managment System
 
 
 
-![image](https://github.com/user-attachments/assets/8c5adb32-0276-4ef9-89ef-8ec8885b5eed)
+![Uploading image.png…]()
+
 
 ![image](https://github.com/user-attachments/assets/c9fe816b-5a99-443b-b4ae-41403a845610)
 
