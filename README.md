@@ -1,9 +1,7 @@
 Hospital Managment System
 
 
-
-[![Uploading image.png…]()](http://localhost/Project%20List/Hospital%20Management%20System%20Project/admin/index.php)
-
+![image](https://github.com/user-attachments/assets/c0af0760-9745-4905-91c1-fa2b340dcc5d)
 
 ![image](https://github.com/user-attachments/assets/c9fe816b-5a99-443b-b4ae-41403a845610)
 
