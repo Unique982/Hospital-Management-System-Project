@@ -1,7 +1,13 @@
 <?php
+ob_start();
 include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
+
+if(!isset($_SESSION['id'])){
+    header('location:index.php');
+}
+
 $select_query = "SELECT m.id, m.medicine_name, c.medicine_name AS category, m.price,m.description,
 m.manufacuturin_company,m.manufacuturin_date,m.stock
  FROM medicine AS m
@@ -11,6 +17,7 @@ m.manufacuturin_company,m.manufacuturin_date,m.stock
 $result = mysqli_query($conn, $select_query);
 $count = mysqli_num_rows($result);
 
+ob_end_flush();
 ?>
 <div class="container-fluid">
     <!-- DataTales Example -->

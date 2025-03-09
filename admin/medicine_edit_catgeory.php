@@ -3,6 +3,11 @@ ob_start();
 include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
+
+if(!isset($_SESSION['id'])){
+    header('location:index.php');
+}
+
 if (isset($_POST['update'])) {
     $id = $_POST['id'];
     $med_name = mysqli_real_escape_string($conn,$_POST['med_name']);

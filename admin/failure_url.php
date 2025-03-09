@@ -1,4 +1,7 @@
 <?php
-echo "<h1>Payment failed!</h1>";
-echo "<p>Your payment has been successfully processed, and your invoice is marked as paid.</p>";
+ob_start();
+include('../database/config.php');
+$_SESSION['alert'] = "Payment failed!";
+$_SESSION['alert_code'] = "success";
+header("location:invoice_list.php");
 ?>

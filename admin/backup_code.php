@@ -1,11 +1,6 @@
 <?php 
 ob_start();
-session_start();
-// if user not login this page not asscess 
-if(!isset($_SESSION['user_id'])){
-  header('location:index.php');
-  exit();
-}
+
 
 $host = "localhost:3307";
 $user = "root";
@@ -74,6 +69,7 @@ $return .="\n\n";
       $handle = fopen($backup_file, 'w');
       fwrite($handle,$return);
       if(fclose($handle)){
+
         echo "Backup File save successful:".$backup_file;
         exit();
       }

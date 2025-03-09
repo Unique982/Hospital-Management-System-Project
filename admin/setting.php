@@ -1,7 +1,13 @@
 <?php
+ob_start();
 include("./includes/header.php");
 include("./includes/navbar.php");
 include('../database/config.php');
+
+if(!isset($_SESSION['id'])){
+    header('location:index.php');
+}
+
 if(isset($_POST['save'])){
     $id = mysqli_real_escape_string($conn,$_POST['id']);
     $sm_name = mysqli_real_escape_string($conn,$_POST['sm_name']);
@@ -11,12 +17,15 @@ if(isset($_POST['save'])){
   website_title = '$sm_title',
   footer = '$footer' WHERE id=$id";
 if(mysqli_query($conn,$update_query)){
-    echo "<div class='alert alert-alert role='alert'>Update Successfullt?</div>";
+    $_SESSION['alert'] = "Update Successfully";
+    $_SESSION['alert_code'] = "success";
 }
 else{
-    echo "<div class='alert alert-alert role='alert'>Failed Update</div>";
+    $_SESSION['alert'] = "Failed Update";
+                $_SESSION['alert_code'] = "error";
 }
 }
+ob_end_flush();
 ?>
 <div class="container-fluid">
 

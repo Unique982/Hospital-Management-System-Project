@@ -2,6 +2,9 @@
 include("includes/navbar.php");
 include('../database/config.php');
 
+if(!isset($_SESSION['id'])){
+    header('location:index.php');
+  }
 
 $bed_id= $_GET['bed_id'];
 $sql = "SELECT * FROM bed where bed_id =$bed_id";

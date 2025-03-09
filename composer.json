@@ -1,5 +1,7 @@
 {
     "require": {
-        "egulias/email-validator": "^4.0"
+        "egulias/email-validator": "^4.0",
+        "smsalert/php-sdk": "^1.0",
+        "twilio/sdk": "^8.3"
     }
 }

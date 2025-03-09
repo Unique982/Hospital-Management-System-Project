@@ -2,6 +2,7 @@
 <?php
 if (isset($_GET['transaction_uuid'])) {
     $transaction_uuid = $_GET['transaction_uuid'];
+    echo $transaction_uuid ;
     $amount = 100;
     $esewa_url = "https://rc-epay.esewa.com.np/api/epay/transaction";
 
@@ -21,7 +22,9 @@ if (isset($_GET['transaction_uuid'])) {
     curl_close($ch);
 
     echo "<h2>Payment Verification Response:</h2>";
-    echo "<pre>$response</pre>";
+    echo "<pre>$response
+     echo $transaction_uuid;
+    </pre>";
 } else {
     echo "<h2>Invalid Request</h2>";
 }

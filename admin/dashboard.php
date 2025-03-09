@@ -2,7 +2,9 @@
 ob_start();
 include("includes/header.php");
 include("includes/navbar.php");
-
+if(!isset($_SESSION['id'])){
+   header('location:index.php');
+}
 ob_end_flush();
 ?>
 
@@ -12,6 +14,8 @@ ob_end_flush();
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary">
+            <i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
     </div>
 
     <div class="row">
@@ -237,8 +241,8 @@ ob_end_flush();
                 </div>
             </div>
         </div>
-    </div>
-
+    </div> <!--End container  -->
+   
     <?php
     include('includes/scripts.php');
         include("includes/footer.php");

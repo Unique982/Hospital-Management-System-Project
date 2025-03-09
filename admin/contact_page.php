@@ -4,6 +4,9 @@ include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
 
+if(!isset($_SESSION['id'])){
+    header('location:index.php');
+}
 if(isset($_POST['update'])){
     $id = mysqli_real_escape_string($conn,$_POST['id']);
     $email = mysqli_real_escape_string($conn, $_POST['email']);

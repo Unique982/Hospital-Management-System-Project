@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b9a5d41f429c5df324a1fe6e577b9276",
+    "content-hash": "0ee76b6b69393f8de5ef09d184bfddd0",
     "packages": [
         {
             "name": "doctrine/lexer",
@@ -149,6 +149,43 @@
                 }
             ],
             "time": "2024-12-27T00:36:43+00:00"
+        },
+        {
+            "name": "smsalert/php-sdk",
+            "version": "1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/SMSAlert/API-Integration-Sample-Code-PHP.git",
+                "reference": "2303068a59731495e84d8d28b817be7e95c4e078"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/SMSAlert/API-Integration-Sample-Code-PHP/zipball/2303068a59731495e84d8d28b817be7e95c4e078",
+                "reference": "2303068a59731495e84d8d28b817be7e95c4e078",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "SMSAlert\\Lib\\": "vendor/src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "PHP Library for sending sms",
+            "homepage": "https://github.com/SMSAlert/API-Integration-Sample-Code-PHP",
+            "keywords": [
+                "api",
+                "sms",
+                "smsalert"
+            ],
+            "support": {
+                "issues": "https://github.com/SMSAlert/API-Integration-Sample-Code-PHP/issues",
+                "source": "https://github.com/SMSAlert/API-Integration-Sample-Code-PHP/tree/v-1.0"
+            },
+            "time": "2021-03-15T11:14:48+00:00"
         },
         {
             "name": "symfony/polyfill-intl-idn",
@@ -313,6 +350,59 @@
                 }
             ],
             "time": "2024-09-09T11:45:10+00:00"
+        },
+        {
+            "name": "twilio/sdk",
+            "version": "8.3.15",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/twilio/twilio-php.git",
+                "reference": "3113e8a672edf5e012120fa6fafc201e013c7ba4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/twilio/twilio-php/zipball/3113e8a672edf5e012120fa6fafc201e013c7ba4",
+                "reference": "3113e8a672edf5e012120fa6fafc201e013c7ba4",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1.0"
+            },
+            "require-dev": {
+                "guzzlehttp/guzzle": "^6.3 || ^7.0",
+                "phpunit/phpunit": ">=7.0 < 10"
+            },
+            "suggest": {
+                "guzzlehttp/guzzle": "An HTTP client to execute the API requests"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Twilio\\": "src/Twilio/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Twilio API Team",
+                    "email": "api@twilio.com"
+                }
+            ],
+            "description": "A PHP wrapper for Twilio's API",
+            "homepage": "https://github.com/twilio/twilio-php",
+            "keywords": [
+                "api",
+                "sms",
+                "twilio"
+            ],
+            "support": {
+                "issues": "https://github.com/twilio/twilio-php/issues",
+                "source": "https://github.com/twilio/twilio-php/tree/8.3.15"
+            },
+            "time": "2025-02-20T14:18:17+00:00"
         }
     ],
     "packages-dev": [],

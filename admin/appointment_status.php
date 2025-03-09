@@ -1,8 +1,11 @@
 <?php 
 ob_start();
-session_start();
+
 include('../database/config.php');
 
+if(!isset($_SESSION['id'])){
+    header('location:index.php');
+}
 
 if(isset($_GET['checkin'])){
     $app_id = $_GET['app_id'];

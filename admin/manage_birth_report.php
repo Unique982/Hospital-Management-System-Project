@@ -4,7 +4,9 @@ include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
 
-
+if(!isset($_SESSION['id'])){
+    header('location:index.php');
+}
 
 $user_type = $_SESSION['user_data']['role'];
 $user_id = $_SESSION['id'];
@@ -32,8 +34,6 @@ $result = mysqli_query($conn,$select_query);
 $count = mysqli_num_rows($result);
 
 ob_end_flush();
-
-
 ?>
 <div class="container-fluid">
     <!-- DataTales Example -->          

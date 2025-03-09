@@ -4,6 +4,9 @@ include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
 
+if(!isset($_SESSION['id'])){
+    header('location:index.php');
+}
 
 $data_display = "SELECT doctors.id as id, doctors.first_name, doctors.last_name, specialization.specialization,
 doctors.phone,doctors.address, doctors.created_at, user_tbl.user_name as username, user_tbl.user_email,user_tbl.role, user_tbl.id   FROM `doctors` 
@@ -18,7 +21,7 @@ ob_end_flush();
         <!-- DataTales Example -->
         <div class="card  mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary"> Doctor List
+                <h6 class="font-weight-bold text-primary"> Doctor List
                 <?php 
                         if($user_type=='admin'){
                             ?>    
@@ -83,7 +86,6 @@ ob_end_flush();
                                    
                             </tr>
                         <?php
-                                 
                                     
                                  }
                                  elseif($user_type=='patient'){  ?>
@@ -95,25 +97,22 @@ ob_end_flush();
                                  
                                 </tr>
                                 <?php
-$sn++;
+
                                  }
+                                 $sn++;
                                  }
                                 }
                             else {
                                 echo "<tr><td colspan='7' class='text-center'>No record</td></tr>";
                             }
                                 ?>
-                               
-                             
-                             
-                             
                         </tbody>
                     
                     </table>
                 </div>
+                
             </div>
         </div>
-
     </div>
 
 

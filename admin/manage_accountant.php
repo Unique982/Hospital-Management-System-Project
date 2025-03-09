@@ -4,7 +4,9 @@ include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
 
-
+if(!isset($_SESSION['id'])){
+    header('location:index.php');
+}
 
 $data_display = "SELECT a.id, a.phone, a.address, a.gender,
 a.qualification, user_tbl.user_name as username, user_tbl.user_email,user_tbl.role, 

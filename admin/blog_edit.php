@@ -4,6 +4,10 @@ include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
 
+if(!isset($_SESSION['id'])){
+    header('location:index.php');
+}
+
 $errors = [
     'blog_title' => '',
     'blog_desc' => '',
@@ -19,6 +23,7 @@ if (isset($_POST['update'])) {
     $blog_desc = mysqli_real_escape_string($conn, $_POST['blog_desc']);
     $category = mysqli_real_escape_string($conn, $_POST['category']);
     $blog_tag = mysqli_real_escape_string($conn, $_POST['blog_tag']);
+    
 
     // banner 
     $new_img_name = $_POST['old_banner'];

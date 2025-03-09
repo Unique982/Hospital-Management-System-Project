@@ -19,10 +19,10 @@ if(isset($_POST['update'])){
    $patient = mysqli_real_escape_string($conn,$_POST['patient']);
    $date = mysqli_real_escape_string($conn,$_POST['date']);
    $time = mysqli_real_escape_string($conn,$_POST['time']);
+   $status = mysqli_real_escape_string($conn,$_POST['status']);
      // bed number validation 
 if(empty($doctor)){
     $errors['doctor'] = 'Doctor is required';
-
 }
 
 // patient 
@@ -36,32 +36,12 @@ if(empty($date)){
 elseif(!preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)){
     $errors['date'] = "Invalid date Formate. Please use YYYY-MM-DD";
  }
- elseif($date < date('Y-m-d')){
- $errors['date'] = "Please select today or a future date";
-    }
-    else{
-       if ($date == date('Y-m-d')) {
-        if(empty($time)){
-            $errors['time'] = "Time is required";
-        }
-        elseif(!preg_match('/^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/',$time)){
-            $errors['time'] = "Invalid time formate .Please use HH:MM";
-        }
-        else{
-            $current_time =date("H:i");
-            if($time < $current_time){
-                $errors['time'] ="sorry select next date";
-            }
-            elseif($current_time > '14:00'){
-                $errors['date'] = "Booking for today is closed after 2 PM. Please select the next day!"; 
-
-            }
-        }
+ 
            
-    }}   
+    
     if (empty(array_filter($errors))) {
    // update query 
-   $update_query = "UPDATE appointments SET patient_id = '$patient' , doctor_id = '$doctor', appointment_date = '$date', appointment_time='$time' WHERE app_id=$app_id";
+   $update_query = "UPDATE appointments SET patient_id = '$patient' , doctor_id = '$doctor', appointment_date = '$date', appointment_time='$time', status='$status' WHERE app_id=$app_id";
   if(mysqli_query($conn,$update_query)){
 // success msg
    $_SESSION['alert'] ="Successfully updated appointment";
@@ -75,6 +55,7 @@ elseif(!preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)){
   }
 }
 }
+
 
 ob_end_flush();
 
@@ -149,7 +130,16 @@ ob_end_flush();
                  <input type="time" name="time" class="form-control" value="<?php echo $row['appointment_time']; ?>" required>
                  <span style='color:red' ;><?php echo $errors['time'] ?></span>
                 </div>
-        </div>
+      
+        <div class="form-group">
+                <label for="">Status</label>
+                 <select name="status" id="status" class="form-control">
+                    <option value="confirmed"<?php echo ($row['status'] =='confirmed') ? 'selected' :''; ?>>Confirmed</option>
+                    <option value="completed" <?php echo ($row['status'] =='completed') ? 'selected' :''; ?>>Completed</option>
+                    <option value="cancel" <?php echo ($row['status'] =='cancel') ? 'selected' :''; ?>>Cancel</option>
+                 </select>
+                </div>
+                    </div>
         <div class="modal-footer">
             <a href="appointment_list.php" class="btn btn-danger">Cancel</a>
             

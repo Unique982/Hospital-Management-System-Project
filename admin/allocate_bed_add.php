@@ -4,7 +4,7 @@ include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
 
-if(!isset($_SESSION['user_id'])){
+if(!isset($_SESSION['id'])){
     header('location:index.php');
     exit();
 }
@@ -36,9 +36,14 @@ if (isset($_POST['save'])) {
     // allocate_time validation 
     if (empty($allocate_time)) {
         $errors['allocation_time'] = 'Allocation time is required';
+    } 
+    elseif (strtotime($allocate_time) <=time()) {
+        $errors['allocation_time'] ="Allocated time must be futre time";
     }
     if (empty($discharge_time)) {
         $errors['discharge_time'] = 'Discharge time is required';
+    }elseif (strtotime($discharge_time) <=time()) {
+        $errors['discharge_time'] ="Discharge Date must be futre date";
     }
 
     if (empty(array_filter($errors))) {
@@ -46,12 +51,18 @@ if (isset($_POST['save'])) {
         $result = mysqli_query($conn, $duplicate_date) or die("Query failed");
         if (mysqli_num_rows($result) >0) {
             $row= mysqli_fetch_assoc($result);
-            if($row['bed_id']==$bed_number && $row['pateint_id']){
-            $_SESSION['alert'] = "Bed  Already patient";
+            if($row['bed_id']==$bed_number){
+            $_SESSION['alert'] = "Bed  Already booked patient ";
             $_SESSION['alert_code'] = "info";
             header('location:allocate_bed_list.php');
             exit();
-        } }else {
+        }  if($row['pateint_id']==$patient){
+            $_SESSION['alert'] = "Bed Already patient";
+            $_SESSION['alert_code'] = "info";
+            header('location:allocate_bed_list.php');
+            exit();
+        }
+    }else {
             $insert_query = "INSERT INTO `bed_allocate`(`bed_id`, `pateint_id`, `allocated_at`, `discharge`)
              VALUES ('$bed_number','$patient','$allocate_time','$discharge_time')";
             if (mysqli_query($conn, $insert_query)) {
@@ -83,10 +94,9 @@ ob_end_flush();
                             <select name="bed_number" id="bed_number" class="form-control">
                                 <option selected>Select</option>
                                 <?php
-                                $select_query_patient_table = "SELECT * FROM bed";
-                                $result = mysqli_query($conn, $select_query_patient_table);
+                                $select_query_bed_table = "SELECT * FROM bed";
+                                $result = mysqli_query($conn, $select_query_bed_table);
                                 while ($row = mysqli_fetch_assoc($result)) {
-
                                     echo "<option value='" . $row['bed_id'] . "'>" . $row['bed_num'] . "</option>";
                                 }
                                 ?>
@@ -102,7 +112,6 @@ ob_end_flush();
                                 $select_query_patient_table = "SELECT * FROM patient";
                                 $result = mysqli_query($conn, $select_query_patient_table);
                                 while ($row = mysqli_fetch_assoc($result)) {
-
                                     echo "<option value='" . $row['id'] . "'>" . $row['name'] . "</option>";
                                 }
                                 ?>

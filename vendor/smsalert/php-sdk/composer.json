@@ -1,0 +1,13 @@
+{
+    "name": "smsalert/php-sdk",	
+    "description": "PHP Library for sending sms",	
+    "type": "library",
+    "keywords": ["smsalert", "sms", "api"],
+    "homepage": "https://github.com/SMSAlert/API-Integration-Sample-Code-PHP",
+    "license": "MIT",	
+    "autoload": {
+		"psr-4": {
+            "SMSAlert\\Lib\\": "vendor/src"
+        }		
+    }  
+}

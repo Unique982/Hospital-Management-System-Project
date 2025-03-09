@@ -53,7 +53,9 @@ if (isset($_POST['add'])) {
         }
     }
     if (empty(array_filter($errors))) {
-
+// check patient already has an app with in 7 day 
+// code her...
+        
         $sql1 = "SELECT app_id FROM appointments WHERE patient_id = '$patient'";
         $result1 = mysqli_query($conn, $sql1) or die("Query failed");
         if (mysqli_num_rows($result1) > 0) {
@@ -90,6 +92,28 @@ ob_end_flush();
             </div>
             <form action="" method="POST" class="needs-validation" novalidate>
                 <div class="modal-body">
+                    <!-- only doctor -->
+                    <?php
+                    if($user_type == 'doctor'){
+                    ?>
+                      <div class="form-group">
+                        <?php 
+                        $select_dotcor_fe = "SELECT id FROM doctors WHERE user_id = $user_id";
+                        $result_d = mysqli_query($conn,$select_dotcor_fe);
+                        if(mysqli_num_rows($result_d)){
+                            $row_d = mysqli_fetch_assoc($result_d);
+                            $doctor_id = $row_d['id'];
+
+                        
+                        ?>
+                        <label for="">Doctor Name</label>
+                      <input type="hidden" name="doctor"  value="<?php echo  $doctor_id;?>">
+                        <input type="text" value="<?php echo isset($_SESSION['user_name']) ? $_SESSION['user_name']:''?>" class="form-control"readonly>
+                    <?php }  ?>
+                    </div>
+                    <?php 
+                    }
+                     ?>
                     <div class="form-group">
                         <label for="">Doctor</label>
                         <select name="doctor" id="doctor" class="form-control" required>
@@ -104,24 +128,47 @@ ob_end_flush();
                             ?>
                         </select>
                         <span style='color:red' ;><?php echo $errors['doctor'] ?></span>
-
                     </div>
+                
+                    <!-- if user type admin doctor and nurse ho vanni select user  -->
+                    <?php if($user_type =='admin' || $user_type =='doctor' || $user_type =='nurse') {
+                        ?>
                     <div class="form-group">
                         <label for="">Patient</label>
                         <select name="patient" id="patient" class="form-control" required>
                             <option selected disabled> Select One</option>
                             <?php
                             $select_query_patient_table = "SELECT * FROM patient";
-                            $result = mysqli_query($conn, $select_query_patient_table);
+                            $result = mysqli_query($conn, $select_query_patient_table);   
                             while ($row = mysqli_fetch_assoc($result)) {
 
                                 echo "<option value='" . $row['id'] . "'>" . $row['name'] . "</option>";
                             }
+                        
                             ?>
                         </select>
                         <span style='color:red' ;><?php echo $errors['patient'] ?></span>
 
                     </div>
+                <?php  }?>
+                <?php if($user_type=='patient'){
+
+                 ?>
+                    <!-- if patient login add appointment then select already patient -->
+                    <div class="form-group">
+                        <?php 
+                        $select_patient_fe = "SELECT id FROM patient WHERE user_id = $user_id";
+                        $result1 = mysqli_query($conn,$select_patient_fe);
+                        if(mysqli_num_rows($result1)){
+                            $row1 = mysqli_fetch_assoc($result1);
+                            $Patient_id = $row1['id'];
+                        
+                        ?>
+                        <label for="">Patient Name</label>
+                      <input type="hidden" name="patient"  value="<?php echo  $Patient_id ;?>">
+                        <input type="text" value="<?php echo isset($_SESSION['user_name']) ? $_SESSION['user_name']:''?>" class="form-control"readonly>
+                    </div>
+                    <?php } } ?>
                     <div class="form-group">
                         <label for="">Date</label>
                         <input type="date" name="date" class="form-control" required>
@@ -151,7 +198,7 @@ ob_end_flush();
                 </button>
             </h6>
             <!-- fetch Data  -->
-            <?php if ($user_type == 'admin') {
+            <?php if ($user_type == 'admin' || $user_type =='nurse') {
                 $appoinment_data = "SELECT ap.app_id,patient.id, patient.name AS patient_name,
              CONCAT(doctors.first_name,'',doctors.last_name) as doctor_name, ap.doctor_id, ap.status,appointment_date, ap.appointment_time
             FROM appointments as ap
@@ -210,7 +257,7 @@ ob_end_flush();
                                     <td><?php echo date("h:i:A ", strtotime($app['appointment_time'])) ?></td>
 
                                     <td>
-                                        <?php if ($user_type == 'patient') {
+                                        <?php if($user_type==='patient') {
                                             if ($app['status'] == 'cancel') { ?>
                                                 <form action="appointment_delete.php" method="POST" id="deleteForm" style="display:inline-block; margin:2px;">
                                                     <input type="hidden" name="app_id" value="<?php echo $app['app_id'] ?>" class="delete_id">
@@ -225,11 +272,14 @@ ob_end_flush();
                                             ?>
 
                                            
-                                        <?php if ($user_type == 'admin' || $user_type == 'doctor') { ?>
-                                            <form action="appointment_status.php" method="GET" style="display:inline-block; margin:2px;">
-                                                <input type="hidden" name="app_id" value="<?php echo $app['app_id'] ?>">
+                                        <?php if ($user_type === 'doctor') { ?>
+                                            <form action="appointment_status.php" method="GET" style="display:inline-block; margin:2px;">   
+                                            <input type="hidden" name="app_id" value="<?php echo $app['app_id'] ?>">
                                                 <button type="submit" name="checkin" class="btn btn-outline-primary btn-sm ">Check In</button>
                                             </form>
+                                            <?php }  ?>
+                                            
+                                            <?php if($user_type =='admin' || $user_type =='nurse' ){ ?>
                                             <!-- <a href=""><button type="button" class="btn btn-outline-warning btn-sm">Checkin</button></a> -->
                                             <a href="appointment_edit.php?id=<?php echo $app['app_id']; ?>" class="btn btn-outline-success btn-sm">Edit</a>
 
@@ -239,11 +289,14 @@ ob_end_flush();
                                             </form>
 
                                     </td>
-                                <?php }  ?>
+                                <?php }
+                                $sn++;  ?>
                                 </tr>
                         <?php
-                                $sn++;
-                            }
+                                
+                            } }else{
+                                
+                            
                         }
 
 

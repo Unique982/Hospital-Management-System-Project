@@ -4,7 +4,9 @@ include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
 
-
+if(!isset($_SESSION['id'])){
+    header('location:index.php');
+}
 
 $invoice_id= $_GET['invoice_id'];
 $select_query = "SELECT i.invoice_id, i.invoice_num, p.name AS patient_id, i.title, i.payment_method, i.amount, i.payment_status, i.invoice_date 

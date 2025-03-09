@@ -1,13 +1,19 @@
 <?php
+ob_start();
 include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
 
+if(!isset($_SESSION['id'])){
+    header('location:index.php');
+}
+
 $select_query = "SELECT a.user_id,a.user_type,a.status,a.ip_address,a.time, user_tbl.id,user_tbl.user_name  FROM activity_log as a
 INNER JOIN user_tbl ON a.user_id = user_tbl.id
- WHERE user_id='".$_SESSION['id']."'";
+ WHERE user_id='".$_SESSION['id']."' ORDER BY a.time DESC";
 $result = mysqli_query($conn,$select_query);
 
+ob_end_flush();
 ?>
 
 <div class="container-fluid">

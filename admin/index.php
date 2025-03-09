@@ -13,7 +13,13 @@ if (isset($_POST['login'])) {
     $user_name_or_email = mysqli_real_escape_string($conn, $_POST['user_name_or_email']);
     $user_type = isset($_POST['user_type']) ? mysqli_real_escape_string($conn, trim($_POST['user_type']))  :'';
     $password = mysqli_real_escape_string($conn, $_POST['password']);
-
+   // set cookies
+   if(isset($_POST['remember'])){
+    setcookie("remember","checked", time() + (86400*7),"/");
+   }
+   else{
+    setcookie("remember","",time() - 3600,"/");
+   }
     if (empty($user_name_or_email)) {
         $errors['user_name'] = 'Required user name or email';
     }
@@ -94,7 +100,7 @@ if (isset($_POST['login'])) {
 <html lang="en">
 
 <head>
-    <title>Login Page</title>
+    <title>Login Page - MeroHospital</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -105,7 +111,9 @@ if (isset($_POST['login'])) {
     <link rel="icon" type="image/png" sizes="96x96" href="../assets/favicon/favicon-96x96.png">
     <link rel="manifest" href="../assets/favicon/site.webmanifest">
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+     <link rel="stylesheet" href="../assets/css/bootstrap.min.css"/>
+     <!-- <link rel="stylesheet" href="../assets/css/style.css"/> -->
+   
 </head>
 <style>
     body {
@@ -116,46 +124,73 @@ if (isset($_POST['login'])) {
        background-repeat: no-repeat;
 
     }
+    .card {
+        max-width: 700px;
+        padding: 10px;
+        margin-top: 20px;
+        background: #fff;
+        border-radius: 20px;
+        box-shadow: 0 5px 10px rgba(211, 211, 211, 0.1);
+    }
+    .card h3{
+        font-size: 25px;
+        font-weight: 700;
+        color: #a52b2b;
+    }
+    .card span{
+        color: #31908d;
+    }
+    img{
+        display: inline-block;
+        width: 100px;
+        height: 100px;
+        align-items: center;
+        justify-content: center;
+    }
 </style>
-
 <body>
     <div class="container d-flex justify-content-center align-items-center vh-100">
         <div class="row justify-content-center w-100">
             <div class="col-xs-12 col-sm-8 col-md-6 col-lg-6">
                 <div class="card border-0">
-                    <!-- <div class="card-header text-center text-primary p-2"> -->
-                      
-                        <h4 class=" text-center p-2 bg-success text-white" style="font-size: 30px; font-weight:blod;"> Login Page</h4>
-                    <!-- </div> -->
-                    <div class="card-body">
+                    <div style="display:flex; align-items:center;justify-content:center">
+                    <img src="../assets/favicon/android-chrome-512x512.png" alt="">
+                        <h3 class="text-center">Mero<span>Hospital</span></h3>
+                            </div>
+                            <!-- <p class="text-center text-muted">Welcome! Plase enter your details</p> -->
+            
+                    <div class="card-body border-0">
                         <form action="" method="post">
                             <div class="form-group">
                                 <label for="">Username or Email</label>
-                                <input type="text" name="user_name_or_email" class="form-control" placeholder="Username/Email">
+                                <input type="text" name="user_name_or_email" value="<?php echo isset($user_name_or_email) ? $user_name_or_email:'' ;?>" class="form-control" placeholder="Username/Email">
                                 <span style='color:red' ;><?php echo $errors['user_name'] ?></span>
                             </div>
                             <div class="form-group">
                                 <label for="">User Type:</label>
                                 <select name="user_type" id="" class="form-control">
                                     <option disabled selected>Select User Type</option>
-                                    <option value="admin">Admin</option>
-                                    <option value="doctor">Doctor</option>
-                                    <option value="nurse">Nurse</option>
-                                    <option value="pharmacist">Pharmacist</option>
-                                    <option value="laboratorist">Laboratorist</option>
-                                    <option value="accountant">Accountant</option>
-                                    <option value="patient">Patient</option>
+                                    <option value="admin" <?php echo isset($user_type) &&  $user_type=='admin' ? 'selected': ''; ?>>Admin</option>
+                                    <option value="doctor" <?php echo isset($user_type) && $user_type=='doctor' ? 'selected' : ''; ?>>Doctor</option>
+                                    <option value="nurse" <?php echo isset($user_type) && $user_type=='nurse' ? 'selected' : ''; ?>>Nurse</option>
+                                    <option value="pharmacist" <?php echo isset($user_type) && $user_type=='pharmacist' ? 'selected' :''; ?>>Pharmacist</option>
+                                    <option value="laboratorist" <?php echo isset($user_type) && $user_type=='laboratorist' ? 'selected' :''; ?>>Laboratorist</option>
+                                    <option value="accountant" <?php echo isset($user_type) && $user_type=='accountant' ? 'selected' :''; ?>>Accountant</option>
+                                    <option value="patient" <?php echo isset($user_type) && $user_type=='patient' ? 'selected' :''; ?>>Patient</option>
 
                                 </select>
                                 <span style='color:red' ;><?php echo $errors['user_type'] ?></span>
                             </div>
+                            <div class="form-group">
                             <div class="fomr-group">
                                 <label for="">Password</label>
-                                <input type="password" class="form-control" name="password">
+                                <input type="password" class="form-control" name="password" value="<?php echo isset($password) ? $password :''; ?>">
                                 <span style='color:red' ;><?php echo $errors['password'] ?></span>
                             </div>
                             <div class="form-check mt-2">
                                 <input type="checkbox" name="remember" class="form-check-input">
+                                
+                              
                                 <label for="">Remember</label>
                             </div>
                             <div class="from-group">
@@ -163,17 +198,13 @@ if (isset($_POST['login'])) {
                             </div>
                             <hr>
                             <div class="form-group">
-                                <p class="text-center text-muted">Don't you have an account?
+                                <p class=" text-muted">Don't you have an account?
                                     <a href="register.php" class="text-center">Create Now</a>
+                                    <a href="forgot_password.php" class="text-end justify-content-end">Forgot password?</a>
 
                                 </p>
                             </div>
-                            <div class="form-group text-center text-muted">
-
-                                <a href="forgot_password.php">Forgot password?</a>
-
-
-                            </div>
+                                
 
                         </form>
                     </div>

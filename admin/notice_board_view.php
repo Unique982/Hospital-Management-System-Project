@@ -1,11 +1,19 @@
-<?php include("includes/header.php");
+<?php 
+ob_start();
+include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
+
+if(!isset($_SESSION['id'])){
+    header('location:index.php');
+}
+
 $notice_id= $_GET['notice_id'];
 $sql = "SELECT * FROM notice_board WHERE notice_id='$notice_id'";
 $result = mysqli_query($conn, $sql);
 if(mysqli_num_rows($result)>0){
     $record = mysqli_fetch_array($result);
+  ob_end_flush();  
 ?>
 
 <div class="container-fluid">

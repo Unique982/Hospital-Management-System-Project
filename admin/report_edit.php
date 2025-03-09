@@ -3,6 +3,10 @@ ob_start();
 require_once("includes/header.php");
 require_once("includes/navbar.php");
 include('../database/config.php');
+
+if(!isset($_SESSION['id'])){
+    header('location:index.php');
+}
 $errors = [
     'report' => '',
     'description' => '',

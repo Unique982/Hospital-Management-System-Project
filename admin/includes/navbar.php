@@ -96,11 +96,11 @@ $user_name = $_SESSION['user_data']['user_name'] ?? null;
             <a class="nav-link collapsed" href="./employee_add.php" data-toggle="collapse" data-target="#collapse1"
                 aria-expanded="true" aria-controls="collapse1">
                 <i class="fas fa-user-md"></i>
-                <span>Empolyee Manage</span>
+                <span>Staff Manage</span>
             </a>
             <div id="collapse1" class="collapse" aria-labelledby="heading1" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <h6 class="collapse-header">Empolyee Manage</h6>
+                    <h6 class="collapse-header">Manage Staff</h6>
 
                     <a class="collapse-item" href="./manage_specialization.php">Manage Specialization</a>
                     <a class="collapse-item" href="./manage_doctor.php">Manage Doctor</a>
@@ -108,6 +108,7 @@ $user_name = $_SESSION['user_data']['user_name'] ?? null;
                     <a class="collapse-item" href="./manage_pharmacist.php">Manage pharmacist</a>
                     <a class="collapse-item" href="./manage_accountant.php">Manage Accountant</a>
                     <a class="collapse-item" href="./manage_laboratorists.php">Manage Laboratorist</a>
+                    <!-- <a class="collapse-item" href="./manage_specialization.php">Manage Doctor_schedule</a> -->
                 </div>
             </div>
         </li>
@@ -390,7 +391,7 @@ $user_name = $_SESSION['user_data']['user_name'] ?? null;
                     <a class="collapse-item" href="contact_page.php">Contact Us</a>
                     <a class="collapse-item" href="notice_board_list.php">Manage Notice</a>
                     <a class="collapse-item" href="blog_manage.php">Manage Blog</a>
-                    <a class="collapse-item" href="notice_board_list.php">Manage Services</a>
+                    <a class="collapse-item" href="services_manage.php">Manage Services</a>
 
 
                 </div>

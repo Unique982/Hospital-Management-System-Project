@@ -4,6 +4,9 @@ include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
 
+if(!isset($_SESSION['id'])){
+    header('location:index.php');
+  }
 
 $errors =[
     'first_name' =>'',
@@ -12,7 +15,8 @@ $errors =[
 'specialization' => '',
     'email' =>'',
     'phone' =>'',
-    'address' =>''
+    'address' =>'',
+    'gender'=>'',
 ];
 if (isset($_POST['update'])) {
     $id= $_POST['id'];
@@ -22,6 +26,7 @@ if (isset($_POST['update'])) {
     $specialization = mysqli_real_escape_string($conn, $_POST['specialization']);
     $email = mysqli_real_escape_string($conn, $_POST['email']);
     $phone = mysqli_real_escape_string($conn, $_POST['phone']);
+    $gender = mysqli_real_escape_string($conn, $_POST['gender']);
     $address = mysqli_real_escape_string($conn, $_POST['address']);
     
     if(empty($username)){
@@ -42,6 +47,13 @@ if (isset($_POST['update'])) {
        elseif(!preg_match('/^[a-zA-Z\s]+$/',$last_name)){
   $errors['last_name'] ='only use letter and space allowed';
        }
+       // gender
+    $genderValid = ['male', 'female', 'other'];
+    if (empty($gender)) {
+        $errors['gender'] = "Select a gender";
+    } elseif (!in_array($gender, $genderValid)) {
+        $errors['gender'] = "Invalid gender selected";
+    }
 
        // validation email 
        if(empty($email)){
@@ -74,7 +86,7 @@ if (isset($_POST['update'])) {
        if (empty(array_filter($errors))) {   
  $user_tbl_update = "UPDATE user_tbl SET user_name='$username', user_email='$email' WHERE id=$id ";
 if(mysqli_query($conn,$user_tbl_update)){
-    $doctor_update = "UPDATE doctors SET first_name = '$first_name',last_name='$last_name', specialization='$specialization',phone='$phone',address='$address' WHERE user_id= $id";
+    $doctor_update = "UPDATE doctors SET first_name = '$first_name',last_name='$last_name', specialization='$specialization',gender='$gender',phone='$phone',address='$address' WHERE user_id= $id";
      if(mysqli_query($conn, $doctor_update)){
         $_SESSION['alert'] ="update successfully";
         $_SESSION['alert_code'] ="success";
@@ -99,7 +111,7 @@ ob_end_flush();
                 <?php 
                  $id = $_GET['id'];
                  $select_query = "SELECT doctors.id as doctors_id, doctors.first_name, doctors.last_name,
-doctors.phone,doctors.address, doctors.created_at, user_tbl.user_name as username, user_tbl.user_email,user_tbl.role, user_tbl.id 
+doctors.phone,doctors.address,doctors.gender, doctors.created_at, user_tbl.user_name as username, user_tbl.user_email,user_tbl.role, user_tbl.id 
 ,specialization.specialization  FROM `doctors` 
 INNER JOIN `user_tbl` ON doctors.user_id = user_tbl.id
 INNER JOIN `specialization` ON doctors.specialization = specialization.id WHERE user_id = $id";
@@ -141,7 +153,16 @@ INNER JOIN `specialization` ON doctors.specialization = specialization.id WHERE 
                     <input type="address" name="address" class="form-control" placeholder="Enter Address"  value="<?php echo $row['address'] ?>">
                     <span style='color:red' ;><?php echo $errors['address'] ?></span>
                 </div>
-               
+                <div class="form-group">
+                                    <label>Gender:</label>
+                                    <select name="gender" id="gender" class="form-control">
+                                        <option selected disabled>Select Option</option>
+                                        <option value="male" <?php echo ($row['gender'] == 'male') ? 'selected' : ''; ?>>Male</option>
+                                        <option value="female" <?php echo ($row['gender'] == 'female') ? 'selected' : ''; ?>>Female</option>
+                                        <option value="other" <?php echo ($row['gender'] == 'other') ? 'selected' : ''; ?>>Other</option>
+                                    </select>
+                                    <span style='color:red' ;><?php echo $errors['gender'] ?></span>
+                                </div>
 
                 <div class="form-group">
                                     <label for="">Specialization</label>
@@ -161,7 +182,7 @@ INNER JOIN `specialization` ON doctors.specialization = specialization.id WHERE 
                                     </select>
                                     <span style='color:red' ;><?php echo $errors['specialization'] ?></span>
                                 </div>
-                      
+                               
                 <div class="modal-footer">
                             
                             <a href="manage_doctors.php" class="btn btn-danger">Cancel</a>

@@ -4,7 +4,9 @@ include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
 
-
+if(!isset($_SESSION['id'])){
+    header('location:index.php');
+}
 
 // select Query
 $select_query = "SELECT * FROM blood_donors ORDER BY blood_donor_id DESC";

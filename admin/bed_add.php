@@ -5,6 +5,7 @@ include("includes/navbar.php");
 include('../database/config.php');
 
 
+
 $errors = [
     'bedNumber' =>'',
     'bed_type' =>'',

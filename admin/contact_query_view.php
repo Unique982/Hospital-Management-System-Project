@@ -1,12 +1,20 @@
 <?php
+ob_start();
 include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
+
+if(!isset($_SESSION['id'])){
+    header('location:index.php');
+}
+
 $id= $_GET['id'];
 $sql = "SELECT * FROM query_contact WHERE id = $id";
 $result = mysqli_query($conn, $sql);
 if(mysqli_num_rows($result)>0){
     $record = mysqli_fetch_array($result);
+
+    ob_end_flush();
 ?>
 
 <div class="container-fluid">

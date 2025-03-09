@@ -5,6 +5,9 @@ include("includes/navbar.php");
 include('../database/config.php');
 require '../vendor/autoload.php';
 
+if(!isset($_SESSION['id'])){
+    header('location:index.php');
+  }
 use Egulias\EmailValidator\EmailValidator;
 use Egulias\EmailValidator\Validation\DNSCheckValidation;
 

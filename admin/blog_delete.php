@@ -1,7 +1,9 @@
 <?php
 ob_start();
-session_start();
 include('../database/config.php');
+if(!isset($_SESSION['id'])){
+    header('location:index.php');
+}
 
 if(isset($_POST['delete_btn_set'])){
     $del_id = $_POST['delete_id'];

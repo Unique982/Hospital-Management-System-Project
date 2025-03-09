@@ -187,7 +187,6 @@ else{
 }
 }
 
-
 ?>
 
 
@@ -195,21 +194,35 @@ else{
 <html lang="en">
 
 <head>
-  <title>Login Page</title>
+  <title>Register Page -MeroHospital</title>
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+  <link rel="apple-touch-icon.png" type="image/png" sizes="512*512" href="./assets/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="512*512" href="../assets/favicon/android-chrome-512x512.png"
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="../assets/favicon/favicon-96x96.png">
+    <link rel="manifest" href="../assets/favicon/site.webmanifest">
+    <!-- Bootstrap CSS -->
+     <link rel="stylesheet" href="../assets/css/bootstrap.min.css"/>
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <style>
   body {
     font-family: 'Times New Roman';
-    background-image: url("../assets/images/Tiny doctors and patients near hospital flat vector illustration.jpg");
+    background-image: url("../assets/images/young-handsome-physician-medical-robe-with-stethoscope_1303-17818.avif");
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
+  }
+  .card{
+    padding: 10px;
+        margin-top: 20px;
+        background: #fff;
+        border-radius: 20px;
+        box-shadow: 0 5px 10px rgba(211, 211, 211, 0.9);
   }
 </style>
 
@@ -217,12 +230,14 @@ else{
   <div class="container d-flex justify-content-center align-items-center">
     <div class="row justify-content-center w-100">
       <div class="col-md-8">
-        <div class="card shadow">
-          <div class="card-header text-center text-primary p-2">
-            <h3> Register Form</h3>
-          </div>
+        <div class="card border-0">
+        <div style="display:flex; align-items:center;justify-content:center">
+                    <img src="../assets/favicon/android-chrome-512x512.png" alt="" style="width: 100px; height: 100px;align-items: center; justify-content: center;">
+                        <h3 class="text-center" style="font-size: 25px;font-weight: 700; color: #a52b2b;">Mero<span style="color: #31908d;">Hospital</span></h3>
+                            </div>
           <div class="card-body">
-            <form action="" method="POST" enctype="multipart/form-data" autocapitalize="off" >             <div class="row">
+            <form action="" method="POST" enctype="multipart/form-data" autocapitalize="off" >             
+              <div class="row">
                 <div class="col-md-6">
                 <div class="form-group">
                     <label>User Name:</label>

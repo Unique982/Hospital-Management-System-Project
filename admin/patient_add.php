@@ -3,6 +3,11 @@ ob_start();
 include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
+
+if(!isset($_SESSION['id'])){
+  header('location:index.php');
+}
+
 $user_id = $_SESSION['id'];
 // email send lab
 use PHPMailer\PHPMailer\PHPMailer;

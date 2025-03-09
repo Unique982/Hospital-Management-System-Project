@@ -4,6 +4,9 @@ include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
 
+if(!isset($_SESSION['id'])){
+    header('location:index.php');
+}
 
 $user_type = $_SESSION['user_data']['role'];
 $user_id = $_SESSION['id'];
@@ -139,7 +142,8 @@ ob_end_flush();
 
                                                 // Values that you want to use in the signature
                                                 $total_amount = $row['amount'];  // Example total amount
-                                                $transaction_uuid = uniqid('txn_') . time();  // Unique transaction UUID based on current time and unique identifier
+                                                $transaction_uuid = uniqid('txn_') . time(); 
+                                                 // Unique transaction UUID based on current time and unique identifier
                                                 $product_code = "EPAYTEST";  // Example product code
 
                                                 // Prepare the signature string

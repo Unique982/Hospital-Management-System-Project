@@ -1,10 +1,18 @@
 <?php
+ob_start();
 include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
+
+if(!isset($_SESSION['id'])){
+    header('location:index.php');
+}
+
 $data_display = "SELECT * FROM notice_board ORDER BY  notice_id DESC";
 $result1 = mysqli_query($conn, $data_display) or die("Query failed");
 $count_row = mysqli_num_rows($result1);
+
+ob_end_flush();
 ?>
 <div class="container-fluid">
     <!-- DataTales Example -->

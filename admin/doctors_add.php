@@ -3,7 +3,8 @@ ob_start();
 include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
-if(!isset($_SESSION['user_id'])){
+
+if(!isset($_SESSION['id'])){
     header('location:index.php');
     exit();
 }
@@ -21,6 +22,7 @@ $errors =[
     'last_name' =>'',
     'username' =>'',
 'specialization' => '',
+'gender'=>'',
     'email' =>'',
     'phone' =>'',
     'address' =>'',
@@ -36,6 +38,7 @@ if(isset($_POST['add'])){
       $email = mysqli_real_escape_string($conn, $_POST['email']);
       $phone = mysqli_real_escape_string($conn, $_POST['phone']);
       $address = mysqli_real_escape_string($conn, $_POST['address']);
+      $gender = mysqli_real_escape_string($conn,$_POST['gender']);
       $plan_password = $_POST['password'];
       $password = mysqli_real_escape_string($conn, password_hash( $plan_password,PASSWORD_BCRYPT));
      
@@ -65,6 +68,14 @@ if(isset($_POST['add'])){
        elseif(!preg_match('/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/',$email)){
         $errors['email'] ='Invalid Email';
        }
+       // gender
+        $genderValid = ['male', 'female', 'other'];
+          if (empty($gender)) {
+          $errors['gender'] = "Select a gender";
+         } elseif (!in_array($gender, $genderValid)) {
+         $errors['gender'] = "Invalid gender selected";
+            }
+
        // phone number
        if(empty($phone)){
         $errors['phone'] ='Phone number is required';
@@ -118,9 +129,9 @@ if(mysqli_num_rows($check_result) > 0){
         exit();
        }
        else{
-        $insert_query = "INSERT INTO `doctors`(`user_id`, `first_name`, `last_name`, `specialization`, `phone`,  `address`,  `created_at`)
+        $insert_query = "INSERT INTO `doctors`(`user_id`, `first_name`, `last_name`, `specialization`,`gender`,`phone`,  `address`,  `created_at`)
 
-         VALUES('$user_id','$first_name','$last_name','$specialization','$phone','$address',Now()) ";
+         VALUES('$user_id','$first_name','$last_name','$specialization','$gender','$phone','$address',Now()) ";
          if(mysqli_query($conn,$insert_query)){
           
           
@@ -231,6 +242,16 @@ ob_end_flush();
                             </select>
                             <span style='color:red' ;><?php echo $errors['specialization'] ?></span>
                         </div>
+                        <div class="form-group">
+                    <label for="">Gender</label>
+                   <select name="gender" id="gender" class="form-control">
+                    <option selected disabled>Select Gender</option>
+                    <option value="male" <?php echo isset($gender) && $gender=='male' ? 'selected':'' ?>>Male</option>
+                    <option value="female" <?php echo isset($gender) && $gender=='female' ? 'selected':'' ?>>Female</option>
+                    <option value="other" <?php echo isset($gender) && $gender=='other' ? 'selected':'' ?>>Other</option>
+                   </select>
+                    <span style='color:red' ;><?php echo $errors['gender'] ?></span>
+                </div>
                 <div class="form-group">
                     <label for="">Phone No</label>
                     <input type="number" name="phone" class="form-control" placeholder="Enter Phone"  value="<?php echo isset($phone) ? $phone:'' ;?>">

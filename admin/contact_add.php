@@ -1,5 +1,8 @@
 <?php
+ob_start();
+session_start();
 include('../database/config.php');
+
 $errors = [
     'name' => '',
     'email' => '',
@@ -7,8 +10,7 @@ $errors = [
     'message' =>'',
 
 ];
-
-if (isset($_POST['contact_us'])) {
+if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST['contact_us'])) {
     $name = mysqli_real_escape_string($conn, $_POST['name']);
     $email = mysqli_real_escape_string($conn, $_POST['email']);
     $number = mysqli_real_escape_string($conn, $_POST['number']);
@@ -23,7 +25,7 @@ if (isset($_POST['contact_us'])) {
     if(empty($email)){
         $errors['email'] ='Email is required';
        }
-       elseif(!preg_match('/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/',$email)){
+       elseif(!filter_var($email,FILTER_VALIDATE_EMAIL)){
         $errors['email'] ='Invalid Email';
        }
        if(empty($number)){
@@ -36,23 +38,26 @@ if (isset($_POST['contact_us'])) {
         $errors['message'] = 'Message is required';
        }
 
-    if (!array_filter($errors)) {
+    if (empty(array_filter($errors))) {
         $insert_sql = "INSERT INTO query_contact (`name`,`email`,`phone`,`message`)
  VALUES('$name','$email','$number','$message')";
         if (mysqli_query($conn, $insert_sql)) {
             $_SESSION['alert'] = "Thank your message successfully!";
             $_SESSION['alert_code'] = "success";
-            header('Location: ../../index.php');
+            header('Location: ../index.php');
             exit();
         } else {
             $_SESSION['alert'] = "Failed";
             $_SESSION['alert_code'] = "warning";
-            header('Location: ../../index.php');
+            header('Location: ../index.php');
             exit();
         }
-        
-      
     }
+    // $_SESSION['errors'] = $errors; 
+    // header('location:../index.php#contact');
+
+    // exit();
 }
 
+ob_end_flush();
 ?>

@@ -1,5 +1,9 @@
 <?php
+ob_start();
 include('../database/config.php');
+if(!isset($_SESSION['id'])){
+    header('location:index.php');
+}
 if(isset($_POST['save'])){
     $payment_id = $_POST['payment_id'];
     $title = mysqli_real_escape_string($conn,$_POST['title']);
@@ -24,5 +28,6 @@ $_SESSION['alert'] = "failed";
 $_SESSION['alert_code'] = "warning";
 }
 }
+ob_end_flush();
     ?>
 

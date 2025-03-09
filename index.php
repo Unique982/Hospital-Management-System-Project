@@ -31,7 +31,7 @@ session_start()
               <br> Rem eligendi
               voluptate in temporibus quia, natus dolorum.
             </p>
-            <a href="#" class="btn btn-success">Book Appointment</a>
+            <a href="./admin/index.php" class="btn btn-success btn">Book Appointment</a>
           </div>
         </div>
       </div>
@@ -46,7 +46,7 @@ session_start()
               <br> Rem eligendi
               voluptate in temporibus quia, natus dolorum.
             </p>
-            <a href="#" class="btn btn-success">Book Appointment</a>
+            <a href="./admin/index.php" class="btn btn-success btn">Book Appointment</a>
           </div>
         </div>
       </div>
@@ -80,7 +80,7 @@ session_start()
             <div class="about_sec">
               <h1><?php echo $row['page_title'] ?></h1>
               <p><?php echo substr($row['page_description'], 0, 800) ?>...</p>
-              <a href="single.php" class="btn btn-danger btn-sm w-10">Read More</a>
+              <a href="about_detalis_page.php" class="btn btn-danger btn-sm w-10">Read More</a>
             </div>
           <?php }  ?>
         </div>
@@ -98,14 +98,20 @@ session_start()
         </div>
       </div>
       <div class="row g-4">
+      <?php 
+         $select_services = "SELECT * FROM services_page ORDER  BY id ASC";
+         $services_result = mysqli_query($conn,$select_services);
+         if(mysqli_num_rows($services_result)>0){
+          while($service_record = mysqli_fetch_assoc($services_result)){
+     ?>
         <div class="col-lg-4 col-md-6 col-sm-12">
           <div class="py-3 card text-center">
-            <i class="fas fa-user-md service-icon"></i>
-            <h5 class="mt-3">Qualified Doctors</h5>
-            <p class="text-muted">Highly skilled and experienced doctors available 24/7.</p>
+            <i><img src="./admin/Service_icon/<?php echo $service_record['icon'] ?>" alt="" width="50px" height="50px"></i>
+            <h5 class="mt-3"><?php echo $service_record['services_name'] ?></h5>
+            <p class="text-muted"><?php echo $service_record['services_slug'] ?></p>
           </div>
         </div>
-        <div class="col-lg-4 col-md-6 col-sm-12">
+        <!-- <div class="col-lg-4 col-md-6 col-sm-12">
           <div class=" py-3 card text-center">
             <i class="fas fa-procedures service-icon"></i>
             <h5 class="mt-3">Emergency Care</h5>
@@ -140,7 +146,10 @@ session_start()
             <h5 class="mt-3">Pharmacy</h5>
             <p class="text-muted">24/7 pharmacy with all essential medicines and drugs.</p>
           </div>
-        </div>
+        </div> -->
+             
+      <?php }} 
+        ?>
 
       </div>
     </div>
@@ -313,12 +322,14 @@ session_start()
             </div>
             
             <div class="col-md-4">
+             
               <div class="card-body">
                 <h3 class="text-center text-muted">Contact Form</h3>
-              <form action="./admin/Contact Query/contact_add.php" method="POST" enctype="multipart/form-data">
+              <form action="admin/contact_add.php" method="POST" enctype="multipart/form-data">
                 <div class="form-group mb-2">
                   <label for="">Name:</label>
                   <input type="text" name="name" class="form-control" placeholder="Enter Your Name">
+                  <!-- <span style="color:red;"><?php echo  $errors['name']; ?></span> -->
                   
                 </div>
                 <div class="form-group mb-2">
@@ -340,6 +351,7 @@ session_start()
                 <button type="submit" name="contact_us" class="btn btn-primary btn-sm w-100">Submit</button>
                 </div>
               </form>
+              
               </div>
               </div>
             </div>
@@ -352,5 +364,6 @@ session_start()
   <!-- End Blog Section -->
 </main>
 <?php
+include('./admin/includes/scripts.php');
 include('footer.php');
 ?>

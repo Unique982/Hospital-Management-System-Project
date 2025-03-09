@@ -1,6 +1,9 @@
 <?php
 include('../database/config.php');
 session_start();
+if(!isset($_SESSION['id'])){
+    header('location:index.php');
+}
 
 $user_name = $_SESSION['user_name'] ;
 $user_id = $_SESSION['id'];

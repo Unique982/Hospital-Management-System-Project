@@ -13,7 +13,7 @@ include('./database/config.php');
             ?>
                 <div class="col-sm-12 col-lg-3 col-md-6">
                     <h1 class="footer-head"><?php echo $row['page_title'] ?></h1>
-                    <p><?php echo $row['page_description'] ?></p>
+                    <p><?php echo substr($row['page_description'],0,200)?>..</p>
                 </div>
             <?php } ?>
             <div class="col-sm-12 col-lg-3 col-md-6">

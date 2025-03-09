@@ -1,10 +1,16 @@
 <?php
+ob_start();
 include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
+
+if(!isset($_SESSION['id'])){
+    header('location:index.php');
+ }
 $sql1 = "SELECT * FROM specialization  ORDER BY `id` DESC";
 $result1 = mysqli_query($conn, $sql1) or die("Error Query");
 $count_row = mysqli_num_rows($result1);
+ob_end_flush();
 ?>
     <div class="container-fluid">
         <!-- DataTales Example -->

@@ -32,21 +32,21 @@ include('../database/config.php');
                         <tr>
                             <td>2</td>
                             <td>Nurse Data File</td>
-                            <td><a href=""><i class="fas fa-database"></i>
+                            <td><a href="backup_code.php"><i class="fas fa-database"></i>
                             </a>
                             </td>
                         </tr>
                         <tr>
                             <td>3</td>
                             <td>Patients Data File</td>
-                            <td><a href=""><i class="fas fa-database"></i>
+                            <td><a href="backup_code.php"><i class="fas fa-database"></i>
                             </a>
                             </td>
                         </tr>
                         <tr>
                             <td>4</td>
-                            <td>All System Backup file</td>
-                            <td><a href=""><i class="fas fa-database"></i>
+                            <td>Doctor Record</td>
+                            <td><a href="backup_code.php"><i class="fas fa-database"></i>
                             </a>
                             </td>
                         </tr>

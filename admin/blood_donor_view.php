@@ -4,6 +4,10 @@ include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
 
+if(!isset($_SESSION['id'])){
+  header('location:index.php');
+}
+
 $blood_donor_id= $_GET['blood_donor_id'];
 $sql = "SELECT * FROM blood_donors where blood_donor_id =$blood_donor_id";
 $result = mysqli_query($conn, $sql);

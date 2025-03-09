@@ -12,10 +12,15 @@ class ComposerStaticInitc089e1796ffd59a8d72aff8b53ed0d87
     );
 
     public static $prefixLengthsPsr4 = array (
+        'T' => 
+        array (
+            'Twilio\\' => 7,
+        ),
         'S' => 
         array (
             'Symfony\\Polyfill\\Intl\\Normalizer\\' => 33,
             'Symfony\\Polyfill\\Intl\\Idn\\' => 26,
+            'SMSAlert\\Lib\\' => 13,
         ),
         'E' => 
         array (
@@ -28,6 +33,10 @@ class ComposerStaticInitc089e1796ffd59a8d72aff8b53ed0d87
     );
 
     public static $prefixDirsPsr4 = array (
+        'Twilio\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/twilio/sdk/src/Twilio',
+        ),
         'Symfony\\Polyfill\\Intl\\Normalizer\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-intl-normalizer',
@@ -35,6 +44,10 @@ class ComposerStaticInitc089e1796ffd59a8d72aff8b53ed0d87
         'Symfony\\Polyfill\\Intl\\Idn\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-intl-idn',
+        ),
+        'SMSAlert\\Lib\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/smsalert/php-sdk/vendor/src',
         ),
         'Egulias\\EmailValidator\\' => 
         array (

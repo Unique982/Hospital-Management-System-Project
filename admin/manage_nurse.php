@@ -4,6 +4,10 @@ include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
 
+if(!isset($_SESSION['id'])){
+    header('location:index.php');
+  }
+
 $data_display = "SELECT nurse.id,nurse.phone, nurse.address,nurse.gender,nurse.qualification, user_tbl.user_name as username, user_tbl.user_email,user_tbl.role, user_tbl.id   FROM `nurse` 
 INNER JOIN `user_tbl` ON nurse.user_id = user_tbl.id
 ORDER BY nurse.id DESC";

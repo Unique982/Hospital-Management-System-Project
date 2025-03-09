@@ -2,6 +2,11 @@
 include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
+
+if(!isset($_SESSION['id'])){
+    header('location:index.php');
+  }
+
 $id= $_GET['id'];
 $sql = "SELECT nurse.id,nurse.phone, nurse.address,nurse.gender,
 nurse.qualification,  user_tbl.user_name as username, user_tbl.user_email,user_tbl.role, user_tbl.id

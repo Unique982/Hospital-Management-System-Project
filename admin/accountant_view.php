@@ -3,7 +3,9 @@ include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
 
-
+if(!isset($_SESSION['id'])){
+    header('location:index.php');
+}
 
 $id= $_GET['id'];
 $sql = "SELECT a.phone,a.address,a.gender,

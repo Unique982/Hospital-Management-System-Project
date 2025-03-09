@@ -3,6 +3,10 @@ include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
 
+if(!isset($_SESSION['id'])){
+    header('location:index.php');
+  }
+
 $select_query = "SELECT * FROM bed ORDER BY  bed_id DESC ";
 $result = mysqli_query($conn, $select_query);
 $count = mysqli_num_rows($result);

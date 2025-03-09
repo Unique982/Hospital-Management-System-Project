@@ -1,14 +1,17 @@
-<?php include("includes/header.php");
+<?php
+ob_start();
+include("includes/header.php");
 include("includes/navbar.php");
 include('../database/config.php');
+if(!isset($_SESSION['id'])){
+    header('location:index.php');
+}
 
 // select Query
 $select_query = "SELECT blood_group, COUNT(*) as status FROM blood_donors GROUP BY blood_group ";
 $result = mysqli_query($conn, $select_query);
 $count = mysqli_num_rows($result);
-
-
-
+ob_end_flush();
 ?>
 <div class="container-fluid">
     <!-- DataTales Example -->
