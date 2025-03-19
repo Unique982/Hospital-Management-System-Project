@@ -44,28 +44,39 @@ if (isset($_POST['save'])) {
         $errors['discharge_time'] = 'Discharge time is required';
     }elseif (strtotime($discharge_time) <=time()) {
         $errors['discharge_time'] ="Discharge Date must be futre date";
+    }elseif(strtotime($discharge_time)<=strtotime($allocate_time)){
+        $errors['discharge_time'] ="Discharge time must be after allocateion";
+
     }
 
     if (empty(array_filter($errors))) {
-        $duplicate_date = "SELECT bed_id,pateint_id FROM bed_allocate WHERE bed_id='$bed_number' OR pateint_id='$patient'";
-        $result = mysqli_query($conn, $duplicate_date) or die("Query failed");
-        if (mysqli_num_rows($result) >0) {
-            $row= mysqli_fetch_assoc($result);
-            if($row['bed_id']==$bed_number){
-            $_SESSION['alert'] = "Bed  Already booked patient ";
-            $_SESSION['alert_code'] = "info";
-            header('location:allocate_bed_list.php');
-            exit();
-        }  if($row['pateint_id']==$patient){
-            $_SESSION['alert'] = "Bed Already patient";
+       // check patient allocated read already or not 
+        $duplicate_date_patient = "SELECT * FROM bed_allocate WHERE pateint_id='$patient' AND ('$allocate_time' BETWEEN allocated_at AND discharge OR '$discharge_time' BETWEEN allocated_at AND discharge)";
+        $result_pa = mysqli_query($conn, $duplicate_date_patient) or die("Query failed");
+        if (mysqli_num_rows($result_pa) > 0) {
+           
+            $_SESSION['alert'] = "This  patient is alread has a bed allocated during this date ";
             $_SESSION['alert_code'] = "info";
             header('location:allocate_bed_list.php');
             exit();
         }
-    }else {
+            //check bed availabe or note
+            $duplicate_date_bed = "SELECT * FROM bed_allocate WHERE bed_id='$bed_number' AND ('$allocate_time' BETWEEN allocated_at AND discharge OR '$discharge_time' BETWEEN allocated_at AND discharge)";
+            $result_bed = mysqli_query($conn, $duplicate_date_bed) or die("Query failed");
+            if (mysqli_num_rows($result_bed) > 0) {
+                $row= mysqli_fetch_assoc($result_bed);
+                if($row['bed_id']==$bed_number){
+                $_SESSION['alert'] = "The selected bed  already booked";
+                $_SESSION['alert_code'] = "info";
+                header('location:allocate_bed_list.php');
+                     exit();
+        }  
+    }
+    else {
             $insert_query = "INSERT INTO `bed_allocate`(`bed_id`, `pateint_id`, `allocated_at`, `discharge`)
              VALUES ('$bed_number','$patient','$allocate_time','$discharge_time')";
             if (mysqli_query($conn, $insert_query)) {
+                mysqli_query($conn,"UPDATE bed SET status ='booked' WHERE bed_id = '$bed_number'");
                 $_SESSION['alert'] = "Bed Allocated Successfully";
                 $_SESSION['alert_code'] = "success";
                 header('location:allocate_bed_list.php');
@@ -75,7 +86,8 @@ if (isset($_POST['save'])) {
                 $_SESSION['alert_code'] = "warning";
             }
         }
-    }
+    }    
+    
 }
 ob_end_flush();
 ?>
@@ -94,7 +106,7 @@ ob_end_flush();
                             <select name="bed_number" id="bed_number" class="form-control">
                                 <option selected>Select</option>
                                 <?php
-                                $select_query_bed_table = "SELECT * FROM bed";
+                                $select_query_bed_table = "SELECT * FROM bed WHERE status ='available'";
                                 $result = mysqli_query($conn, $select_query_bed_table);
                                 while ($row = mysqli_fetch_assoc($result)) {
                                     echo "<option value='" . $row['bed_id'] . "'>" . $row['bed_num'] . "</option>";

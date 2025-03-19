@@ -40,30 +40,49 @@ if (isset($_POST['add'])) {
         if ($date == date('Y-m-d')) {
             if (empty($time)) {
                 $errors['time'] = "Time is required";
-            } elseif (!preg_match('/^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/', $time)) {
-                $errors['time'] = "Invalid time formate .Please use HH:MM";
+            } elseif (!preg_match('/^(0[6-9]|10):[0-5][0-9]$/', $time)) {
+                $errors['time'] = "Invalid time formate. Plase select between 06:00 am to 10:00 am";
             } else {
                 $current_time = date("H:i");
                 if ($time < $current_time) {
                     $errors['time'] = "sorry select next date";
-                } elseif ($current_time > '14:00') {
+                } elseif ($current_time > '10:00') {
                     $errors['time'] = "Booking for today is closed after 2 PM. Please select the next day!";
                 }
             }
         }
     }
     if (empty(array_filter($errors))) {
-// check patient already has an app with in 7 day 
-// code her...
-        
-        $sql1 = "SELECT app_id FROM appointments WHERE patient_id = '$patient'";
-        $result1 = mysqli_query($conn, $sql1) or die("Query failed");
-        if (mysqli_num_rows($result1) > 0) {
-            $_SESSION['alert'] = "The patient already exists please select next patient";
+        // check the patient already app with the doctor
+        $sql_patient = "SELECT app_id FROM appointments WHERE patient_id = '$patient'AND appointment_date >= CURDATE()";
+        $result_patient = mysqli_query($conn, $sql_patient) or die("Query failed");
+        if (mysqli_num_rows($result_patient) > 0) {
+            $_SESSION['alert'] = "Patient already has an appointment  today.";
             $_SESSION['alert_code'] = "info";
             header('location:appointment_list.php');
             exit();
-        } else {
+        } 
+        // check the patient already visited this doctor within the last 7 day 
+        $sql_7day = "SELECT app_id FROM appointments WHERE patient_id = '$patient' AND doctor_id = '$doctor' AND appointment_date >= DATE_SUB(CURDATE(),INTERVAL 7 DAY)";
+        $result_check = mysqli_query($conn, $sql_7day) or die("Query failed");
+        if (mysqli_num_rows($result_check) > 0) {
+            $_SESSION['alert'] = "Patient already visited this doctor within the  last 7days.";
+            $_SESSION['alert_code'] = "info";
+            header('location:appointment_list.php');
+            exit();
+        }
+        // check doctor per day 30 patient 
+        $doctor_limit = "SELECT COUNT(*) as patient_count FROM appointments WHERE doctor_id = '$doctor' AND appointment_date  = CURDATE()";
+        $result_doctor = mysqli_query($conn, $doctor_limit) or die("Query failed");
+        $data_limit = mysqli_fetch_assoc($result_doctor);
+        if ($data_limit['patient_count'] >= 30) {
+            $_SESSION['alert'] = "Doctor had already reached the maximun number of appointments for today";
+            $_SESSION['alert_code'] = "info";
+            header('location:appointment_list.php');
+            exit();
+        }
+        
+        else {
             $insert_query = "INSERT INTO `appointments`(`patient_id`, `doctor_id`,`status`, `appointment_date`,`appointment_time`)
      VALUES('$patient','$doctor','confirmed','$date','$time')";
             if (mysqli_query($conn, $insert_query)) {
@@ -114,6 +133,8 @@ ob_end_flush();
                     <?php 
                     }
                      ?>
+                      <?php if($user_type =='admin'  || $user_type =='nurse') {
+                        ?>
                     <div class="form-group">
                         <label for="">Doctor</label>
                         <select name="doctor" id="doctor" class="form-control" required>
@@ -127,8 +148,9 @@ ob_end_flush();
                             }
                             ?>
                         </select>
-                        <span style='color:red' ;><?php echo $errors['doctor'] ?></span>
+                        <span style='color:red';><?php echo $errors['doctor'] ?></span>
                     </div>
+                    <?php }  ?>
                 
                     <!-- if user type admin doctor and nurse ho vanni select user  -->
                     <?php if($user_type =='admin' || $user_type =='doctor' || $user_type =='nurse') {
@@ -147,7 +169,7 @@ ob_end_flush();
                         
                             ?>
                         </select>
-                        <span style='color:red' ;><?php echo $errors['patient'] ?></span>
+                        <span style='color:red';><?php echo $errors['patient'] ?></span>
 
                     </div>
                 <?php  }?>
@@ -258,12 +280,12 @@ ob_end_flush();
 
                                     <td>
                                         <?php if($user_type==='patient') {
-                                            if ($app['status'] == 'cancel') { ?>
+                                            if ($app['status'] == 'completed' || $app['status']=='cancel') { ?>
                                                 <form action="appointment_delete.php" method="POST" id="deleteForm" style="display:inline-block; margin:2px;">
                                                     <input type="hidden" name="app_id" value="<?php echo $app['app_id'] ?>" class="delete_id">
                                                     <button type="submit" name="delete" class="btn btn-outline-danger btn-sm deletebtn" data-delete-url="appointment_delete.php">Delete</button>
                                                 </form>
-                                            <?php   }else{?>
+                                            <?php   }elseif ($app['status'] == 'confirmed') {?>
                                                 <form action="appointment_status.php" method="GET" style="display:inline-block; margin:2px;">
                                                 <input type="hidden" name="app_id" value="<?php echo $app['app_id'] ?>">
                                                 <button type="submit" name="Cancel" class="btn btn-outline-danger btn-sm ">Cancell</button>
@@ -272,12 +294,18 @@ ob_end_flush();
                                             ?>
 
                                            
-                                        <?php if ($user_type === 'doctor') { ?>
+                                        <?php if ($user_type === 'doctor') { 
+                                             if ($app['status'] == 'cancel') { ?>
+                                            <form action="appointment_delete.php" method="POST" id="deleteForm" style="display:inline-block; margin:2px;">
+                                                    <input type="hidden" name="app_id" value="<?php echo $app['app_id'] ?>" class="delete_id">
+                                                    <button type="submit" name="delete" class="btn btn-outline-danger btn-sm deletebtn" data-delete-url="appointment_delete.php">Delete</button>
+                                                </form>
+                                                <?php }else{ ?>
                                             <form action="appointment_status.php" method="GET" style="display:inline-block; margin:2px;">   
                                             <input type="hidden" name="app_id" value="<?php echo $app['app_id'] ?>">
                                                 <button type="submit" name="checkin" class="btn btn-outline-primary btn-sm ">Check In</button>
                                             </form>
-                                            <?php }  ?>
+                                            <?php } } ?>
                                             
                                             <?php if($user_type =='admin' || $user_type =='nurse' ){ ?>
                                             <!-- <a href=""><button type="button" class="btn btn-outline-warning btn-sm">Checkin</button></a> -->

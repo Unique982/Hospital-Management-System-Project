@@ -184,7 +184,7 @@ if (isset($_POST['login'])) {
                             <div class="form-group">
                             <div class="fomr-group">
                                 <label for="">Password</label>
-                                <input type="password" class="form-control" name="password" value="<?php echo isset($password) ? $password :''; ?>">
+                                <input type="password" class="form-control" name="password" value="<?php echo isset($password) ? $password :''; ?>" placeholder="Enter Password">
                                 <span style='color:red' ;><?php echo $errors['password'] ?></span>
                             </div>
                             <div class="form-check mt-2">

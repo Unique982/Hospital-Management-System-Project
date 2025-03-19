@@ -57,12 +57,13 @@ ob_end_flush();
                                 <th>ID</th>
                                 <th>Name</th>
                                 <th>specialization</th>
+                                <!-- <th>Action</th> -->
                             </tr>
                             <?php  } ?>
                             
                         </thead>
                         <tbody>
-                            <tr>
+                            
                                 <?php
                                 
                                 $sn = 1;
@@ -70,6 +71,7 @@ ob_end_flush();
                                 while ($row = mysqli_fetch_assoc($result1)) { 
                                  if($user_type=='admin'){
                                     ?>
+                                    <tr>
                                     <td><?php echo $sn; ?></td>
                                     <td><?php echo $row['username']; ?></td>
                                     <td><?php echo $row['user_email']; ?></td>
@@ -83,7 +85,6 @@ ob_end_flush();
                                         </form>
 
                                     </td>
-                                   
                             </tr>
                         <?php
                                     
@@ -94,7 +95,11 @@ ob_end_flush();
                              <td><?php echo $sn; ?></td>
                                     <td><?php echo $row['username']; ?></td>
                                     <td><?php echo $row['specialization']; ?></td>
-                                 
+                                
+                                    <!-- <td>
+                                        
+                                    <a href="appointment_list.php?doctor_id=<?php echo $row['id']; ?>"><button type="button" class="btn btn-outline-warning btn-sm">Book</button></a>
+                                    </td> -->
                                 </tr>
                                 <?php
 

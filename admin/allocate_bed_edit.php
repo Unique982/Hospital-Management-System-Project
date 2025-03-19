@@ -45,6 +45,11 @@ if (isset($_POST['save'])) {
 
         $update_query = "UPDATE `bed_allocate` SET `bed_id`='$bed_number',`pateint_id`='$patient',`allocated_at`='$allocate_time',`discharge`='$discharge_time' WHERE bed_allocate_id=$bed_allocate_id";
         if (mysqli_query($conn, $update_query)) {
+
+            // update 
+           mysqli_query($conn,"UPDATE bed JOIN bed_allocate ON bed.bed_id=bed_allocate.bed_id SET bed.status ='booked' WHERE bed_allocate_id = '$bed_allocate_id'");
+                                      
+
             $_SESSION['alert'] = "Update Successfully";
             $_SESSION['alert_code'] = "success";
             header('location:allocate_bed_list.php');

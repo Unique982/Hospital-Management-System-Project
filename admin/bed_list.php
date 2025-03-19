@@ -7,10 +7,12 @@ if(!isset($_SESSION['id'])){
     header('location:index.php');
   }
 
-$select_query = "SELECT * FROM bed ORDER BY  bed_id DESC ";
+$select_query = "SELECT * FROM bed ORDER BY  bed_id ASC ";
 $result = mysqli_query($conn, $select_query);
 $count = mysqli_num_rows($result);
-
+$update_status ="UPDATE bed  JOIN bed_allocate ON bed.bed_id = bed_allocate.bed_id
+SET bed.status ='available' WHERE DATE(bed_allocate.discharge)<=CURDATE()";
+mysqli_query($conn,$update_status);
 ?>
 <div class="container-fluid">
     <!-- DataTales Example -->             
@@ -33,6 +35,7 @@ $count = mysqli_num_rows($result);
                             <th>Bed Number</th>
                             <th>Type</th>
                             <th>Description</th>
+                            <th>Status</th>
                             <th>Action</th>
                           
                         </tr>
@@ -50,6 +53,12 @@ $count = mysqli_num_rows($result);
                             <td><?php echo $row['bed_num'] ?></td>
                             <td><?php echo $row['bed_type'] ?></td>
                             <td><?php echo $row['description'] ?></td>
+                            <td><?php if($row['status']=='booked'){?>
+                                <span class="badge badge-danger">Booked</span>
+                                    <?php } elseif($row['status']=='available') { ?>
+                                        <span class="badge badge-success">Available</span>
+                                    
+                               <?php  } ?></td>
                             <td><a href="bed_view.php?bed_id=<?php echo $row['bed_id'] ?>"><button type="button" class="btn btn-outline-warning btn-sm">View</button></a>
                           <a href="bed_edit.php?bed_id=<?php echo $row['bed_id'] ?>" class="btn btn-outline-success btn-sm">Edit</a>     
                           <form action="bed_delete.php" method="POST" id="deleteForm" style="display:inline-block; margin:2px;">

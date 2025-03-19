@@ -9,12 +9,12 @@ if(!isset($_SESSION['id'])){
 }
 
 $id= $_GET['id'];
-$sql = "SELECT p.id, p.case_history, p.medication, p.medication_form_pharamcist, p.description, p.date, 
+$sql = "SELECT p.id, p.case_history, p.medication, p.medication_form_pharamcist, p.description as des, p.date, 
     pt.name AS patient, CONCAT(d.first_name,' ',d.last_name)  As doctor ,dr.report_type, dr.document_type, dr.file_name, dr.description
     FROM prescription AS p
     INNER JOIN doctors AS d ON p.doctor_id = d.id
     INNER JOIN patient AS pt ON p.patient_id =pt.id
-    INNER JOIN diagnosis_report AS dr ON p.patient_id = dr.patient_id
+    LEFT JOIN diagnosis_report AS dr ON p.patient_id = dr.patient_id
 WHERE p.id= $id";
 $result = mysqli_query($conn, $sql);
 if(mysqli_num_rows($result)>0){
@@ -63,7 +63,7 @@ if(mysqli_num_rows($result)>0){
                    </tr>
                    <tr>
                      <th>Description:</th>
-                    <td><?php echo $record['description'] ?></td>
+                    <td><?php echo $record['des'] ?></td>
                    </tr>
                    <tr>
                      <th>Date:</th>
@@ -92,9 +92,9 @@ if(mysqli_num_rows($result)>0){
                         <tbody>
                         <?php
                         $count_id =1; 
+                        if (!empty($record['file_name'])) { ?>
                         
                         
-                        ?>
                           <tr>
                             <td><?php echo $count_id; ?></td>
                           <td><?php echo $record['report_type'] ?></td>
@@ -129,17 +129,25 @@ if(mysqli_num_rows($result)>0){
                 <?php 
                 } ?>
                 </div>
-                   <?php }  ?>   
+                   
                    
                    </td>
                           </tr>
-                        </tbody>
+                          <?php $count_id ++;
+                  }}else{ ?> 
+                          <tr>
+                            <td colspan="5">
+                            <p class="alert alert-warning" role="alert">
+  No Diagnosis report available!.
+</p>
+                            </td>
+                          </tr> 
+                          <?php } ?>                       </tbody>
                    
                 </table>
             </div>
     </div>
-
-                  
+        
                    <td colspan="2">
                    <a href="manage_prescription.php"><button class="btn btn-outline-success w-40">Go Back</button></a>
 </td>
@@ -151,6 +159,7 @@ if(mysqli_num_rows($result)>0){
         </div>
         <?php 
 }
+
                         ?>
         
 

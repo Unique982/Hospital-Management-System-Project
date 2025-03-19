@@ -187,8 +187,8 @@ if (isset($_POST['add_patient'])) {
 
 ob_end_flush();
 ?>
-<div class="container-fluid">
 
+<div class="container-fluid">
   <div class="row">
     <div class="col-12">
       <div class="card mb-4">

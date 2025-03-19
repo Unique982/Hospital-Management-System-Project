@@ -8,7 +8,7 @@ if(!isset($_SESSION['id'])){
 }
 
 // select Query
-$select_query = "SELECT blood_group, COUNT(*) as status FROM blood_donors GROUP BY blood_group ";
+$select_query = "SELECT blood_group, COUNT(*) as status FROM blood_donors WHERE is_available=1 GROUP BY blood_group ";
 $result = mysqli_query($conn, $select_query);
 $count = mysqli_num_rows($result);
 ob_end_flush();

@@ -86,7 +86,7 @@ ob_end_flush();// output buffering data after header() redirection
         <div class="col-12">
             <div class="card mb-4">
                 <div class="card-header">
-                 Add  Prescription
+                 Update Prescription
                 </div>
                 <?php
                 $id = $_GET['id'];

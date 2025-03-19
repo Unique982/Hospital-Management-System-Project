@@ -98,7 +98,7 @@ if(mysqli_num_rows($check_result) > 0){
      }
     if(mysqli_query($conn,$insert_usertbale)){
         $user_id = mysqli_insert_id($conn);
-       // check data same xa ki nai doctors tabls
+       // check data same xa ki nai pharmacist tabls
        $sql = "SELECT user_id,  phone FROM pharmacist WHERE user_id = '$user_id' OR phone= '$phone'";
        $result = mysqli_query($conn, $sql) or die("Query failed");
        if(mysqli_num_rows($result) <0){

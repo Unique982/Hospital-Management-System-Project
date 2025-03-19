@@ -69,7 +69,6 @@ ob_end_flush();
             <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
-
                         <tr>
                             <th>#</th>
                             <th>Invoice No</th>
@@ -79,10 +78,6 @@ ob_end_flush();
                             <th>Payment Method</th>
                             <th>Payment Status</th>
                             <th>Action</th>
-
-
-
-
                         </tr>
                     </thead>
                     <tbody>
@@ -91,7 +86,6 @@ ob_end_flush();
                         $sn = 1;
                         if ($count > 0) {
                             while ($row = mysqli_fetch_assoc($result)) {
-
                         ?><tr>
                                     <td><?php echo $sn; ?></td>
                                     <td><?php echo $row['invoice_num'] ?></td>
@@ -145,7 +139,7 @@ ob_end_flush();
                                                 $transaction_uuid = uniqid('txn_') . time(); 
                                                  // Unique transaction UUID based on current time and unique identifier
                                                 $product_code = "EPAYTEST";  // Example product code
-
+                                                $server_charge = 0;
                                                 // Prepare the signature string
                                                 $signature_string = "total_amount={$row['amount']},transaction_uuid={$transaction_uuid},product_code={$product_code}";
 
@@ -173,7 +167,7 @@ ob_end_flush();
                                                     <!-- Use the dynamically generated transaction_uuid -->
                                                     <input type="hidden" id="transaction_uuid" name="transaction_uuid" value="<?php echo htmlspecialchars($transaction_uuid); ?>" required>
                                                     <input type="hidden" id="product_code" name="product_code" value="EPAYTEST" required>
-                                                    <input type="hidden" id="product_service_charge" name="product_service_charge" value="0" required>
+                                                    <input type="hidden" id="product_service_charge" name="product_service_charge" value="<?php echo   $server_charge  ?>" required>
                                                     <input type="hidden" id="product_delivery_charge" name="product_delivery_charge" value="0" required>
                                                     <input type="hidden" id="success_url" name="success_url" value="<?php echo  $success_url ?>" required>
                                                     <input type="hidden" id="failure_url" name="failure_url" value="<?php echo $failure_url ?>" required>

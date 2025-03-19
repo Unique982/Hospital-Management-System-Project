@@ -29,29 +29,29 @@ if (isset($_POST['add_bed'])) {
     $date = mysqli_real_escape_string($conn, $_POST['date']);
 
     // validation doctor id  
-    if (empty($doctor)) {
-        $errors['doctor'] = "doctor id is required";
+    if (empty($doctor)|| $doctor === 'Select Doctor') {
+        $errors['doctor'] = "Doctor is required";
     }
-    if (empty($patient)) {
-        $errors['patient'] = "patient id is required";
+    if (empty($patient)|| $patient === 'Select Patient') {
+        $errors['patient'] = "Patient id is required";
     }
     if (empty($cash_history)) {
-        $errors['cash_history'] = "case history is required";
+        $errors['cash_history'] = "Case history is required";
     }
     if (!preg_match('/^[a-zA-Z\s]+$/', $cash_history)) {
         $errors['cash_history'] = "only use letter,number and space allowed";
     }
     if (empty($medication)) {
-        $errors['medication'] = "medication is required";
+        $errors['medication'] = "Medication is required";
     }
     if (!preg_match('/^[a-zA-Z0-9]+$/', $medication)) {
         $errors['medication'] = "only use letter number and space allowed";
     }
     if (empty($medication_form_pharamacist)) {
-        $errors['medication_form_pharamacist'] = "medication form pharamacist is required";
+        $errors['medication_form_pharamacist'] = "Medication form pharamacist is required";
     }
     if (empty($description)) {
-        $errors['description'] = "description is required";
+        $errors['description'] = "Description is required";
     }
     if (empty($date)) {
         $errors['date'] = 'date is required';

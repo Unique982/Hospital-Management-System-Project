@@ -58,7 +58,7 @@ ob_end_flush();
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
+                        
                             <?php
                             $sn = 1;
                             if ($count_row > 0) {
@@ -67,6 +67,7 @@ ob_end_flush();
 
 
                             ?>
+                            <tr>
                                     <td><?php echo $sn; ?></td>
                                     <td><?php echo $record['patient'] ?></td>
                                     <td><?php echo $record['doctor']  ?></td>
@@ -82,6 +83,7 @@ ob_end_flush();
                                        <?php }  ?>
                                        <?php if($user_type=='doctor'){ ?>
                                        <a href="prescription_edit.php?id=<?php echo $record['id'] ?>" class="btn btn-outline-success btn-sm">Edit</a>
+                                       <a href="prescription_view.php?id=<?php echo $record['id'] ?>"><button type="button" class="btn btn-outline-warning btn-sm">View</button></a>
                                         <form action="prescription_delete.php" method="POST" id="deleteForm" style="display:inline-block; margin:2px;">
                                                 <input type="hidden" name="id" value="<?php echo $record['id'] ?>" class="delete_id">
                                                 <button type="submit" name="delete" class="btn btn-outline-danger btn-sm deletebtn" data-delete-url="prescription_delete.php">Delete</button>
