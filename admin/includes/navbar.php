@@ -41,7 +41,7 @@ $user_name = $_SESSION['user_data']['user_name'] ?? null;
             </a>
         </li>
         <li class="nav-item ">
-            <a class="nav-link text-white" href="./manage_doctor.php">
+            <a class="nav-link text-white" href="./doctor_view.php">
                 <i class="fas fa-user-md"></i>
                 <span> Viwe Doctors</span>
             </a>
@@ -126,8 +126,7 @@ $user_name = $_SESSION['user_data']['user_name'] ?? null;
             <div id="collapse2" class="collapse" aria-labelledby="heading2" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Manage Patient</h6>
-                    <a class="collapse-item" href="./patient_add.php">Patient Add</a>
-                    <a class="collapse-item" href="./patient_list.php">Patient List</a>
+                    <a class="collapse-item" href="./patient_list.php">Manage Patient List</a>
                 </div>
             </div>
         </li>

@@ -16,7 +16,7 @@ session_start()
               <br> Rem eligendi
               voluptate in temporibus quia, natus dolorum.
             </p>
-            <a href="./admin/index.php" class="btn btn-success">Book Appointment</a>
+            <a href="./admin/index.php" class="btn btn-danger">Book Appointment</a>
 
           </div>
         </div>

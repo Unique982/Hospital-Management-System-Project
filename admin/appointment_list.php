@@ -54,7 +54,7 @@ if (isset($_POST['add'])) {
     }
     if (empty(array_filter($errors))) {
         // check the patient already app with the doctor
-        $sql_patient = "SELECT app_id FROM appointments WHERE patient_id = '$patient'AND appointment_date >= CURDATE()";
+        $sql_patient = "SELECT app_id FROM appointments WHERE patient_id = '$patient' AND appointment_date >= CURDATE()";
         $result_patient = mysqli_query($conn, $sql_patient) or die("Query failed");
         if (mysqli_num_rows($result_patient) > 0) {
             $_SESSION['alert'] = "Patient already has an appointment  today.";
@@ -109,6 +109,10 @@ ob_end_flush();
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+            <?php
+$selected_doctor_id = isset($_GET['doctor_id']) ? $_GET['doctor_id'] : '';
+
+?>
             <form action="" method="POST" class="needs-validation" novalidate>
                 <div class="modal-body">
                     <!-- only doctor -->
@@ -133,11 +137,12 @@ ob_end_flush();
                     <?php 
                     }
                      ?>
-                      <?php if($user_type =='admin'  || $user_type =='nurse') {
+                      <?php if($user_type =='admin'  || $user_type =='nurse' || $user_type=='patient') {
                         ?>
                     <div class="form-group">
                         <label for="">Doctor</label>
                         <select name="doctor" id="doctor" class="form-control" required>
+                            <option selected disabled>Select Doctor</option>
                             <?php
                             $select_doctor_table = "SELECT d.id, CONCAT(d.first_name,'',d.last_name) as username FROM doctors as d
                     INNER JOIN user_tbl ON d.user_id = user_tbl.id ";
@@ -215,7 +220,7 @@ ob_end_flush();
     <div class="card mb-4">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">Appointment List
-                <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#exampleModal">
+                <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#exampleModal" >
                     Add Appointment
                 </button>
             </h6>

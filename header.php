@@ -71,7 +71,7 @@ if (mysqli_num_rows($result)) {
               <a class="nav-link" href="<?php echo ($current_page == 'single.php' ||  $current_page=='about_detalis_page.php') ? 'index.php#contact' : '#contact'; ?>">Contact us</a>
             </li>
             <li class="nav-item">
-              <a href="./admin/index.php"><button class="btn btn-success ms-lg-3">Login</button></a>
+              <a href="./admin/index.php"><button class="btn btn-primary ms-lg-3">Login</button></a>
             </li>
           </ul>
 

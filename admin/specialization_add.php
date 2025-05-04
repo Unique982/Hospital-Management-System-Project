@@ -9,12 +9,14 @@ if(!isset($_SESSION['id'])){
 }
 $errors = [
     'specialization' =>'',
-    'description' =>''
+    'description' =>'',
+    'symptoms' =>''
 ];
 
 if(isset($_POST['add'])){
     $specialization = mysqli_real_escape_string($conn, $_POST['specialization']);
     $description = mysqli_real_escape_string($conn, $_POST['description']);
+    $symptoms = mysqli_real_escape_string($conn,$_POST['symptoms']);
   // 
   $specializationPattern = "/^[a-zA-Z\s]+$/";
   if(empty($specialization)){
@@ -32,8 +34,13 @@ if(isset($_POST['add'])){
   elseif(strlen($description) > 1000){
     $errors['description'] = 'Description must be at least 1000 characters';
   }
+    
+  if(empty($symptoms)){
+    $errors['symptoms']="Symptoms is required";
+  }
+
   if(empty(array_filter($errors))){
-    $sql = "INSERT INTO `specialization`(specialization,description,created_at) VALUES ('$specialization','$description', Now())";
+    $sql = "INSERT INTO `specialization`(specialization,description,symptoms,created_at) VALUES ('$specialization','$description','$symptoms', Now())";
    if(mysqli_query($conn, $sql)){
     $_SESSION['alert'] = "Added successfully";
     $_SESSION['alert_code'] = "success";
@@ -69,7 +76,11 @@ ob_end_flush();
                            <textarea name="description" id="" class="form-control" placeholder="Enter Description"><?php echo isset($description) ? $description:'' ?></textarea>
                            <span style='color:red' ;><?php echo $errors['description'] ?></span>
                           </div>
-                       
+                          <div class="form-group">
+                            <label>Symptom:</label>
+                            <input type="text" name="symptoms" class="form-control" placeholder="Enter Symptom" value="<?php echo isset($symptoms)? $symptoms:''?>">
+                            <span style='color:red' ;><?php echo $errors['symptoms'] ?></span>
+                          </div>
                         <div class="form-group">
                         <button type="submit" name="add" class="btn btn-primary">Save</button>
                         </div>
