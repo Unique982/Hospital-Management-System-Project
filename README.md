@@ -66,7 +66,7 @@ A full-featured web-based Hospital Management System built using PHP and MySQL. 
    ```bash
    git clone https://github.com/yourusername/hospital-management-system.git
 ##Project ScreenShort
-
+```bash
 ![image](https://github.com/user-attachments/assets/c0af0760-9745-4905-91c1-fa2b340dcc5d)
 
 ![image](https://github.com/user-attachments/assets/79973ac6-4a95-4aac-bbc9-18e610f32810)
@@ -92,7 +92,7 @@ A full-featured web-based Hospital Management System built using PHP and MySQL. 
 ![image](https://github.com/user-attachments/assets/03650b24-518c-47b4-9b0e-178ac60e693b)
 ![image](https://github.com/user-attachments/assets/b8b013b8-7b5b-4a64-a66a-e92de0e4f84d)
 
-
+```
 
 
 
