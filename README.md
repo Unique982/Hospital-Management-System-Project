@@ -1,5 +1,71 @@
-Hospital Managment System
+# 🏥 Hospital Management System
 
+A full-featured web-based Hospital Management System built using PHP and MySQL. The system supports multiple roles and includes advanced features like online appointment booking, invoice and blood management, eSewa payment gateway, email notifications, and disease prediction using Naive Bayes algorithm.
+
+---
+
+## ✅ Features
+
+### 👨‍⚕️ Admin Module
+- Login / Logout
+- Manage Staff, Specialization, Patients, Appointments
+- View Invoices and Reports
+- Manage Blood Bank, Beds, and Noticeboard
+- Change Profile
+
+### 🩺 Doctor Module
+- Login / Logout
+- Manage Appointments, Reports, Prescriptions
+- Change Profile
+
+### 👤 Patient Module
+- Register / Login / Logout
+- Symptom-based disease prediction (🔍 Naive Bayes Algorithm)
+- Find and Book Appointment with Doctor
+- View Prescriptions, Blood Bank, Reports, Invoices
+- **Make Payments via eSewa**
+- **Receive Email on Registration & Bookings**
+
+### 👩‍⚕️ Nurse Module
+- Manage Patients, Blood, Beds, Reports
+
+### 💊 Pharmacist Module
+- Manage Medicines and Distribution
+
+### 🔬 Laboratorist Module
+- Manage Diagnosis Reports
+
+### 💰 Accountant Module
+- Manage Payments, Invoices
+
+---
+
+## 🧠 Machine Learning Feature
+
+**Disease Prediction Using Naive Bayes Classifier**
+- Based on symptoms entered by the patient
+- Predicts possible diseases
+- Suggests relevant doctor
+
+---
+
+## 🛠️ Tech Stack
+
+- **Frontend:** HTML, CSS, JavaScript, Bootstrap  
+- **Backend:** PHP  
+- **Database:** MySQL  
+- **Payment Gateway:** eSewa  
+- **Email System:** SMTP / PHP Mail  
+- **ML Algorithm:** Naive Bayes (PHP logic or API)
+
+---
+
+## 📦 Installation
+
+1. Clone the project:
+   ```bash
+   git clone https://github.com/yourusername/hospital-management-system.git
+##Project ScreenShort
 
 ![image](https://github.com/user-attachments/assets/c0af0760-9745-4905-91c1-fa2b340dcc5d)
 
